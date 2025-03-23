@@ -1,0 +1,16 @@
+services:
+  web-ui:
+    image: node:22
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    user: node
+    networks:
+      - nw-holos
+    ports:
+      - 3000:3000
+    tty: true
+
+networks:
+  nw-holos:
+    external: true
