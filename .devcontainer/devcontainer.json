@@ -1,0 +1,21 @@
+{
+  "dockerComposeFile": ["../docker-compose.yml"],
+  "service": "web-ui",
+  "workspaceFolder": "/workspace",
+  "postAttachCommand": "git config --global --add safe.directory /workspace && npm run dev",
+  "containerEnv": {
+    "SHELL": "/bin/bash"
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "git.openRepositoryInParentFolders": "always"
+      },
+      "extensions": [
+        "shardulm94.trailing-spaces",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  }
+}
