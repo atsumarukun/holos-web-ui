@@ -17,7 +17,7 @@ jobs:
           cache: "npm"
 
       - name: Run lint
-        uses: npm run lint
+        run: npm run lint
 
   test:
     runs-on: ubuntu-latest
@@ -32,4 +32,4 @@ jobs:
           cache: "npm"
 
       - name: Run test
-        uses: npm run test
+        run: npm run test
