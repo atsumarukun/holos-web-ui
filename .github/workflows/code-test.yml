@@ -1,0 +1,35 @@
+name: Code Test
+
+on:
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4.2.1
+
+      - name: Set up node
+        uses: actions/setup-node@v4.3.0
+        with:
+          node-version-file: package.json
+          cache: "npm"
+
+      - name: Run lint
+        uses: npm run lint
+
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4.2.1
+
+      - name: Set up node
+        uses: actions/setup-node@v4.3.0
+        with:
+          node-version-file: package.json
+          cache: "npm"
+
+      - name: Run test
+        uses: npm run test
