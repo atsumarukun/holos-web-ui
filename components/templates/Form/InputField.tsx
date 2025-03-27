@@ -1,9 +1,8 @@
 import { ReactNode } from "react";
-import { FieldError } from "react-hook-form";
 
 type Props = Readonly<{
   children: ReactNode;
-  error?: FieldError;
+  error?: string;
   className?: string;
 }>;
 
@@ -17,7 +16,7 @@ export const InputField = ({ children, error, className }: Props) => {
       >
         {children}
       </div>
-      {error && <p className="text-xs text-alert">{error?.message}</p>}
+      {error && <p className="text-xs text-alert">{error}</p>}
     </div>
   );
 };
