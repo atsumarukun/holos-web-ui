@@ -13,6 +13,7 @@ export const Form = ({ children, className, onSubmit }: Props) => {
       className={
         "w-full grow flex flex-col gap-10" + (className ? " " + className : "")
       }
+      onSubmit={onSubmit}
     >
       {children}
     </form>
