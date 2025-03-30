@@ -11,6 +11,7 @@ import { Account, accountSchema } from "../schemas/account";
 import { Signup } from "../schemas/signup";
 
 export const signup = async (data: Signup): Promise<Account | ActionsError> => {
+  console.log(toSnakeCase(data));
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_ACCOUNT_API_HOST}/accounts`,
@@ -25,7 +26,7 @@ export const signup = async (data: Signup): Promise<Account | ActionsError> => {
     );
 
     if (!res.ok) {
-      const result = errorSchema.safeParse(await res.json());
+      const result = errorSchema.safeParse(toCamelCase(await res.json()));
       if (result.success) {
         return {
           type: "ActionsError",

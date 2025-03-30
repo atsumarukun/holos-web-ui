@@ -1,10 +1,9 @@
-import { ReactNode } from "react";
-import { SubmitHandler } from "react-hook-form";
+import { BaseSyntheticEvent, ReactNode } from "react";
 
 type Props = Readonly<{
   children: ReactNode;
   className?: string;
-  onSubmit: SubmitHandler<any>;
+  onSubmit: (e?: BaseSyntheticEvent) => Promise<void>;
 }>;
 
 export const Form = ({ children, className, onSubmit }: Props) => {

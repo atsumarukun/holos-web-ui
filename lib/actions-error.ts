@@ -32,6 +32,11 @@ export type ActionsError = {
   readonly code: ActionsErrorCode;
 };
 
-export const isActionsError = (value: any): value is ActionsError => {
-  return "type" in value && value.type === "ActionsError";
+export const isActionsError = (value: unknown): value is ActionsError => {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "type" in value &&
+    value.type === "ActionsError"
+  );
 };
