@@ -1,4 +1,4 @@
-import { ThemeToggle } from "@components/molecules/ThemeToggle";
+import { ThemeToggle } from "@/components/molecules/ThemeToggle";
 import { fireEvent, render } from "@testing-library/react";
 import { useTheme } from "next-themes";
 
@@ -8,7 +8,11 @@ jest.mock("next-themes", () => ({
 
 describe("ThemeToggle", () => {
   it("Check rendering", () => {
-    useTheme.mockReturnValue({ theme: "dark", setTheme: jest.fn() });
+    jest.mocked(useTheme).mockReturnValue({
+      theme: "dark",
+      setTheme: jest.fn(),
+      themes: [],
+    });
 
     const { getByRole } = render(<ThemeToggle />);
 
@@ -17,7 +21,11 @@ describe("ThemeToggle", () => {
 
   it("Check if it switches to light mode", async () => {
     const setThemeMock = jest.fn();
-    useTheme.mockReturnValue({ theme: "dark", setTheme: setThemeMock });
+    jest.mocked(useTheme).mockReturnValue({
+      theme: "dark",
+      setTheme: setThemeMock,
+      themes: [],
+    });
     const { getByRole } = render(<ThemeToggle />);
 
     const button = getByRole("button");
@@ -28,7 +36,11 @@ describe("ThemeToggle", () => {
 
   it("Check if it switches to dark mode", async () => {
     const setThemeMock = jest.fn();
-    useTheme.mockReturnValue({ theme: "light", setTheme: setThemeMock });
+    jest.mocked(useTheme).mockReturnValue({
+      theme: "light",
+      setTheme: setThemeMock,
+      themes: [],
+    });
     const { getByRole } = render(<ThemeToggle />);
 
     const button = getByRole("button");
