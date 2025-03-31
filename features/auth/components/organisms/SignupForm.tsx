@@ -79,7 +79,7 @@ export const SignupForm = () => {
           />
         </InputField>
       </FormField>
-      <div className="grow flex justify-between items-center">
+      <div className="grow flex justify-between items-center mt-6 md:mt-0">
         <Link
           href="/auth/signin"
           className="text-sm rounded-full hover:bg-hover px-4 py-1.5 -ml-4"
