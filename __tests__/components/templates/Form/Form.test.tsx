@@ -9,8 +9,7 @@ describe("Form", () => {
       </Form>
     );
 
-    const form = document.querySelector("form");
-    expect(form).toBeInTheDocument();
+    expect(document.querySelector("form")).toBeInTheDocument();
   });
 
   it("Check if className is reflected", () => {
@@ -20,8 +19,7 @@ describe("Form", () => {
       </Form>
     );
 
-    const form = document.querySelector("form");
-    expect(form).toHaveClass("test-class");
+    expect(document.querySelector("form")).toHaveClass("test-class");
   });
 
   it("Check if onSubmit is called", () => {

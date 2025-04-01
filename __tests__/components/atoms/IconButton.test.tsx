@@ -5,7 +5,7 @@ import { LuMoon } from "react-icons/lu";
 describe("IconButton", () => {
   it("Check rendering", () => {
     const { getByRole } = render(
-      <IconButton icon={LuMoon} onClick={() => {}} />
+      <IconButton icon={LuMoon} onClick={jest.fn()} />
     );
 
     expect(getByRole("button").querySelector("svg")).toBeInTheDocument();
@@ -24,12 +24,10 @@ describe("IconButton", () => {
   });
 
   it("Check if className is reflected", () => {
-    const handleClick = jest.fn();
     const { getByRole } = render(
-      <IconButton icon={LuMoon} onClick={handleClick} className="test-class" />
+      <IconButton icon={LuMoon} onClick={jest.fn()} className="test-class" />
     );
 
-    const button = getByRole("button");
-    expect(button).toHaveClass("test-class");
+    expect(getByRole("button")).toHaveClass("test-class");
   });
 });

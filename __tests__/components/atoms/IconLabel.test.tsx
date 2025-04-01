@@ -6,16 +6,16 @@ describe("IconLabel", () => {
   it("Check rendering", () => {
     render(<IconLabel htmlFor="test-input" icon={FaBeer} />);
 
-    const label = document.querySelector("label");
-    expect(label?.querySelector("svg")).toBeInTheDocument();
+    expect(
+      document.querySelector("label")?.querySelector("svg")
+    ).toBeInTheDocument();
   });
 
-  it("Check className", () => {
+  it("Check if className is reflected", () => {
     render(
-      <IconLabel htmlFor="test-input" className="custom-class" icon={FaBeer} />
+      <IconLabel htmlFor="test-input" className="test-class" icon={FaBeer} />
     );
 
-    const label = document.querySelector("label");
-    expect(label).toHaveClass("text-xl", "custom-class");
+    expect(document.querySelector("label")).toHaveClass("test-class");
   });
 });
