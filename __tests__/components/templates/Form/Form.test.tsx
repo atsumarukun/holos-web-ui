@@ -3,34 +3,34 @@ import { fireEvent, render } from "@testing-library/react";
 
 describe("Form", () => {
   it("Check rendering", () => {
-    render(
+    const { container } = render(
       <Form onSubmit={jest.fn()}>
         <input />
       </Form>
     );
 
-    expect(document.querySelector("form")).toBeInTheDocument();
+    expect(container.querySelector("form")).toBeInTheDocument();
   });
 
   it("Check if className is reflected", () => {
-    render(
+    const { container } = render(
       <Form onSubmit={jest.fn()} className="test-class">
         <input />
       </Form>
     );
 
-    expect(document.querySelector("form")).toHaveClass("test-class");
+    expect(container.querySelector("form")).toHaveClass("test-class");
   });
 
   it("Check if onSubmit is called", () => {
     const handleSubmit = jest.fn();
-    render(
+    const { container } = render(
       <Form onSubmit={handleSubmit}>
         <input />
       </Form>
     );
 
-    const form = document.querySelector("form");
+    const form = container.querySelector("form");
     fireEvent.submit(form!);
 
     expect(handleSubmit).toHaveBeenCalledTimes(1);

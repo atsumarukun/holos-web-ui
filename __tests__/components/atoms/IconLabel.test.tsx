@@ -4,18 +4,20 @@ import { FaBeer } from "react-icons/fa";
 
 describe("IconLabel", () => {
   it("Check rendering", () => {
-    render(<IconLabel htmlFor="test-input" icon={FaBeer} />);
+    const { container } = render(
+      <IconLabel htmlFor="test-input" icon={FaBeer} />
+    );
 
     expect(
-      document.querySelector("label")?.querySelector("svg")
+      container.querySelector("label")?.querySelector("svg")
     ).toBeInTheDocument();
   });
 
   it("Check if className is reflected", () => {
-    render(
+    const { container } = render(
       <IconLabel htmlFor="test-input" className="test-class" icon={FaBeer} />
     );
 
-    expect(document.querySelector("label")).toHaveClass("test-class");
+    expect(container.querySelector("label")).toHaveClass("test-class");
   });
 });
