@@ -35,4 +35,14 @@ describe("Form", () => {
 
     expect(handleSubmit).toHaveBeenCalledTimes(1);
   });
+
+  it("Check rendering of child elements", () => {
+    const { getByRole } = render(
+      <Form onSubmit={jest.fn()}>
+        <input />
+      </Form>
+    );
+
+    expect(getByRole("textbox")).toBeInTheDocument();
+  });
 });
