@@ -26,7 +26,8 @@ describe("SignupForm", () => {
     expect(getByPlaceholderText("アカウント名")).toBeInTheDocument();
     expect(getByPlaceholderText("パスワード")).toBeInTheDocument();
     expect(getByPlaceholderText("パスワード(確認)")).toBeInTheDocument();
-    expect(getByRole("button")).toBeInTheDocument();
+    expect(getByRole("link", { name: "ログイン" })).toBeInTheDocument();
+    expect(getByRole("button", { name: "作成" })).toBeInTheDocument();
   });
 
   it("Check error display for invalid input", async () => {
