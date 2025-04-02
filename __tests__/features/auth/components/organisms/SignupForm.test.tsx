@@ -5,10 +5,6 @@ import { ActionsError, actionsErrorCode } from "@/lib/actions-error";
 import { fireEvent, render, waitFor } from "@testing-library/react";
 import { useRouter } from "next/navigation";
 
-jest.mock("next/navigation", () => ({
-  useRouter: jest.fn(),
-}));
-
 jest.mock("@/features/auth/hooks/signup", () => ({
   useSignup: jest.fn(),
 }));
