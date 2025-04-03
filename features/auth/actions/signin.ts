@@ -7,13 +7,13 @@ import {
 } from "@/lib/actions-error";
 import { toCamelCase, toSnakeCase } from "@/lib/case-converters";
 import { errorSchema } from "@/schemas/error";
-import { Account, accountSchema } from "../schemas/account";
-import { Signup } from "../schemas/signup";
+import { Session, sessionSchema } from "../schemas/session";
+import { Signin } from "../schemas/signin";
 
-export const signup = async (data: Signup): Promise<Account | ActionsError> => {
+export const signin = async (data: Signin): Promise<Session | ActionsError> => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_ACCOUNT_API_HOST}/accounts`,
+      `${process.env.NEXT_PUBLIC_ACCOUNT_API_HOST}/login`,
       {
         method: "POST",
         headers: {
@@ -32,17 +32,15 @@ export const signup = async (data: Signup): Promise<Account | ActionsError> => {
           message: result.data.message,
           code: toActionsErrorCode(res.status),
         };
-      } else {
-        throw new Error("invalid fetch response");
       }
-    }
-
-    const result = accountSchema.safeParse(toCamelCase(await res.json()));
-    if (result.success) {
-      return result.data;
-    } else {
       throw new Error("invalid fetch response");
     }
+
+    const result = sessionSchema.safeParse(toCamelCase(await res.json()));
+    if (result.success) {
+      return result.data;
+    }
+    throw new Error("invalid fetch response");
   } catch (e) {
     return {
       type: "ActionsError",
