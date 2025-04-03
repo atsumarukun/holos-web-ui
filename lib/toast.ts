@@ -9,9 +9,10 @@ export const successToast = (title: string, description?: string) => {
       size: 20,
     }),
     style: {
-      color: "var(--safe)",
+      color: "var(--foreground)",
       backgroundColor: "var(--background)",
       border: "none",
+      borderLeft: "var(--safe) 8px solid",
       boxShadow: "0 0 50px var(--board)",
     },
   });
@@ -24,9 +25,10 @@ export const errorToast = () => {
       size: 20,
     }),
     style: {
-      color: "var(--alert)",
+      color: "var(--foreground)",
       backgroundColor: "var(--background)",
       border: "none",
+      borderLeft: "var(--alert) 8px solid",
       boxShadow: "0 0 50px var(--board)",
     },
   });
