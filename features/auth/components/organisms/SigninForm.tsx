@@ -23,9 +23,6 @@ export const SigninForm = () => {
   const router = useRouter();
   const [error, setError] = useState<ActionsError | undefined>();
 
-  var test = "test";
-  console.log(test);
-
   const {
     register,
     handleSubmit,
