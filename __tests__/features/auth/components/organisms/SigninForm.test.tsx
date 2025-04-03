@@ -37,9 +37,7 @@ describe("SigninForm", () => {
       onSubmit: jest.fn(),
     });
 
-    const { getByRole, getByPlaceholderText, getByText } = render(
-      <SigninForm />
-    );
+    const { getByRole, getByText } = render(<SigninForm />);
 
     const submitButton = getByRole("button");
     fireEvent.click(submitButton);
