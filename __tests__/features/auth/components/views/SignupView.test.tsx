@@ -3,10 +3,12 @@ import { render } from "@testing-library/react";
 
 describe("SignupView", () => {
   it("Check rendering", () => {
-    const { container, getByText } = render(<SignupView />);
+    const { container, getByRole } = render(<SignupView />);
 
     expect(container.querySelector("p")).toBeInTheDocument();
-    expect(getByText("アカウント作成")).toBeInTheDocument();
+    expect(
+      getByRole("heading", { name: "アカウント作成" })
+    ).toBeInTheDocument();
     expect(container.querySelector("form")).toBeInTheDocument();
   });
 });
