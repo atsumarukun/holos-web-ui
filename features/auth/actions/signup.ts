@@ -11,7 +11,6 @@ import { Account, accountSchema } from "../schemas/account";
 import { Signup } from "../schemas/signup";
 
 export const signup = async (data: Signup): Promise<Account | ActionsError> => {
-  console.log(toSnakeCase(data));
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_ACCOUNT_API_HOST}/accounts`,
@@ -45,18 +44,10 @@ export const signup = async (data: Signup): Promise<Account | ActionsError> => {
       throw new Error("invalid fetch response");
     }
   } catch (e) {
-    if (e instanceof Error) {
-      return {
-        type: "ActionsError",
-        message: e.message,
-        code: actionsErrorCode.Unknown,
-      };
-    } else {
-      return {
-        type: "ActionsError",
-        message: "failed to signup",
-        code: actionsErrorCode.Unknown,
-      };
-    }
+    return {
+      type: "ActionsError",
+      message: e instanceof Error ? e.message : "failed to signup",
+      code: actionsErrorCode.Unknown,
+    };
   }
 };
