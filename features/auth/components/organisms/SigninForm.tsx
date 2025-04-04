@@ -1,5 +1,6 @@
 "use client";
 
+import { setToken } from "@/actions/token";
 import { IconLabel } from "@/components/atoms/IconLabel";
 import { Input } from "@/components/atoms/Input";
 import {
@@ -30,7 +31,11 @@ export const SigninForm = () => {
   } = useForm<Signin>({ resolver: zodResolver(signinSchema) });
 
   const { onSubmit } = useSignin({
-    onCompleted: () => {
+    onCompleted: async (session) => {
+      if (session) {
+        // NOTE: awaitしないとmiddlewareの認証検証が失敗しリダイレクトされるためtokenが保存されるまで待機.
+        await setToken(session.token);
+      }
       successToast("ログインしました.");
       router.push("/");
     },
