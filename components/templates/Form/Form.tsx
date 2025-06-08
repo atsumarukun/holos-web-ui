@@ -1,3 +1,4 @@
+import { buildClassName } from "@/lib/class-name";
 import { BaseSyntheticEvent, ReactNode } from "react";
 
 type Props = Readonly<{
@@ -9,9 +10,7 @@ type Props = Readonly<{
 export const Form = ({ children, className, onSubmit }: Props) => {
   return (
     <form
-      className={
-        "w-full grow flex flex-col gap-10" + (className ? " " + className : "")
-      }
+      className={buildClassName("w-full grow flex flex-col gap-10", className)}
       onSubmit={onSubmit}
     >
       {children}

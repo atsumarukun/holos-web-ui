@@ -1,3 +1,4 @@
+import { buildClassName } from "@/lib/class-name";
 import { ReactNode } from "react";
 
 type Props = Readonly<{
@@ -7,11 +8,7 @@ type Props = Readonly<{
 
 export const FormField = ({ children, className }: Props) => {
   return (
-    <div
-      className={
-        "grow flex flex-col gap-6" + (className ? " " + className : "")
-      }
-    >
+    <div className={buildClassName("grow flex flex-col gap-6", className)}>
       {children}
     </div>
   );
