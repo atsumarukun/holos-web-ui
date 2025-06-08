@@ -1,3 +1,4 @@
+import { buildClassName } from "@/lib/class-name";
 import { UseFormRegisterReturn } from "react-hook-form";
 
 type Props = Readonly<
@@ -21,10 +22,10 @@ export const Input = ({
       id={id}
       placeholder={placeholder}
       type={type}
-      className={
-        "grow bg-inherit focus:outline-none" +
-        (className ? " " + className : "")
-      }
+      className={buildClassName(
+        "grow bg-inherit focus:outline-none",
+        className
+      )}
       {...props}
     />
   );
