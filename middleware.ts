@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getToken } from "./actions/token";
+import { authorize } from "./actions/authorize";
 
 export const middleware = async (request: NextRequest) => {
-  const token = await getToken();
-  if (!token) {
+  const accountName = await authorize();
+  if (!accountName) {
     return NextResponse.redirect(new URL("/auth/signin", request.url));
   }
-  return NextResponse.next();
+  const res = NextResponse.next();
+  res.headers.set("account-name", accountName);
+  return res;
 };
 
 export const config = {
