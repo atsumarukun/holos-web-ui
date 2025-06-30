@@ -43,6 +43,7 @@
   --color-hover: var(--hover);
   --color-alert: var(--alert);
   --color-theme: var(--theme);
+  --color-separator: var(--separator);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -89,6 +90,7 @@
   --button: oklch(0.239 0 0 / 0.075);
   --hover: oklch(0.239 0 0 / 0.075);
   --board: oklch(0.239 0 0 / 0.1);
+  --separator: oklch(0.239 0 0 / 0.2);
 }
 
 .dark {
@@ -126,6 +128,7 @@
   --button: oklch(0.994 0 0 / 0.075);
   --hover: oklch(0.994 0 0 / 0.075);
   --board: oklch(0.994 0 0 / 0.1);
+  --separator: oklch(0.994 0 0 / 0.2);
 }
 
 @layer base {
