@@ -2,13 +2,17 @@
 
 import { Accordion } from "@/components/ui/accordion";
 import { buildClassName } from "@/lib/class-name";
-import Link from "next/link";
 import { useState } from "react";
 import { NavItem } from "./NavItem";
 import { SearchNavField } from "./SearchNavField";
 import { floors } from "./constant";
 
-export const Nav = () => {
+type Props = {
+  className?: string;
+  onAccess?: () => void;
+};
+
+export const Nav = ({ className, onAccess }: Props) => {
   const [searchKey, setSearchKey] = useState("");
 
   const collator = new Intl.Collator("ja", {
@@ -30,19 +34,11 @@ export const Nav = () => {
   );
 
   return (
-    <nav className="w-72 grow flex flex-col gap-6">
-      <Link
-        href="/"
-        className={buildClassName(
-          "w-full inline-block font-playwrite text-xl px-6 py-4 mt-2"
-        )}
-      >
-        H<span className="text-theme">o</span>los
-      </Link>
+    <nav className={buildClassName("grow flex flex-col gap-6", className)}>
       <SearchNavField onSearch={(key) => setSearchKey(key)} />
       <Accordion type="single" collapsible className="text-sm w-full grow">
         {searchedFloors.map((floor) => (
-          <NavItem floor={floor} key={floor.key} />
+          <NavItem floor={floor} key={floor.key} onAccess={onAccess} />
         ))}
       </Accordion>
     </nav>

@@ -8,7 +8,7 @@ type Props = {
 
 export const Board = ({ children, className }: Props) => {
   return (
-    <div className={buildClassName("bg-background rounded-xl", className)}>
+    <div className={buildClassName("bg-background md:rounded-xl", className)}>
       {children}
     </div>
   );
