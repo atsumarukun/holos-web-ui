@@ -19,9 +19,10 @@ type Props = {
     }[];
     icon: IconType;
   };
+  onAccess?: () => void;
 };
 
-export const NavAccordionItem = ({ floor }: Props) => {
+export const NavAccordionItem = ({ floor, onAccess }: Props) => {
   const pathName = usePathname();
   const hrefs = floor.children.map((v) => v.href);
 
@@ -31,8 +32,8 @@ export const NavAccordionItem = ({ floor }: Props) => {
         className={buildClassName(
           "font-normal hover:no-underline hover:bg-hover rounded-none py-2",
           hrefs.includes(pathName)
-            ? "border-l-4 border-theme bg-hover px-5"
-            : "px-6"
+            ? "border-l-4 border-theme bg-hover px-3 md:px-5"
+            : "px-4 md:px-6"
         )}
       >
         <div className="flex flex-row items-center gap-4">
@@ -40,9 +41,14 @@ export const NavAccordionItem = ({ floor }: Props) => {
           <p>{floor.name}</p>
         </div>
       </AccordionTrigger>
-      <AccordionContent className="flex flex-col border-l border-base p-0 ml-9">
+      <AccordionContent className="flex flex-col border-l border-base p-0 ml-7">
         {floor.children.map((child, i) => (
-          <Link href={child.href} key={i} className="hover:bg-hover px-4 py-2">
+          <Link
+            href={child.href}
+            key={i}
+            className="hover:bg-hover px-4 py-2"
+            onClick={onAccess}
+          >
             {child.name}
           </Link>
         ))}
