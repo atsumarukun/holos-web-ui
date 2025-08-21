@@ -11,6 +11,18 @@ services:
       - 3000:3000
     tty: true
 
+  storybook:
+    image: node:22
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    user: node
+    networks:
+      - nw-holos
+    ports:
+      - 6006:6006
+    command: npm run storybook
+
 networks:
   nw-holos:
     external: true

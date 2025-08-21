@@ -1,6 +1,7 @@
 {
   "dockerComposeFile": ["../docker-compose.yml"],
   "service": "web-ui",
+  "runServices": ["web-ui", "storybook"],
   "workspaceFolder": "/workspace",
   "postAttachCommand": "git config --global --add safe.directory /workspace && npm run dev",
   "containerEnv": {
