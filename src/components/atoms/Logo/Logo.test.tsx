@@ -2,10 +2,6 @@ import { render, screen } from "@testing-library/react";
 import { Logo } from "./Logo";
 import { Size, sizes } from "./styles";
 
-jest.mock("next/image", () => (props: any) => {
-  return <img {...props} alt={props.alt} />;
-});
-
 describe("Logo", () => {
   it("renders", () => {
     render(<Logo />);
