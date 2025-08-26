@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from "@storybook/nextjs";
 import { Logo } from ".";
+import { logoSizes } from "./styles";
 
 const meta = {
   title: "Atoms/Logo",
@@ -11,7 +12,7 @@ const meta = {
   argTypes: {
     size: {
       control: "select",
-      options: ["sm", "base", "lg", "xl"],
+      options: Object.keys(logoSizes),
     },
     noIcon: {
       control: "boolean",

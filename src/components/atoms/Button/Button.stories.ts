@@ -2,6 +2,7 @@ import { Meta, StoryObj } from "@storybook/nextjs";
 import { Button } from ".";
 import { LuSettings } from "react-icons/lu";
 import { fn } from "storybook/test";
+import { buttonVariants } from "./styles";
 
 const meta = {
   title: "Atoms/Button",
@@ -13,7 +14,7 @@ const meta = {
   argTypes: {
     variant: {
       control: "select",
-      options: ["default", "outline", "ghost"],
+      options: Object.keys(buttonVariants),
     },
     icon: {
       control: false,
