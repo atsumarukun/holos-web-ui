@@ -1,6 +1,6 @@
 import { ComponentProps } from "react";
 import { IconType } from "react-icons";
-import { IconButtonVariant, iconButtonVariants } from "./variants";
+import { IconButtonVariant, iconButtonVariants } from "./styles";
 import { cn } from "@/lib/utils";
 
 type Props = Readonly<{

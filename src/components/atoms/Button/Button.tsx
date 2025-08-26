@@ -1,5 +1,5 @@
 import { ComponentProps } from "react";
-import { ButtonVariant, buttonVariants } from "./variants";
+import { ButtonVariant, buttonVariants } from "./styles";
 import { IconType } from "react-icons";
 import { cn } from "@/lib/utils";
 
