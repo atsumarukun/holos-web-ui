@@ -1,9 +1,9 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { Size, sizes } from "./styles";
+import { LogoSize, logoSizes } from "./styles";
 
 type Props = Readonly<{
-  size?: Size;
+  size?: LogoSize;
   noIcon?: boolean;
 }>;
 
@@ -14,11 +14,11 @@ export const Logo = ({ size = "base", noIcon }: Props) => {
         <Image
           src="/logo.png"
           alt="ロゴ"
-          width={sizes[size].image}
-          height={sizes[size].image}
+          width={logoSizes[size].image}
+          height={logoSizes[size].image}
         />
       )}
-      <p className={cn("font-playwrite mt-1", sizes[size].label)}>
+      <p className={cn("font-playwrite mt-1", logoSizes[size].label)}>
         H<span className="text-[#fe5dd8]">o</span>los
       </p>
     </div>

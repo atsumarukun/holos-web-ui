@@ -1,4 +1,4 @@
-export const sizes = {
+export const logoSizes = {
   sm: {
     label: "text-lg",
     image: 20,
@@ -17,4 +17,4 @@ export const sizes = {
   },
 } as const;
 
-export type Size = keyof typeof sizes;
+export type LogoSize = keyof typeof logoSizes;
