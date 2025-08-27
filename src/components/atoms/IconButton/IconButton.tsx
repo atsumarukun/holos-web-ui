@@ -9,12 +9,14 @@ type Props = Readonly<{
 }> &
   ComponentProps<"button">;
 
-export const IconButton = ({ icon, variant, className, ...props }: Props) => {
+export const IconButton = ({
+  icon,
+  variant = "default",
+  className,
+  ...props
+}: Props) => {
   return (
-    <button
-      className={cn(iconButtonVariants[variant ?? "default"], className)}
-      {...props}
-    >
+    <button className={cn(iconButtonVariants[variant], className)} {...props}>
       {icon({ size: 16 })}
     </button>
   );
