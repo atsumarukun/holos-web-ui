@@ -2,7 +2,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { Input } from "./Input";
 import { LuUserRound } from "react-icons/lu";
 
-describe("Input", () => {
+describe("Atoms/AuthInput", () => {
   it("renders", () => {
     const { container } = render(
       <Input id="username" placeholder="username" icon={LuUserRound} />
