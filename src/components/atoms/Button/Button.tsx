@@ -13,15 +13,12 @@ type Props = Readonly<{
 export const Button = ({
   label,
   icon,
-  variant,
+  variant = "default",
   className,
   ...props
 }: Props) => {
   return (
-    <button
-      className={cn(buttonVariants[variant ?? "default"], className)}
-      {...props}
-    >
+    <button className={cn(buttonVariants[variant], className)} {...props}>
       {icon && icon({ size: 16 })}
       {label}
     </button>
