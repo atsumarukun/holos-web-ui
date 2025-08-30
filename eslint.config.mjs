@@ -24,7 +24,7 @@ const eslintConfig = [
     ],
     rules: {
       "no-var": "off",
-      "no-console": "error",
+      "no-console": ["error", { allow: ["error"] }],
       "@typescript-eslint/no-unused-vars": "error",
     },
   }),
