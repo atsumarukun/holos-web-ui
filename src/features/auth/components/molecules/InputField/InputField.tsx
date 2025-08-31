@@ -17,7 +17,7 @@ export const InputField = ({ id, placeholder, type, error, icon }: Props) => {
     <div>
       <div
         className={cn(
-          "flex flex-row items-center gap-1 px-2",
+          "flex flex-row items-center gap-2 px-2",
           "border-b",
           error ? "border-destructive mb-0" : "border-border mb-4"
         )}
