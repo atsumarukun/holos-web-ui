@@ -2,11 +2,13 @@ import { cn } from "@/lib/utils";
 import { InputVariant, inputVariants } from "./styles";
 import { ComponentProps } from "react";
 
-type Props = {
-  id: string;
-  placeholder: string;
-  variant?: InputVariant;
-} & ComponentProps<"input">;
+type Props = Readonly<
+  {
+    id: string;
+    placeholder: string;
+    variant?: InputVariant;
+  } & ComponentProps<"input">
+>;
 
 export const Input = ({
   id,

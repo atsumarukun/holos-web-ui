@@ -3,11 +3,13 @@ import { IconType } from "react-icons";
 import { IconLabelVariant, iconLabelVariants } from "./styles";
 import { cn } from "@/lib/utils";
 
-type Props = {
-  htmlFor: string;
-  variant?: IconLabelVariant;
-  icon: IconType;
-} & ComponentProps<"label">;
+type Props = Readonly<
+  {
+    htmlFor: string;
+    variant?: IconLabelVariant;
+    icon: IconType;
+  } & ComponentProps<"label">
+>;
 
 export const IconLabel = ({
   htmlFor,
