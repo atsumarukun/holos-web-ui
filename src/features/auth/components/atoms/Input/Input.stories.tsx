@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from "@storybook/nextjs";
 import { Input } from ".";
 import { inputVariants } from "./styles";
-import { LuUserRound } from "react-icons/lu";
 
 const meta = {
   title: "Atoms/AuthInput",
@@ -18,9 +17,6 @@ const meta = {
     id: {
       control: false,
     },
-    icon: {
-      control: false,
-    },
   },
 } satisfies Meta<typeof Input>;
 
@@ -32,7 +28,6 @@ export const Default: Story = {
     variant: "default",
     placeholder: "アカウント名",
     id: "name",
-    icon: LuUserRound,
   },
 };
 
@@ -41,6 +36,5 @@ export const Destructive: Story = {
     variant: "destructive",
     placeholder: "アカウント名",
     id: "name",
-    icon: LuUserRound,
   },
 };
