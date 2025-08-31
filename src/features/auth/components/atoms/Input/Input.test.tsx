@@ -3,22 +3,24 @@ import { Input } from "./Input";
 
 describe("Atoms/AuthInput", () => {
   it("renders", () => {
-    const { container } = render(
-      <Input id="username" placeholder="username" />
-    );
+    render(<Input id="username" placeholder="username" />);
     expect(screen.getByPlaceholderText("username")).toBeInTheDocument();
   });
 
   it("applies variant styles", () => {
-    const { rerender, container } = render(
+    const { rerender } = render(
       <Input id="username" placeholder="username" variant="default" />
     );
-    expect(container.firstChild).toHaveClass("placeholder-gray-400");
+    expect(screen.getByPlaceholderText("username")).toHaveClass(
+      "placeholder-gray-400"
+    );
 
     rerender(
       <Input id="username" placeholder="username" variant="destructive" />
     );
-    expect(container.firstChild).toHaveClass("placeholder-destructive/50");
+    expect(screen.getByPlaceholderText("username")).toHaveClass(
+      "placeholder-destructive/50"
+    );
   });
 
   it("fires onChange event", () => {

@@ -21,7 +21,8 @@ export const Input = ({
       placeholder={placeholder}
       className={cn(
         "focus:outline-none text-foreground",
-        inputVariants[variant]
+        inputVariants[variant],
+        className
       )}
       {...props}
     />
