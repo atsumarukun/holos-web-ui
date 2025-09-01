@@ -3,16 +3,25 @@ import { IconType } from "react-icons";
 import { IconLabel } from "../../atoms/IconLabel";
 import { Input } from "../../atoms/Input";
 import { HTMLInputTypeAttribute } from "react";
+import { UseFormRegisterReturn } from "react-hook-form";
 
 type Props = Readonly<{
   id: string;
   placeholder: string;
   type?: HTMLInputTypeAttribute;
   error?: string;
+  registerReturn: UseFormRegisterReturn;
   icon: IconType;
 }>;
 
-export const InputField = ({ id, placeholder, type, error, icon }: Props) => {
+export const InputField = ({
+  id,
+  placeholder,
+  type,
+  error,
+  registerReturn,
+  icon,
+}: Props) => {
   return (
     <div>
       <div
@@ -32,6 +41,7 @@ export const InputField = ({ id, placeholder, type, error, icon }: Props) => {
           placeholder={placeholder}
           type={type}
           variant={error ? "destructive" : "default"}
+          {...registerReturn}
         />
       </div>
       {error && <p className="text-xs text-destructive">{error}</p>}

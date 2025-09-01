@@ -2,6 +2,13 @@ import { render, screen } from "@testing-library/react";
 import { InputField } from "./InputField";
 import { LuUserRound } from "react-icons/lu";
 
+const mockRegisterReturn = {
+  name: "mock",
+  onChange: () => Promise.resolve(),
+  onBlur: () => Promise.resolve(),
+  ref: () => {},
+};
+
 describe("Input", () => {
   it("renders", () => {
     const { container } = render(
@@ -10,6 +17,7 @@ describe("Input", () => {
         placeholder="username"
         type="text"
         icon={LuUserRound}
+        registerReturn={mockRegisterReturn}
       />
     );
     expect(screen.getByPlaceholderText("username")).toBeInTheDocument();
@@ -30,6 +38,7 @@ describe("Input", () => {
         type="text"
         error="user name is required."
         icon={LuUserRound}
+        registerReturn={mockRegisterReturn}
       />
     );
     expect(screen.getByText("user name is required.")).toBeInTheDocument();
