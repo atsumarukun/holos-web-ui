@@ -2,6 +2,13 @@ import { Meta, StoryObj } from "@storybook/nextjs";
 import { InputField } from ".";
 import { LuUserRound } from "react-icons/lu";
 
+const mockRegisterReturn = {
+  name: "mock",
+  onChange: () => Promise.resolve(),
+  onBlur: () => Promise.resolve(),
+  ref: () => {},
+};
+
 const meta = {
   title: "Molecules/AuthInputField",
   component: InputField,
@@ -16,6 +23,9 @@ const meta = {
     icon: {
       control: false,
     },
+    registerReturn: {
+      control: false,
+    },
   },
 } satisfies Meta<typeof InputField>;
 
@@ -27,6 +37,7 @@ export const Default: Story = {
     placeholder: "アカウント名",
     id: "name",
     icon: LuUserRound,
+    registerReturn: mockRegisterReturn,
   },
 };
 
@@ -36,5 +47,6 @@ export const WithError: Story = {
     error: "アカウント名は必須です.",
     id: "name",
     icon: LuUserRound,
+    registerReturn: mockRegisterReturn,
   },
 };
