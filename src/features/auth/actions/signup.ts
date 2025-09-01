@@ -2,13 +2,13 @@
 
 import { toCamelCase, toSnakeCase } from "@/lib/case-converters";
 
-type SignupRequest = Readonly<{
+export type SignupRequest = Readonly<{
   name: string;
   password: string;
   confirmPassword: string;
 }>;
 
-type SignupResponse = Readonly<{
+export type SignupResponse = Readonly<{
   name: string;
 }>;
 

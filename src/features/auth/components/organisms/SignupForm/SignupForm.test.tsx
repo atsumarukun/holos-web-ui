@@ -1,5 +1,6 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { SignupForm } from "./SignupForm";
+import { SignupRequest } from "@/features/auth/actions/signup";
 
 const pushMock = jest.fn();
 jest.mock("next/navigation", () => ({
@@ -8,13 +9,8 @@ jest.mock("next/navigation", () => ({
 
 const signupMock = jest.fn();
 jest.mock("@/features/auth/actions/signup", () => ({
-  signup: (data: any) => signupMock(data),
+  signup: (data: SignupRequest) => signupMock(data),
 }));
-
-// jest.mock("@/lib/toast", () => ({
-//   successToast: jest.fn(),
-//   errorToast: jest.fn(),
-// }));
 
 describe("Organisms/AuthSignupForm", () => {
   beforeEach(() => {
