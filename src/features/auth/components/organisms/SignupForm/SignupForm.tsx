@@ -6,7 +6,7 @@ import Link from "next/link";
 import { InputField } from "../../molecules/InputField";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Signup, signupFormSchema } from "./schema";
+import { SignupInput, signupFormSchema } from "./schema";
 import { useState } from "react";
 import { signup } from "@/features/auth/actions/signup";
 import { useRouter } from "next/navigation";
@@ -26,7 +26,7 @@ export const SignupForm = () => {
     resolver: zodResolver(signupFormSchema),
   });
 
-  const onSubmit: SubmitHandler<Signup> = async (data) => {
+  const onSubmit: SubmitHandler<SignupInput> = async (data) => {
     if (data.password !== data.confirmPassword) {
       setPasswordError("パスワードが一致しません.");
       return;
