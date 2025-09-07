@@ -22,7 +22,7 @@ export const Input = ({
       id={id}
       placeholder={placeholder}
       className={cn(
-        "focus:outline-none text-foreground",
+        "w-full focus:outline-none text-foreground",
         inputVariants[variant],
         className
       )}
