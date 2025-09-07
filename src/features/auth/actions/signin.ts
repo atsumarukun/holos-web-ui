@@ -2,12 +2,12 @@
 
 import { toCamelCase, toSnakeCase } from "@/lib/case-converters";
 
-type SigninRequest = Readonly<{
+export type SigninRequest = Readonly<{
   accountName: string;
   password: string;
 }>;
 
-type SigninResponse = Readonly<{
+export type SigninResponse = Readonly<{
   token: string;
 }>;
 
