@@ -56,7 +56,9 @@ export const SignupForm = () => {
           placeholder="アカウント名"
           icon={LuUserRound}
           error={nameError ?? errors.name?.message}
-          registerReturn={register("name")}
+          registerReturn={register("name", {
+            onChange: () => setNameError(undefined),
+          })}
         />
         <InputField
           id="password"
