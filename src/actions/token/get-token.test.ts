@@ -7,14 +7,16 @@ jest.mock("next/headers", () => ({
 
 describe("getToken", () => {
   it("success: got token", async () => {
-    const getMock = jest.fn().mockReturnValue({ value: "test-token" });
+    const getMock = jest
+      .fn()
+      .mockReturnValue({ value: "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS" });
     (cookies as jest.Mock).mockResolvedValue({
       get: getMock,
     });
 
     const result = await getToken();
 
-    expect(result).toBe("test-token");
+    expect(result).toBe("1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS");
     expect(getMock).toHaveBeenCalledWith("token");
   });
 
