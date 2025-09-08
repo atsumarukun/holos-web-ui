@@ -12,7 +12,10 @@ describe("authorize", () => {
   it("success: authorized", async () => {
     const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
 
-    const mockResponse = { name: "holos" };
+    const mockResponse = {
+      id: "e3e36f5d-0ec0-4ac4-a6b5-97f49212a376",
+      name: "holos",
+    };
 
     global.fetch = jest.fn().mockResolvedValue({
       ok: true,
@@ -33,7 +36,7 @@ describe("authorize", () => {
     );
     expect(result).toEqual({
       success: true,
-      data: mockResponse,
+      data: { name: mockResponse.name },
     });
   });
 
