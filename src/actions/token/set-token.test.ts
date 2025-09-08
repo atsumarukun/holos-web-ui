@@ -10,12 +10,16 @@ describe("setToken", () => {
     const setMock = jest.fn();
     (cookies as jest.Mock).mockResolvedValue({ set: setMock });
 
-    await setToken("test-token");
+    await setToken("1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS");
 
-    expect(setMock).toHaveBeenCalledWith("token", "test-token", {
-      httpOnly: true,
-      path: "/",
-      maxAge: 60 * 60 * 24 * 7,
-    });
+    expect(setMock).toHaveBeenCalledWith(
+      "token",
+      "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS",
+      {
+        httpOnly: true,
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7,
+      }
+    );
   });
 });
