@@ -12,6 +12,11 @@ jest.mock("@/features/auth/actions/signin", () => ({
   signin: (data: SigninRequest) => signinMock(data),
 }));
 
+const setTokenMock = jest.fn();
+jest.mock("@/actions/token", () => ({
+  setToken: (token: string) => setTokenMock(token),
+}));
+
 describe("Organisms/AuthSigninForm", () => {
   beforeEach(() => {
     jest.resetModules();
@@ -30,7 +35,10 @@ describe("Organisms/AuthSigninForm", () => {
   });
 
   it("redirects when signin succeeds", async () => {
-    signinMock.mockResolvedValue({ success: true });
+    signinMock.mockResolvedValue({
+      success: true,
+      data: { token: "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS" },
+    });
 
     render(<SigninForm />);
 
@@ -44,6 +52,9 @@ describe("Organisms/AuthSigninForm", () => {
     fireEvent.click(screen.getByRole("button"));
 
     await waitFor(() => {
+      expect(setTokenMock).toHaveBeenCalledWith(
+        "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS"
+      );
       expect(pushMock).toHaveBeenCalledWith("/");
     });
   });

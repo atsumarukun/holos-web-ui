@@ -12,6 +12,7 @@ import { errorToast, successToast } from "@/lib/toast";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Alert } from "@/components/atoms/Alert";
+import { setToken } from "@/actions/token";
 
 export const SigninForm = () => {
   const router = useRouter();
@@ -28,8 +29,9 @@ export const SigninForm = () => {
 
   const onSubmit: SubmitHandler<SigninInput> = async (data) => {
     const res = await signin(data);
-    if (res.success) {
+    if (res.success && res.data) {
       successToast("ログインしました.");
+      await setToken(res.data.token);
       router.push("/");
     } else {
       if (res.error) {
