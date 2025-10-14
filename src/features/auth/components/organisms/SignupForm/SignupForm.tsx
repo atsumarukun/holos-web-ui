@@ -47,7 +47,7 @@ export const SignupForm = () => {
 
   return (
     <form
-      className="w-full flex flex-col gap-6"
+      className="w-full flex flex-col gap-12 md:gap-6"
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-col gap-3">
