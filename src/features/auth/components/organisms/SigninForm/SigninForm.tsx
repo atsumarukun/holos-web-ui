@@ -44,7 +44,7 @@ export const SigninForm = () => {
 
   return (
     <form
-      className="w-full flex flex-col gap-6"
+      className="w-full flex flex-col gap-12 md:gap-6"
       onSubmit={handleSubmit(onSubmit)}
     >
       {error && <Alert text={error} className="text-xs -mt-6 mb-2" />}
