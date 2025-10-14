@@ -1,4 +1,5 @@
 import type { Preview } from "@storybook/nextjs";
+import { MINIMAL_VIEWPORTS } from "storybook/viewport";
 import "../src/app/globals.css";
 
 const preview: Preview = {
@@ -8,6 +9,9 @@ const preview: Preview = {
         color: /(background|color)$/i,
         date: /Date$/i,
       },
+    },
+    viewport: {
+      options: MINIMAL_VIEWPORTS,
     },
   },
 };
