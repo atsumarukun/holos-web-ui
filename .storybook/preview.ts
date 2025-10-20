@@ -13,6 +13,9 @@ const preview: Preview = {
     viewport: {
       options: MINIMAL_VIEWPORTS,
     },
+    nextjs: {
+      appDirectory: true,
+    },
   },
 };
 
