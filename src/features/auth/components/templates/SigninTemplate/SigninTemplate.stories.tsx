@@ -6,9 +6,6 @@ const meta = {
   component: SigninTemplate,
   parameters: {
     layout: "centered",
-    nextjs: {
-      appDirectory: true,
-    },
   },
   tags: ["autodocs"],
 } satisfies Meta<typeof SigninTemplate>;

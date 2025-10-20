@@ -6,12 +6,6 @@ const meta = {
   component: SigninForm,
   parameters: {
     layout: "centered",
-    nextjs: {
-      appDirectory: true,
-      navigation: {
-        pathname: "/auth/signup",
-      },
-    },
   },
   tags: ["autodocs"],
 } satisfies Meta<typeof SigninForm>;
