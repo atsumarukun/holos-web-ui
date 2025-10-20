@@ -1,5 +1,5 @@
 import { IconType } from "react-icons";
-import { LuBot, LuHouse } from "react-icons/lu";
+import { LuHouse } from "react-icons/lu";
 
 export type Floor = {
   key: string;
