@@ -35,11 +35,11 @@ const MenuItem = ({
         className={cn(
           "flex flex-row items-center gap-3 hover:bg-accent py-3 pr-6",
           floor.path === currentPath
-            ? "bg-accent border-l-4 border-[#fe5dd8] pl-5"
+            ? "bg-accent border-l-4 border-theme pl-5"
             : "pl-6"
         )}
       >
-        <floor.icon className="w-6 h-6 rounded text-[#fe5dd8] bg-[#fe5dd8]/24 p-1" />
+        <floor.icon className="w-6 h-6 rounded text-theme bg-theme/24 p-1" />
         {floor.name}
       </Link>
     );
@@ -49,7 +49,7 @@ const MenuItem = ({
     <AccordionItem value={floor.key} className="border-0">
       <AccordionTrigger className="font-normal hover:no-underline items-center hover:bg-accent py-3 px-6">
         <span className="flex flex-row gap-3">
-          <floor.icon className="w-6 h-6 rounded text-[#fe5dd8] bg-[#fe5dd8]/24 p-1" />
+          <floor.icon className="w-6 h-6 rounded text-theme bg-theme/24 p-1" />
           {floor.name}
         </span>
       </AccordionTrigger>
@@ -60,7 +60,7 @@ const MenuItem = ({
             className={cn(
               "hover:bg-accent py-3 pr-6",
               child.path === currentPath
-                ? "bg-accent border-l-4 border-[#fe5dd8] pl-14"
+                ? "bg-accent border-l-4 border-theme pl-14"
                 : "pl-15"
             )}
             key={child.path}

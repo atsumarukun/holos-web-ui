@@ -19,7 +19,7 @@ export const Logo = ({ size = "base", noIcon }: Props) => {
         />
       )}
       <p className={cn("font-playwrite mt-1", logoSizes[size].label)}>
-        H<span className="text-[#fe5dd8]">o</span>los
+        H<span className="text-theme">o</span>los
       </p>
     </div>
   );
