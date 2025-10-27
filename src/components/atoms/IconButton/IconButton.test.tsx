@@ -1,4 +1,5 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import { userEvent } from "@testing-library/user-event";
 import { IconButton } from "./IconButton";
 import { LuSettings } from "react-icons/lu";
 
@@ -19,10 +20,10 @@ describe("Atoms/IconButton", () => {
     expect(screen.getByRole("button")).toHaveClass("hover:bg-accent");
   });
 
-  it("fires onClick event", () => {
+  it("fires onClick event", async () => {
     const handleClick = jest.fn();
     render(<IconButton icon={LuSettings} onClick={handleClick} />);
-    fireEvent.click(screen.getByRole("button"));
+    await userEvent.click(screen.getByRole("button"));
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
 

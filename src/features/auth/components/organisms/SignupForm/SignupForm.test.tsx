@@ -1,4 +1,5 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import { userEvent } from "@testing-library/user-event";
 import { SignupForm } from "./SignupForm";
 import { SignupRequest } from "@/features/auth/actions/signup";
 
@@ -35,17 +36,14 @@ describe("Organisms/AuthSignupForm", () => {
 
     render(<SignupForm />);
 
-    fireEvent.change(screen.getByPlaceholderText("アカウント名"), {
-      target: { value: "holos" },
-    });
-    fireEvent.change(screen.getByPlaceholderText("パスワード"), {
-      target: { value: "password" },
-    });
-    fireEvent.change(screen.getByPlaceholderText("パスワード(確認)"), {
-      target: { value: "password" },
-    });
+    await userEvent.type(screen.getByPlaceholderText("アカウント名"), "holos");
+    await userEvent.type(screen.getByPlaceholderText("パスワード"), "password");
+    await userEvent.type(
+      screen.getByPlaceholderText("パスワード(確認)"),
+      "password"
+    );
 
-    fireEvent.click(screen.getByRole("button"));
+    await userEvent.click(screen.getByRole("button"));
 
     await waitFor(() => {
       expect(pushMock).toHaveBeenCalledWith("/auth/signin");
@@ -54,7 +52,7 @@ describe("Organisms/AuthSignupForm", () => {
 
   it("shows error when required fields are empty", async () => {
     render(<SignupForm />);
-    fireEvent.click(screen.getByRole("button"));
+    await userEvent.click(screen.getByRole("button"));
 
     await waitFor(() => {
       expect(screen.getByText("3文字以上にしてください.")).toBeInTheDocument();
@@ -65,17 +63,17 @@ describe("Organisms/AuthSignupForm", () => {
   it("shows error when passwords do not match", async () => {
     render(<SignupForm />);
 
-    fireEvent.change(screen.getByPlaceholderText("アカウント名"), {
-      target: { value: "holos" },
-    });
-    fireEvent.change(screen.getByPlaceholderText("パスワード"), {
-      target: { value: "password1" },
-    });
-    fireEvent.change(screen.getByPlaceholderText("パスワード(確認)"), {
-      target: { value: "password2" },
-    });
+    await userEvent.type(screen.getByPlaceholderText("アカウント名"), "holos");
+    await userEvent.type(
+      screen.getByPlaceholderText("パスワード"),
+      "password1"
+    );
+    await userEvent.type(
+      screen.getByPlaceholderText("パスワード(確認)"),
+      "password2"
+    );
 
-    fireEvent.click(screen.getByRole("button"));
+    await userEvent.click(screen.getByRole("button"));
 
     await waitFor(() => {
       expect(screen.getAllByText("パスワードが一致しません.").length).toBe(2);
@@ -90,17 +88,14 @@ describe("Organisms/AuthSignupForm", () => {
 
     render(<SignupForm />);
 
-    fireEvent.change(screen.getByPlaceholderText("アカウント名"), {
-      target: { value: "holos" },
-    });
-    fireEvent.change(screen.getByPlaceholderText("パスワード"), {
-      target: { value: "password" },
-    });
-    fireEvent.change(screen.getByPlaceholderText("パスワード(確認)"), {
-      target: { value: "password" },
-    });
+    await userEvent.type(screen.getByPlaceholderText("アカウント名"), "holos");
+    await userEvent.type(screen.getByPlaceholderText("パスワード"), "password");
+    await userEvent.type(
+      screen.getByPlaceholderText("パスワード(確認)"),
+      "password"
+    );
 
-    fireEvent.click(screen.getByRole("button"));
+    await userEvent.click(screen.getByRole("button"));
 
     await waitFor(() => {
       expect(

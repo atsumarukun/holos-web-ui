@@ -1,4 +1,5 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import { userEvent } from "@testing-library/user-event";
 import { LuBot, LuHouse } from "react-icons/lu";
 import { Menu } from "./Menu";
 
@@ -55,7 +56,7 @@ describe("Organisms/Menu", () => {
   it("renders children when the accordion is open", async () => {
     render(<Menu />);
 
-    fireEvent.click(screen.getByRole("button"));
+    await userEvent.click(screen.getByRole("button"));
 
     await waitFor(() => {
       expect(
@@ -82,7 +83,7 @@ describe("Organisms/Menu", () => {
 
     render(<Menu />);
 
-    fireEvent.click(screen.getByRole("button"));
+    await userEvent.click(screen.getByRole("button"));
 
     await waitFor(() => {
       expect(screen.getByRole("link", { name: "エージェント" })).toHaveClass(

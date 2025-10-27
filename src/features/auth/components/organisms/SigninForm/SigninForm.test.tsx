@@ -1,4 +1,5 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import { userEvent } from "@testing-library/user-event";
 import { SigninForm } from "./SigninForm";
 import { SigninRequest } from "@/features/auth/actions/signin";
 
@@ -42,14 +43,10 @@ describe("Organisms/AuthSigninForm", () => {
 
     render(<SigninForm />);
 
-    fireEvent.change(screen.getByPlaceholderText("アカウント名"), {
-      target: { value: "holos" },
-    });
-    fireEvent.change(screen.getByPlaceholderText("パスワード"), {
-      target: { value: "password" },
-    });
+    await userEvent.type(screen.getByPlaceholderText("アカウント名"), "holos");
+    await userEvent.type(screen.getByPlaceholderText("パスワード"), "password");
 
-    fireEvent.click(screen.getByRole("button"));
+    await userEvent.click(screen.getByRole("button"));
 
     await waitFor(() => {
       expect(setTokenMock).toHaveBeenCalledWith(
@@ -61,7 +58,7 @@ describe("Organisms/AuthSigninForm", () => {
 
   it("shows error when required fields are empty", async () => {
     render(<SigninForm />);
-    fireEvent.click(screen.getByRole("button"));
+    await userEvent.click(screen.getByRole("button"));
 
     await waitFor(() => {
       expect(screen.getAllByText("必須項目です.").length).toBe(2);
@@ -76,14 +73,10 @@ describe("Organisms/AuthSigninForm", () => {
 
     render(<SigninForm />);
 
-    fireEvent.change(screen.getByPlaceholderText("アカウント名"), {
-      target: { value: "holos" },
-    });
-    fireEvent.change(screen.getByPlaceholderText("パスワード"), {
-      target: { value: "password" },
-    });
+    await userEvent.type(screen.getByPlaceholderText("アカウント名"), "holos");
+    await userEvent.type(screen.getByPlaceholderText("パスワード"), "password");
 
-    fireEvent.click(screen.getByRole("button"));
+    await userEvent.click(screen.getByRole("button"));
 
     await waitFor(() => {
       expect(
