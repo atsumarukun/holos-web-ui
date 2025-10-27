@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { Breadcrumbs, breadcrumbContext } from "./provider";
 import { Breadcrumb } from "./Breadcrumb";
+import { userEvent } from "storybook/internal/test";
 
 describe("Molecules/Breadcrumb", () => {
   const renderWithContext = (breadcrumbs: Breadcrumbs) => {
@@ -83,7 +84,7 @@ describe("Molecules/Breadcrumb", () => {
 
     renderWithContext(breadcrumbs);
 
-    fireEvent.click(screen.getByRole("button"));
+    userEvent.click(screen.getByRole("button"));
 
     await waitFor(() => {
       expect(
