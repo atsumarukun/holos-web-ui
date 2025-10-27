@@ -1,4 +1,5 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import { userEvent } from "@testing-library/user-event";
 import { Input } from "./Input";
 
 describe("Atoms/AuthInput", () => {
@@ -23,11 +24,11 @@ describe("Atoms/AuthInput", () => {
     );
   });
 
-  it("fires onChange event", () => {
+  it("fires onChange event", async () => {
     render(<Input id="username" placeholder="username" />);
     const input: HTMLInputElement = screen.getByPlaceholderText("username");
 
-    fireEvent.change(input, { target: { value: "holos" } });
+    await userEvent.type(input, "holos");
     expect(input.value).toBe("holos");
   });
 });
