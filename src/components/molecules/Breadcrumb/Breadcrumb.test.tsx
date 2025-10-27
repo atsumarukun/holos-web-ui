@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { Breadcrumbs, breadcrumbContext } from "./provider";
 import { Breadcrumb } from "./Breadcrumb";
 import { userEvent } from "storybook/internal/test";
