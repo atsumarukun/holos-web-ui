@@ -31,4 +31,9 @@ describe("Atoms/Logo", () => {
       expect(screen.getByRole("paragraph")).toHaveClass(logoSizes[size].label);
     }
   );
+
+  it("merges className correctly", () => {
+    const { container } = render(<Logo className="custom-class" />);
+    expect(container.firstChild).toHaveClass("custom-class");
+  });
 });
