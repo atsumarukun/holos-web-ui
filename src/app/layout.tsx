@@ -5,6 +5,7 @@ import { Toaster } from "sonner";
 import { BreadcrumbProvider } from "@/components/molecules/Breadcrumb";
 import { headers } from "next/headers";
 import { AccountProvider } from "@/providers/account";
+import { redirect } from "next/navigation";
 
 const notoSansJP = Noto_Sans_JP({
   variable: "--font-noto-sans-jp",
@@ -21,14 +22,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const accountName = (await headers()).get("account-name") ?? "";
-
   return (
     <html lang="en">
       <body className={`${notoSansJP.className} antialiased`}>
-        <AccountProvider accountName={accountName}>
-          <BreadcrumbProvider>{children}</BreadcrumbProvider>
-        </AccountProvider>
+        <BreadcrumbProvider>{children}</BreadcrumbProvider>
         <Toaster />
       </body>
     </html>
