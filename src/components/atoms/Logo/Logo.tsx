@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { LogoSize, logoSizes } from "./styles";
+import logo from "@/assets/logo.png";
 
 type Props = Readonly<{
   size?: LogoSize;
@@ -12,7 +13,7 @@ export const Logo = ({ size = "base", noIcon }: Props) => {
     <div className="flex flex-row items-center">
       {!noIcon && (
         <Image
-          src="/logo.png"
+          src={logo}
           alt="ロゴ"
           width={logoSizes[size].image}
           height={logoSizes[size].image}
