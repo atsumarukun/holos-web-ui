@@ -3,9 +3,6 @@ import { Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { BreadcrumbProvider } from "@/components/molecules/Breadcrumb";
-import { headers } from "next/headers";
-import { AccountProvider } from "@/providers/account";
-import { redirect } from "next/navigation";
 
 const notoSansJP = Noto_Sans_JP({
   variable: "--font-noto-sans-jp",
