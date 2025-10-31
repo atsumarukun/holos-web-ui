@@ -6,11 +6,12 @@ import logo from "@/assets/logo.png";
 type Props = Readonly<{
   size?: LogoSize;
   noIcon?: boolean;
+  className?: string;
 }>;
 
-export const Logo = ({ size = "base", noIcon }: Props) => {
+export const Logo = ({ size = "base", noIcon, className }: Props) => {
   return (
-    <div className="flex flex-row items-center">
+    <div className={cn("flex flex-row items-center", className)}>
       {!noIcon && (
         <Image
           src={logo}
