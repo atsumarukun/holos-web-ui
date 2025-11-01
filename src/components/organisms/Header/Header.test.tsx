@@ -13,11 +13,6 @@ jest.mock("@/features/auth/actions/signout", () => ({
   signout: (token: string) => signoutMock(token),
 }));
 
-const getTokenMock = jest.fn();
-jest.mock("@/actions/token", () => ({
-  getToken: () => getTokenMock(),
-}));
-
 describe("Organisms/Header", () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -27,8 +22,7 @@ describe("Organisms/Header", () => {
     jest.restoreAllMocks();
   });
 
-  const renderWithContext = (accountName: string, token?: string) => {
-    getTokenMock.mockReturnValue(token);
+  const renderWithContext = (accountName: string) => {
     render(
       <accountContext.Provider value={{ accountName: accountName }}>
         <Header />
@@ -37,7 +31,7 @@ describe("Organisms/Header", () => {
   };
 
   it("renders", () => {
-    renderWithContext("holos", "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS");
+    renderWithContext("holos");
     expect(screen.getByAltText("ロゴ")).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: "" }).querySelector("svg")
@@ -48,25 +42,13 @@ describe("Organisms/Header", () => {
   it("redirects when signout succeeds", async () => {
     signoutMock.mockResolvedValue({ success: true });
 
-    renderWithContext("holos", "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS");
+    renderWithContext("holos");
 
     await userEvent.click(screen.getByRole("button", { name: "H" }));
     await userEvent.click(screen.getByRole("button", { name: "ログアウト" }));
 
     await waitFor(async () => {
       expect(pushMock).toHaveBeenCalledWith("/auth/signin");
-    });
-  });
-
-  it("does not sign out when no token", async () => {
-    renderWithContext("holos", undefined);
-
-    await userEvent.click(screen.getByRole("button", { name: "H" }));
-    await userEvent.click(screen.getByRole("button", { name: "ログアウト" }));
-
-    await waitFor(async () => {
-      expect(signoutMock).not.toHaveBeenCalled();
-      expect(pushMock).not.toHaveBeenCalled();
     });
   });
 });

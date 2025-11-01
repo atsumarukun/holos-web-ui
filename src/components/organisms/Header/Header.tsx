@@ -18,22 +18,17 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
 import { LuLogOut } from "react-icons/lu";
-import { getToken } from "@/actions/token";
 
 export const Header = () => {
   const router = useRouter();
   const context = useContext(accountContext);
 
   const handleSignout = async () => {
-    const token = await getToken();
-    if (token) {
-      const res = await signout(token);
-      if (res.success) {
-        router.push("/auth/signin");
-      } else {
-        errorToast();
-      }
+    const res = await signout();
+    if (!res.success) {
+      errorToast();
     }
+    router.push("/auth/signin");
   };
 
   return (
