@@ -14,14 +14,6 @@ jest.mock("@/features/auth/actions/signout", () => ({
 }));
 
 describe("Organisms/Header", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
-  afterEach(() => {
-    jest.restoreAllMocks();
-  });
-
   const renderWithContext = (accountName: string) => {
     render(
       <accountContext.Provider value={{ accountName: accountName }}>

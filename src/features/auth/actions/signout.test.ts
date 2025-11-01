@@ -8,14 +8,6 @@ jest.mock("@/actions/token", () => ({
 }));
 
 describe("signout", () => {
-  beforeEach(() => {
-    jest.resetModules();
-  });
-
-  afterEach(() => {
-    jest.restoreAllMocks();
-  });
-
   it("success: logged out", async () => {
     const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
 
