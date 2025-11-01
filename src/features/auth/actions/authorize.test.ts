@@ -1,14 +1,6 @@
 import { authorize } from "./authorize";
 
 describe("authorize", () => {
-  beforeEach(() => {
-    jest.resetModules();
-  });
-
-  afterEach(() => {
-    jest.restoreAllMocks();
-  });
-
   it("success: authorized", async () => {
     const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
 

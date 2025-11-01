@@ -29,14 +29,6 @@ jest.mock("./constant", () => ({
 }));
 
 describe("Organisms/Menu", () => {
-  beforeEach(() => {
-    jest.resetModules();
-  });
-
-  afterEach(() => {
-    jest.restoreAllMocks();
-  });
-
   it("renders", () => {
     render(<Menu />);
     expect(screen.getByRole("link", { name: "ホーム" })).toBeInTheDocument();
