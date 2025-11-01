@@ -1,5 +1,6 @@
 "use server";
 
+import { setToken } from "@/actions/token";
 import { toCamelCase, toSnakeCase } from "@/lib/case-converters";
 
 export type SigninRequest = Readonly<{
@@ -13,7 +14,7 @@ export type SigninResponse = Readonly<{
 
 export const signin = async (
   data: SigninRequest
-): Promise<{ success: boolean; data?: SigninResponse; error?: string }> => {
+): Promise<{ success: boolean; error?: string }> => {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_ACCOUNT_API_HOST}/login`,
@@ -28,7 +29,9 @@ export const signin = async (
     );
 
     if (res.ok) {
-      return { success: true, data: toCamelCase(await res.json()) };
+      const data: SigninResponse = toCamelCase(await res.json());
+      await setToken(data.token);
+      return { success: true };
     }
 
     if (res.status === 401) {

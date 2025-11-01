@@ -1,5 +1,10 @@
 import { signin } from "./signin";
 
+const setTokenMock = jest.fn();
+jest.mock("@/actions/token", () => ({
+  setToken: (token: string) => setTokenMock(token),
+}));
+
 describe("signin", () => {
   beforeEach(() => {
     jest.resetModules();
@@ -34,8 +39,8 @@ describe("signin", () => {
     );
     expect(result).toEqual({
       success: true,
-      data: mockResponse,
     });
+    expect(setTokenMock).toHaveBeenCalled();
   });
 
   it("failed: unauthorized", async () => {
