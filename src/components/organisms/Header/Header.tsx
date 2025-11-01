@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { signout } from "@/features/auth/actions/signout";
-import { errorToast } from "@/lib/toast";
+import { errorToast, successToast } from "@/lib/toast";
 import { accountContext } from "@/providers/account";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -25,7 +25,9 @@ export const Header = () => {
 
   const handleSignout = async () => {
     const res = await signout();
-    if (!res.success) {
+    if (res.success) {
+      successToast("ログアウトしました.");
+    } else {
       errorToast();
     }
     router.push("/auth/signin");
