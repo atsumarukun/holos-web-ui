@@ -24,6 +24,9 @@ describe("Organisms/Header", () => {
 
   it("renders", () => {
     renderWithContext("holos");
+    expect(
+      screen.getByRole("button", { name: "" }).querySelector("svg")
+    ).toBeInTheDocument();
     expect(screen.getByAltText("ロゴ")).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: "" }).querySelector("svg")
@@ -39,7 +42,7 @@ describe("Organisms/Header", () => {
     await userEvent.click(screen.getByRole("button", { name: "H" }));
     await userEvent.click(screen.getByRole("button", { name: "ログアウト" }));
 
-    await waitFor(async () => {
+    await waitFor(() => {
       expect(pushMock).toHaveBeenCalledWith("/auth/signin");
     });
   });
