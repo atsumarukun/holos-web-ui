@@ -18,7 +18,7 @@ export const IconButton = ({
 }: Props) => {
   return (
     <button className={cn(iconButtonVariants[variant], className)} {...props}>
-      {icon({ size: 16 })}
+      {icon({ size: 20 })}
     </button>
   );
 };
