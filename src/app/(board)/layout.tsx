@@ -20,9 +20,9 @@ export default async function BoardLayout({
       <div className="h-screen flex flex-col">
         <Header />
         <div className="grow flex flex-row">
-          <nav className="hidden md:block w-[260px]">
+          <div className="hidden md:block w-[260px]">
             <Menu />
-          </nav>
+          </div>
           <div className="grow bg-secondary p-6">{children}</div>
         </div>
       </div>
