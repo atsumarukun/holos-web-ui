@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import { ReactNode } from "react";
 
 type Props = Readonly<{
   text: string;
