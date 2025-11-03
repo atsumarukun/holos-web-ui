@@ -64,7 +64,7 @@ export const Breadcrumb = ({ className }: Props) => {
       </Link>
       <MdChevronRight size={18} className="mt-0.5" />
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
+        <DropdownMenuTrigger className="focus:outline-none" asChild>
           <button>
             <MdMoreHoriz size={18} className="mt-0.5" />
           </button>
@@ -73,9 +73,11 @@ export const Breadcrumb = ({ className }: Props) => {
           {context.breadcrumbs
             .slice(0, context.breadcrumbs.length - 2)
             .map((breadcrumb) => (
-              <DropdownMenuItem key={breadcrumb.href}>
-                <Link href={breadcrumb.href}>{breadcrumb.label}</Link>
-              </DropdownMenuItem>
+              <Link href={breadcrumb.href} key={breadcrumb.href}>
+                <DropdownMenuItem className="hover:cursor-pointer">
+                  {breadcrumb.label}
+                </DropdownMenuItem>
+              </Link>
             ))}
         </DropdownMenuContent>
       </DropdownMenu>
