@@ -136,3 +136,7 @@ html {
     font-size: 18px;
   }
 }
+
+button:hover {
+  cursor: pointer;
+}

@@ -35,7 +35,7 @@ export const SearchBox = () => {
         className="grow bg-background border rounded-l-full focus:outline-none px-4 py-1.5"
         {...register("keyword")}
       />
-      <button className="text-white bg-[#bbbbbb] border border-l-0 rounded-r-full hover:cursor-pointer px-4 py-2">
+      <button className="text-white bg-[#bbbbbb] border border-l-0 rounded-r-full px-4 py-2">
         <LuSearch size={20} />
       </button>
     </form>

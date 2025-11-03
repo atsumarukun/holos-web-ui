@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-const base = "p-2 rounded-full hover:cursor-pointer focus:outline-none";
+const base = "p-2 rounded-full focus:outline-none";
 
 export const iconButtonVariants = {
   default: cn(base, "bg-primary text-primary-foreground hover:bg-primary/90"),
