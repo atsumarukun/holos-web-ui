@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 
 const base = cn(
   "flex flex-row items-center gap-2 py-2 px-3",
-  "text-sm rounded-full hover:cursor-pointer focus:outline-none"
+  "text-sm rounded-full focus:outline-none"
 );
 
 export const buttonVariants = {

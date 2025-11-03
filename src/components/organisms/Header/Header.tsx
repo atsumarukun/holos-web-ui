@@ -61,7 +61,7 @@ export const Header = () => {
       <div className="grow flex flex-row items-center justify-end md:justify-between gap-6">
         <Breadcrumb className="hidden md:block text-white border-l border-white pl-6" />
         <DropdownMenu>
-          <DropdownMenuTrigger className="hover:cursor-pointer" asChild>
+          <DropdownMenuTrigger asChild>
             <button className="focus:outline-none">
               <Avatar
                 accountName={context.accountName}
@@ -76,7 +76,7 @@ export const Header = () => {
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <button
-                className="flex flex-row items-center gap-1 hover:cursor-pointer"
+                className="flex flex-row items-center gap-1"
                 onClick={handleSignout}
               >
                 <LuLogOut className="text-foreground" />

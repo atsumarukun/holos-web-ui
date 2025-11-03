@@ -64,7 +64,7 @@ export const Breadcrumb = ({ className }: Props) => {
       </Link>
       <MdChevronRight size={18} className="mt-0.5" />
       <DropdownMenu>
-        <DropdownMenuTrigger className="hover:cursor-pointer" asChild>
+        <DropdownMenuTrigger asChild>
           <button>
             <MdMoreHoriz size={18} className="mt-0.5" />
           </button>
