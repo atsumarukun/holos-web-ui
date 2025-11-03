@@ -5,7 +5,7 @@ import { fn } from "storybook/test";
 import { buttonVariants } from "./styles";
 
 const meta = {
-  title: "Atoms/Button",
+  title: "Common/Atoms/Button",
   component: Button,
   parameters: {
     layout: "centered",

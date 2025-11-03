@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { Avatar } from ".";
 
-describe("Atoms/Avatar", () => {
+describe("Common/Atoms/Avatar", () => {
   it("renders", () => {
     render(<Avatar accountName="sample" />);
     expect(screen.getByText("S")).toBeInTheDocument();

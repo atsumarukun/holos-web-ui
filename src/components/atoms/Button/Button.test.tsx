@@ -3,7 +3,7 @@ import { userEvent } from "@testing-library/user-event";
 import { Button } from "./Button";
 import { LuSettings } from "react-icons/lu";
 
-describe("Atoms/Button", () => {
+describe("Common/Atoms/Button", () => {
   it("renders", () => {
     render(<Button label="label" />);
     expect(screen.getByText("label")).toBeInTheDocument();

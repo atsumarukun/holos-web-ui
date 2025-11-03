@@ -11,7 +11,7 @@ jest.mock("next/navigation", () => ({
   useRouter: () => ({ push: pushMock }),
 }));
 
-describe("Molecules/SearchBox", () => {
+describe("Common/Molecules/SearchBox", () => {
   it("renders", () => {
     render(<SearchBox />);
     expect(screen.getByPlaceholderText("検索")).toBeInTheDocument();

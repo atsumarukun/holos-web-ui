@@ -3,7 +3,7 @@ import { Header } from "./Header";
 import { accountContext } from "@/providers/account";
 
 const meta = {
-  title: "Organisms/Header",
+  title: "Common/Organisms/Header",
   component: Header,
   parameters: {
     layout: "centered",

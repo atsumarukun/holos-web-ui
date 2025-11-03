@@ -3,7 +3,7 @@ import { userEvent } from "@testing-library/user-event";
 import { Breadcrumbs, breadcrumbContext } from "./provider";
 import { Breadcrumb } from "./Breadcrumb";
 
-describe("Molecules/Breadcrumb", () => {
+describe("Common/Molecules/Breadcrumb", () => {
   const renderWithContext = (breadcrumbs: Breadcrumbs) => {
     render(
       <breadcrumbContext.Provider

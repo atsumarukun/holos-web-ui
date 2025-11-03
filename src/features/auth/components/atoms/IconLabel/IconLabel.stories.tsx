@@ -4,7 +4,7 @@ import { iconLabelVariants } from "./styles";
 import { LuUserRound } from "react-icons/lu";
 
 const meta = {
-  title: "Atoms/AuthIconLabel",
+  title: "Auth/Atoms/IconLabel",
   component: IconLabel,
   parameters: {
     layout: "centered",

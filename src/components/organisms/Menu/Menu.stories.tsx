@@ -2,7 +2,7 @@ import { Meta, StoryObj } from "@storybook/nextjs";
 import { Menu } from ".";
 
 const meta = {
-  title: "Organisms/Menu",
+  title: "Common/Organisms/Menu",
   component: Menu,
   parameters: {
     layout: "centered",

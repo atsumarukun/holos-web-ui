@@ -10,7 +10,7 @@ const mockRegisterReturn = {
 };
 
 const meta = {
-  title: "Molecules/AuthInputField",
+  title: "Auth/Molecules/InputField",
   component: InputField,
   parameters: {
     layout: "centered",

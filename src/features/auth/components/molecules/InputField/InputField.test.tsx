@@ -9,7 +9,7 @@ const mockRegisterReturn = {
   ref: () => {},
 };
 
-describe("Input", () => {
+describe("Auth/Molecules/InputField", () => {
   it("renders", () => {
     const { container } = render(
       <InputField

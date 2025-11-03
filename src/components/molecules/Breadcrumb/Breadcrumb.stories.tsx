@@ -3,7 +3,7 @@ import { Breadcrumb } from "./Breadcrumb";
 import { breadcrumbContext } from "./provider";
 
 const meta = {
-  title: "Molecules/Breadcrumb",
+  title: "Common/Molecules/Breadcrumb",
   component: Breadcrumb,
   parameters: {
     layout: "centered",

@@ -3,7 +3,7 @@ import { userEvent } from "@testing-library/user-event";
 import { IconButton } from "./IconButton";
 import { LuSettings } from "react-icons/lu";
 
-describe("Atoms/IconButton", () => {
+describe("Common/Atoms/IconButton", () => {
   it("renders", () => {
     render(<IconButton icon={LuSettings} />);
     expect(screen.getByRole("button").querySelector("svg")).toBeInTheDocument();
