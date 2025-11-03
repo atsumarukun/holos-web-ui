@@ -6,7 +6,7 @@ jest.mock("next/navigation", () => ({
   useRouter: () => ({ push: pushMock }),
 }));
 
-describe("SignupTemplate", () => {
+describe("Auth/Templates/SignupTemplate", () => {
   it("renders", () => {
     const { container } = render(<SignupTemplate />);
     expect(screen.getByRole("paragraph")).toHaveTextContent("Holos");

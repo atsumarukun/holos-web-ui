@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { Logo } from "./Logo";
 import { LogoSize, logoSizes } from "./styles";
 
-describe("Atoms/Logo", () => {
+describe("Common/Atoms/Logo", () => {
   it("renders", () => {
     render(<Logo />);
     expect(screen.getByAltText("ロゴ")).toBeInTheDocument();

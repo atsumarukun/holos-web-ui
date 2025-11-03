@@ -2,7 +2,7 @@ import { Meta, StoryObj } from "@storybook/nextjs";
 import { Heading } from "./Heading";
 
 const meta = {
-  title: "Atoms/Heading",
+  title: "Common/Atoms/Heading",
   component: Heading,
   parameters: {
     layout: "centered",

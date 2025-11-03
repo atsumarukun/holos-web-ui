@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { Heading } from "./Heading";
 
-describe("Atoms/Heading", () => {
+describe("Common/Atoms/Heading", () => {
   it("renders", () => {
     render(<Heading text="ホーム" />);
     expect(screen.getByText("ホーム")).toBeInTheDocument();

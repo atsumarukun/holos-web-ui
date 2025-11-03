@@ -2,7 +2,7 @@ import { Meta, StoryObj } from "@storybook/nextjs";
 import { Alert } from ".";
 
 const meta = {
-  title: "Atoms/Alert",
+  title: "Common/Atoms/Alert",
   component: Alert,
   parameters: {
     layout: "centered",

@@ -2,7 +2,7 @@ import { Meta, StoryObj } from "@storybook/nextjs";
 import { SigninTemplate } from ".";
 
 const meta = {
-  title: "Templates/AuthSigninTemplate",
+  title: "Auth/Templates/SigninTemplate",
   component: SigninTemplate,
   parameters: {
     layout: "centered",

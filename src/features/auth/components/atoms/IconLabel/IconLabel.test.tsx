@@ -2,7 +2,7 @@ import { render } from "@testing-library/react";
 import { IconLabel } from ".";
 import { LuUserRound } from "react-icons/lu";
 
-describe("Atoms/AuthIconLabel", () => {
+describe("Auth/Atoms/IconLabel", () => {
   it("renders", () => {
     const { container } = render(
       <IconLabel htmlFor="username" icon={LuUserRound} />

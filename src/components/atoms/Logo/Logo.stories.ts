@@ -3,7 +3,7 @@ import { Logo } from ".";
 import { logoSizes } from "./styles";
 
 const meta = {
-  title: "Atoms/Logo",
+  title: "Common/Atoms/Logo",
   component: Logo,
   parameters: {
     layout: "centered",

@@ -13,7 +13,7 @@ jest.mock("@/features/auth/actions/signup", () => ({
   signup: (data: SignupRequest) => signupMock(data),
 }));
 
-describe("Organisms/AuthSignupForm", () => {
+describe("Auth/Organisms/SignupForm", () => {
   it("renders", () => {
     render(<SignupForm />);
     expect(screen.getByPlaceholderText("アカウント名")).toBeInTheDocument();

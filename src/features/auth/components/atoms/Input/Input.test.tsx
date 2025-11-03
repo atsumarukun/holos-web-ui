@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { Input } from "./Input";
 
-describe("Atoms/AuthInput", () => {
+describe("Auth/Atoms/Input", () => {
   it("renders", () => {
     render(<Input id="username" placeholder="username" />);
     expect(screen.getByPlaceholderText("username")).toBeInTheDocument();

@@ -3,7 +3,7 @@ import { Input } from ".";
 import { inputVariants } from "./styles";
 
 const meta = {
-  title: "Atoms/AuthInput",
+  title: "Auth/Atoms/Input",
   component: Input,
   parameters: {
     layout: "centered",

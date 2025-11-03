@@ -2,7 +2,7 @@ import { Meta, StoryObj } from "@storybook/nextjs";
 import { SearchBox } from "./SearchBox";
 
 const meta = {
-  title: "Molecules/SearchBox",
+  title: "Common/Molecules/SearchBox",
   component: SearchBox,
   parameters: {
     layout: "centered",

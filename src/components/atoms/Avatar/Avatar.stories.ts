@@ -2,7 +2,7 @@ import { Meta, StoryObj } from "@storybook/nextjs";
 import { Avatar } from "./Avatar";
 
 const meta = {
-  title: "Atoms/Avatar",
+  title: "Common/Atoms/Avatar",
   component: Avatar,
   parameters: {
     layout: "centered",

@@ -13,7 +13,7 @@ jest.mock("@/features/auth/actions/signout", () => ({
   signout: (token: string) => signoutMock(token),
 }));
 
-describe("Organisms/Header", () => {
+describe("Common/Organisms/Header", () => {
   const renderWithContext = (accountName: string) => {
     render(
       <accountContext.Provider value={{ accountName: accountName }}>

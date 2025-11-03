@@ -28,7 +28,7 @@ jest.mock("./constant", () => ({
   ],
 }));
 
-describe("Organisms/Menu", () => {
+describe("Common/Organisms/Menu", () => {
   it("renders", () => {
     render(<Menu />);
     expect(screen.getByRole("link", { name: "ホーム" })).toBeInTheDocument();
