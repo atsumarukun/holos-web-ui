@@ -74,15 +74,12 @@ export const Header = () => {
               {context.accountName}
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <button
-                className="flex flex-row items-center gap-1"
-                onClick={handleSignout}
-              >
+            <button className="w-full" onClick={handleSignout}>
+              <DropdownMenuItem className="flex-row items-center gap-1 hover:cursor-pointer">
                 <LuLogOut className="text-foreground" />
                 ログアウト
-              </button>
-            </DropdownMenuItem>
+              </DropdownMenuItem>
+            </button>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
