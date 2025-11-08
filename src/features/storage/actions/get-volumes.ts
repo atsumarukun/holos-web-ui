@@ -6,16 +6,17 @@ import { UnauthorizedErr } from "@/lib/errors";
 import { redirect } from "next/navigation";
 
 export type GetVolumesResponse = Readonly<{
-  name: string;
-  isPublic: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  volumes: {
+    name: string;
+    isPublic: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+  }[];
 }>;
 
 export const getVolumes = async (): Promise<{
   success: boolean;
   data?: GetVolumesResponse;
-  error?: string;
 }> => {
   try {
     const token = await getToken();

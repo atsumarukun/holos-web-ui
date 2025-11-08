@@ -14,10 +14,14 @@ describe("getVolumes", () => {
   it("success: got volumes", async () => {
     const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
     const mockResponse = {
-      name: "volume",
-      isPublic: false,
-      createdAt: "2025-01-01T00:00:00Z",
-      updatedAt: "2025-01-01T00:00:00Z",
+      volumes: [
+        {
+          name: "volume",
+          isPublic: false,
+          createdAt: "2025-01-01T00:00:00Z",
+          updatedAt: "2025-01-01T00:00:00Z",
+        },
+      ],
     };
 
     getTokenMock.mockResolvedValue(token);
