@@ -59,7 +59,7 @@ export const Header = () => {
         </Link>
       </div>
       <div className="grow flex flex-row items-center justify-end md:justify-between gap-6">
-        <Breadcrumb className="hidden md:block text-white border-l border-white pl-6" />
+        <Breadcrumb className="hidden md:flex text-white border-l border-white pl-6" />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button className="focus:outline-none">
