@@ -6,7 +6,7 @@ const base = cn(
 );
 
 export const buttonVariants = {
-  default: cn(base, "bg-primary text-primary-foreground hover:bg-primary/90"),
+  default: cn(base, "bg-button text-primary-foreground hover:bg-button/80"),
   outline: cn(
     base,
     "border bg-inherit hover:bg-accent hover:text-accent-foreground"
