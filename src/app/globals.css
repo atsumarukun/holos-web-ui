@@ -38,6 +38,7 @@
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
   --color-theme: var(--theme);
+  --color-button: var(--button);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -80,6 +81,7 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
   --theme: oklch(0.7276 0.2337 338.3);
+  --button: oklch(0.4891 0 0);
 }
 
 .dark {

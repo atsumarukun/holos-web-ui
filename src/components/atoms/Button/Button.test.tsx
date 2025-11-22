@@ -17,7 +17,7 @@ describe("Common/Atoms/Button", () => {
 
   it("applies variant styles", () => {
     const { rerender } = render(<Button label="default" />);
-    expect(screen.getByRole("button")).toHaveClass("bg-primary");
+    expect(screen.getByRole("button")).toHaveClass("bg-button");
 
     rerender(<Button label="outline" variant="outline" />);
     expect(screen.getByRole("button")).toHaveClass("border");
