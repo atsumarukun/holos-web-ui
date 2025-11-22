@@ -16,6 +16,15 @@ const preview: Preview = {
     nextjs: {
       appDirectory: true,
     },
+    backgrounds: {
+      options: {
+        white: { name: "White", value: "#ffffff" },
+        light: { name: "Light", value: "#f4f6f8" },
+      },
+    },
+  },
+  initialGlobals: {
+    backgrounds: { value: "white" },
   },
 };
 
