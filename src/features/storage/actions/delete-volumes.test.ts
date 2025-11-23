@@ -113,7 +113,6 @@ describe("deleteVolumes", () => {
 
   it("failed: occured fetch error", async () => {
     const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
-    const mockResponse = { message: "internal server error" };
 
     const consoleSpy = jest
       .spyOn(console, "error")
