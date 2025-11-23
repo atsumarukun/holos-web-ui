@@ -68,6 +68,28 @@ describe("createVolume", () => {
     expect(redirectMock).toHaveBeenCalledWith("/auth/signin");
   });
 
+  it("failed: duplicated volume name", async () => {
+    const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
+    const mockResponse = { message: "conflict" };
+
+    getTokenMock.mockResolvedValue(token);
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: false,
+      status: 409,
+      json: async () => mockResponse,
+    });
+
+    const result = await createVolume({
+      name: "volume",
+      isPublic: true,
+    });
+
+    expect(result).toEqual({
+      success: false,
+      error: "ボリューム名がすでに利用されています.",
+    });
+  });
+
   it("failed: internal server error", async () => {
     const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
     const mockResponse = { message: "internal server error" };

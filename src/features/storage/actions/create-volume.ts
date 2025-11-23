@@ -22,6 +22,7 @@ export const createVolume = async (
 ): Promise<{
   success: boolean;
   data?: CreateVolumeResponse;
+  error?: string;
 }> => {
   try {
     const token = await getToken();
@@ -45,6 +46,10 @@ export const createVolume = async (
 
     if (res.status === 401) {
       throw UnauthorizedErr;
+    }
+
+    if (res.status === 409) {
+      return { success: false, error: "ボリューム名がすでに利用されています." };
     }
 
     throw new Error(toCamelCase(await res.json()).message);
