@@ -1,6 +1,5 @@
 import { Input } from "@/components/atoms/Input";
 import { RequiredBadge } from "@/components/atoms/RequiredBadge";
-import { HTMLInputTypeAttribute } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 
 type Props = Readonly<{
