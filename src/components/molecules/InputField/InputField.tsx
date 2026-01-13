@@ -28,6 +28,7 @@ export const InputField = ({
         <Input
           id={id}
           variant={error ? "destructive" : "default"}
+          className="w-full"
           {...inputProps}
           {...registerReturn}
         />
