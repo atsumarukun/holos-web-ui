@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
+import { UpdateVolumeFormDialog } from "./UpdateVolumeFormDialog";
 import { UseFormProps } from "react-hook-form";
-import { CreateVolumeFormDialog } from "./CreateVolumeFormDialog";
 import userEvent from "@testing-library/user-event";
 
 const resetMock = jest.fn();
@@ -22,52 +22,58 @@ jest.mock("@/lib/toast", () => ({
   errorToast: () => errorToastMock(),
 }));
 
-const createVolumeMock = jest.fn();
-jest.mock("@/features/storage/actions/create-volume", () => ({
-  createVolume: () => createVolumeMock(),
+const updateVolumeMock = jest.fn();
+jest.mock("@/features/storage/actions/update-volume", () => ({
+  updateVolume: () => updateVolumeMock(),
 }));
 
 const onOpenChangeMock = jest.fn();
 const refetchMock = jest.fn();
 
-describe("Storage/Organisms/CreateVolumeFormDialog", () => {
+describe("Storage/Organisms/UpdateVolumeFormDialog", () => {
   it("renders", () => {
+    const name = "holos";
+
     render(
-      <CreateVolumeFormDialog
+      <UpdateVolumeFormDialog
+        defaultValues={{ name: name, isPublic: true }}
         open
         onOpenChange={onOpenChangeMock}
         refetch={refetchMock}
       />,
     );
-    expect(screen.getByText("ボリューム作成")).toBeInTheDocument();
+    expect(screen.getByText(`「${name}」を更新`)).toBeInTheDocument();
     expect(screen.getByLabelText("ボリューム名")).toBeInTheDocument();
     expect(screen.getByLabelText("パブリック公開")).toBeInTheDocument();
     expect(screen.getByRole("switch")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "作成" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "更新" })).toBeInTheDocument();
   });
 
   it("does not render when closed", () => {
+    const name = "holos";
+
     render(
-      <CreateVolumeFormDialog
+      <UpdateVolumeFormDialog
+        defaultValues={{ name: name, isPublic: true }}
         open={false}
         onOpenChange={onOpenChangeMock}
         refetch={refetchMock}
       />,
     );
-    expect(screen.queryByText("ボリューム作成")).not.toBeInTheDocument();
+    expect(screen.queryByText(`「${name}」を更新`)).not.toBeInTheDocument();
     expect(screen.queryByLabelText("ボリューム名")).not.toBeInTheDocument();
     expect(screen.queryByLabelText("パブリック公開")).not.toBeInTheDocument();
     expect(screen.queryByRole("switch")).not.toBeInTheDocument();
     expect(
-      screen.queryByRole("button", { name: "作成" }),
+      screen.queryByRole("button", { name: "更新" }),
     ).not.toBeInTheDocument();
   });
 
-  it("invokes the success handler when create succeeds", async () => {
-    createVolumeMock.mockResolvedValue({
+  it("invokes the success handler when update succeeds", async () => {
+    updateVolumeMock.mockResolvedValue({
       success: true,
       data: {
-        name: "holos",
+        name: "update",
         isPublic: false,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -75,15 +81,16 @@ describe("Storage/Organisms/CreateVolumeFormDialog", () => {
     });
 
     render(
-      <CreateVolumeFormDialog
+      <UpdateVolumeFormDialog
+        defaultValues={{ name: "holos", isPublic: true }}
         open
         onOpenChange={onOpenChangeMock}
         refetch={refetchMock}
       />,
     );
 
-    await userEvent.type(screen.getByRole("textbox"), "holos");
-    await userEvent.click(screen.getByRole("button", { name: "作成" }));
+    await userEvent.type(screen.getByRole("textbox"), "update");
+    await userEvent.click(screen.getByRole("button", { name: "更新" }));
 
     await waitFor(() => {
       expect(successToastMock).toHaveBeenCalled();
@@ -95,36 +102,39 @@ describe("Storage/Organisms/CreateVolumeFormDialog", () => {
 
   it("shows error when required fields are empty", async () => {
     render(
-      <CreateVolumeFormDialog
+      <UpdateVolumeFormDialog
+        defaultValues={{ name: "holos", isPublic: true }}
         open
         onOpenChange={onOpenChangeMock}
         refetch={refetchMock}
       />,
     );
 
-    await userEvent.click(screen.getByRole("button", { name: "作成" }));
+    await userEvent.clear(screen.getByRole("textbox"));
+    await userEvent.click(screen.getByRole("button", { name: "更新" }));
 
     await waitFor(() => {
       expect(screen.getByText("必須項目です.")).toBeInTheDocument();
     });
   });
 
-  it("shows error when create fails with error message", async () => {
-    createVolumeMock.mockResolvedValue({
+  it("shows error when update fails with error message", async () => {
+    updateVolumeMock.mockResolvedValue({
       success: false,
       error: "ボリューム名がすでに利用されています.",
     });
 
     render(
-      <CreateVolumeFormDialog
+      <UpdateVolumeFormDialog
+        defaultValues={{ name: "holos", isPublic: true }}
         open
         onOpenChange={onOpenChangeMock}
         refetch={refetchMock}
       />,
     );
 
-    await userEvent.type(screen.getByRole("textbox"), "holos");
-    await userEvent.click(screen.getByRole("button", { name: "作成" }));
+    await userEvent.type(screen.getByRole("textbox"), "update");
+    await userEvent.click(screen.getByRole("button", { name: "更新" }));
 
     await waitFor(() => {
       expect(
@@ -133,19 +143,20 @@ describe("Storage/Organisms/CreateVolumeFormDialog", () => {
     });
   });
 
-  it("shows error toast when create fails without error message", async () => {
-    createVolumeMock.mockResolvedValue({ success: false });
+  it("shows error toast when update fails without error message", async () => {
+    updateVolumeMock.mockResolvedValue({ success: false });
 
     render(
-      <CreateVolumeFormDialog
+      <UpdateVolumeFormDialog
+        defaultValues={{ name: "holos", isPublic: true }}
         open
         onOpenChange={onOpenChangeMock}
         refetch={refetchMock}
       />,
     );
 
-    await userEvent.type(screen.getByRole("textbox"), "holos");
-    await userEvent.click(screen.getByRole("button", { name: "作成" }));
+    await userEvent.type(screen.getByRole("textbox"), "update");
+    await userEvent.click(screen.getByRole("button", { name: "更新" }));
 
     await waitFor(() => {
       expect(errorToastMock).toHaveBeenCalled();

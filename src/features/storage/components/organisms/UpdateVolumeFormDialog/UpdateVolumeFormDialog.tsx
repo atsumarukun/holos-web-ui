@@ -41,7 +41,7 @@ export const UpdateVolumeFormDialog = ({
   const onSubmit: SubmitHandler<VolumeInput> = async (data) => {
     const res = await updateVolume(defaultValues.name, data);
     if (res.success) {
-      successToast("ボリュームを作成しました.");
+      successToast("ボリュームを更新しました.");
       reset();
       refetch();
       onOpenChange();
