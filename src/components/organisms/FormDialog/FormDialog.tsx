@@ -42,6 +42,7 @@ export const FormDialog = ({
             <Button
               variant="outline"
               label="キャンセル"
+              type="button"
               onClick={onOpenChange}
             />
             <Button label={submitLabel} type="submit" />

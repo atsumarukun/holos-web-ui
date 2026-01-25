@@ -11,11 +11,11 @@ describe("Storage/Organisms/VolumeFormContent", () => {
         control={result.current.control}
         register={result.current.register}
         errors={result.current.formState.errors}
-      />
+      />,
     );
-    expect(screen.getByText("ボリューム名")).toBeInTheDocument();
+    expect(screen.getByLabelText("ボリューム名")).toBeInTheDocument();
     expect(screen.getByRole("textbox")).toBeInTheDocument();
-    expect(screen.getByText("パブリック公開")).toBeInTheDocument();
+    expect(screen.getByLabelText("パブリック公開")).toBeInTheDocument();
     expect(screen.getByRole("switch")).toBeInTheDocument();
     expect(screen.getAllByText("必須")).toHaveLength(1);
   });
