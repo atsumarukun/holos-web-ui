@@ -12,16 +12,22 @@ type Props = Readonly<{
   control: Control<VolumeInput>;
   errors: FieldErrors<VolumeInput>;
   register: UseFormRegister<VolumeInput>;
+  conflictError?: string;
 }>;
 
-export const VolumeFormContent = ({ control, errors, register }: Props) => {
+export const VolumeFormContent = ({
+  control,
+  errors,
+  register,
+  conflictError,
+}: Props) => {
   return (
     <div className="flex flex-col gap-2">
       <InputField
         id="name"
         label="ボリューム名"
         registerReturn={register("name")}
-        error={errors.name?.message}
+        error={conflictError ?? errors.name?.message}
         isRequired
       />
       <div className="flex flex-row items-center gap-2">
