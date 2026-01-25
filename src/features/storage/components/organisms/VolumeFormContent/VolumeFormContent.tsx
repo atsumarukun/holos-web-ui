@@ -35,7 +35,11 @@ export const VolumeFormContent = ({
           name="isPublic"
           control={control}
           render={({ field }) => (
-            <Switch checked={field.value} onCheckedChange={field.onChange} />
+            <Switch
+              id="isPublic"
+              checked={field.value}
+              onCheckedChange={field.onChange}
+            />
           )}
         />
         <label htmlFor="isPublic">パブリック公開</label>
