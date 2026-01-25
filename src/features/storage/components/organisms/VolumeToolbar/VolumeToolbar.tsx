@@ -2,18 +2,9 @@
 
 import { Button } from "@/components/atoms/Button";
 import { SearchBox } from "@/components/molecules/SearchBox";
-import { FormDialog } from "@/components/organisms/FormDialog";
 import { useState } from "react";
 import { LuPlus } from "react-icons/lu";
-import {
-  VolumeFormContent,
-  volumeFormSchema,
-  VolumeInput,
-} from "../VolumeFormContent";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { createVolume } from "@/features/storage/actions/create-volume";
-import { errorToast, successToast } from "@/lib/toast";
+import { CreateVolumeFormDialog } from "../CreateVolumeFormDialog";
 
 type Props = Readonly<{
   refetch: () => void;
@@ -21,34 +12,6 @@ type Props = Readonly<{
 
 export const VolumeToolbar = ({ refetch }: Props) => {
   const [open, setOpen] = useState(false);
-  const [conflictError, setConflictError] = useState<string>();
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    control,
-    formState: { errors },
-  } = useForm({
-    resolver: zodResolver(volumeFormSchema),
-    defaultValues: { isPublic: false },
-  });
-
-  const onSubmit: SubmitHandler<VolumeInput> = async (data) => {
-    const res = await createVolume(data);
-    if (res.success) {
-      successToast("ボリュームを作成しました.");
-      reset();
-      refetch();
-      setOpen(false);
-    } else {
-      if (res.error) {
-        setConflictError(res.error);
-      } else {
-        errorToast();
-      }
-    }
-  };
 
   return (
     <>
@@ -61,20 +24,11 @@ export const VolumeToolbar = ({ refetch }: Props) => {
           onClick={() => setOpen(true)}
         />
       </div>
-      <FormDialog
-        title="ボリューム作成"
-        submitLabel="作成"
+      <CreateVolumeFormDialog
         open={open}
         onOpenChange={() => setOpen((v) => !v)}
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <VolumeFormContent
-          control={control}
-          register={register}
-          errors={errors}
-          conflictError={conflictError}
-        />
-      </FormDialog>
+        refetch={refetch}
+      />
     </>
   );
 };
