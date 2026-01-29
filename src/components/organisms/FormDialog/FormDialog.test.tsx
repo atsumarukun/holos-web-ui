@@ -16,11 +16,14 @@ describe("Common/Organisms/FormDialog", () => {
         onSubmit={onSubmitMock}
       >
         <input />
-      </FormDialog>
+      </FormDialog>,
     );
     expect(screen.getByText("アカウント作成")).toBeInTheDocument();
     expect(screen.getByRole("textbox")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "作成" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "キャンセル" }),
+    ).toBeInTheDocument();
   });
 
   it("does not render when closed", () => {
@@ -33,12 +36,15 @@ describe("Common/Organisms/FormDialog", () => {
         onSubmit={onSubmitMock}
       >
         <input />
-      </FormDialog>
+      </FormDialog>,
     );
     expect(screen.queryByText("アカウント作成")).not.toBeInTheDocument();
     expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
     expect(
-      screen.queryByRole("button", { name: "作成" })
+      screen.queryByRole("button", { name: "作成" }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "キャンセル" }),
     ).not.toBeInTheDocument();
   });
 
@@ -52,7 +58,7 @@ describe("Common/Organisms/FormDialog", () => {
         onSubmit={onSubmitMock}
       >
         <input />
-      </FormDialog>
+      </FormDialog>,
     );
 
     await userEvent.click(screen.getByRole("button", { name: "キャンセル" }));
@@ -72,7 +78,7 @@ describe("Common/Organisms/FormDialog", () => {
         onSubmit={onSubmitMock}
       >
         <input />
-      </FormDialog>
+      </FormDialog>,
     );
 
     await userEvent.click(screen.getByRole("button", { name: "作成" }));
