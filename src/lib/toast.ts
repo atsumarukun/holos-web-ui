@@ -19,8 +19,9 @@ export const successToast = (title: string, description?: string) => {
   });
 };
 
-export const errorToast = () => {
+export const errorToast = (description?: string) => {
   return toast("エラーが発生しました", {
+    description: description,
     icon: TbAlertCircleFilled({
       color: "var(--destructive)",
       size: 24,
