@@ -42,7 +42,7 @@ describe("Storage/Organisms/UpdateVolumeFormDialog", () => {
         refetch={refetchMock}
       />,
     );
-    expect(screen.getByText(`「${name}」を更新`)).toBeInTheDocument();
+    expect(screen.getByText(`「${name}」を編集`)).toBeInTheDocument();
     expect(screen.getByLabelText("ボリューム名")).toBeInTheDocument();
     expect(screen.getByLabelText("パブリック公開")).toBeInTheDocument();
     expect(screen.getByRole("switch")).toBeInTheDocument();
@@ -60,7 +60,7 @@ describe("Storage/Organisms/UpdateVolumeFormDialog", () => {
         refetch={refetchMock}
       />,
     );
-    expect(screen.queryByText(`「${name}」を更新`)).not.toBeInTheDocument();
+    expect(screen.queryByText(`「${name}」を編集`)).not.toBeInTheDocument();
     expect(screen.queryByLabelText("ボリューム名")).not.toBeInTheDocument();
     expect(screen.queryByLabelText("パブリック公開")).not.toBeInTheDocument();
     expect(screen.queryByRole("switch")).not.toBeInTheDocument();
