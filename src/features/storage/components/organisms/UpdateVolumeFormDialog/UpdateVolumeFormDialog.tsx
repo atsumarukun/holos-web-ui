@@ -56,7 +56,7 @@ export const UpdateVolumeFormDialog = ({
 
   return (
     <FormDialog
-      title={`「${defaultValues.name}」を更新`}
+      title={`「${defaultValues.name}」を編集`}
       submitLabel="更新"
       open={open}
       onOpenChange={onOpenChange}
