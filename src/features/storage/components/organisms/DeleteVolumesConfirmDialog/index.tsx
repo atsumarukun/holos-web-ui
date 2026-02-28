@@ -1,0 +1,1 @@
+export { DeleteVolumesConfirmDialog } from "./DeleteVolumesConfirmDialog";

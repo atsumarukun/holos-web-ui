@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import { DeleteVolumeConfirmDialog } from "./DeleteVolumeConfirmDialog";
+import { DeleteVolumesConfirmDialog } from "./DeleteVolumesConfirmDialog";
 import userEvent from "@testing-library/user-event";
 
 const successToastMock = jest.fn();
@@ -17,11 +17,11 @@ jest.mock("@/features/storage/actions/delete-volumes", () => ({
 const onOpenChangeMock = jest.fn();
 const refetchMock = jest.fn();
 
-describe("Storage/Organisms/DeleteVolumeConfirmDialog", () => {
+describe("Storage/Organisms/DeleteVolumesConfirmDialog", () => {
   it("renders", () => {
     render(
-      <DeleteVolumeConfirmDialog
-        name="holos"
+      <DeleteVolumesConfirmDialog
+        names={["holos", "test"]}
         open
         onOpenChange={onOpenChangeMock}
         refetch={refetchMock}
@@ -31,7 +31,7 @@ describe("Storage/Organisms/DeleteVolumeConfirmDialog", () => {
     expect(
       screen.getByText(
         (content) =>
-          content.includes("「holos」を削除しますか？") &&
+          content.includes("選択したボリュームを削除しますか？") &&
           content.includes("削除したボリュームは復元できません."),
       ),
     ).toBeInTheDocument();
@@ -40,8 +40,8 @@ describe("Storage/Organisms/DeleteVolumeConfirmDialog", () => {
 
   it("does not render when closed", () => {
     render(
-      <DeleteVolumeConfirmDialog
-        name="holos"
+      <DeleteVolumesConfirmDialog
+        names={["holos", "test"]}
         open={false}
         onOpenChange={onOpenChangeMock}
         refetch={refetchMock}
@@ -51,7 +51,7 @@ describe("Storage/Organisms/DeleteVolumeConfirmDialog", () => {
     expect(
       screen.queryByText(
         (content) =>
-          content.includes("「holos」を削除しますか？") &&
+          content.includes("選択したボリュームを削除しますか？") &&
           content.includes("削除したボリュームは復元できません."),
       ),
     ).not.toBeInTheDocument();
@@ -62,15 +62,14 @@ describe("Storage/Organisms/DeleteVolumeConfirmDialog", () => {
 
   it("invokes the success handler when delete succeeds", async () => {
     deleteVolumesMock.mockResolvedValue({
-      holos: {
-        success: true,
-      },
+      holos: { success: true },
+      test: { success: true },
     });
 
     render(
-      <DeleteVolumeConfirmDialog
-        name="holos"
-        open
+      <DeleteVolumesConfirmDialog
+        names={["holos", "test"]}
+        open={true}
         onOpenChange={onOpenChangeMock}
         refetch={refetchMock}
       />,
@@ -91,12 +90,13 @@ describe("Storage/Organisms/DeleteVolumeConfirmDialog", () => {
         success: false,
         error: "空ではないボリュームは削除できません.",
       },
+      test: { success: true },
     });
 
     render(
-      <DeleteVolumeConfirmDialog
-        name="holos"
-        open
+      <DeleteVolumesConfirmDialog
+        names={["holos", "test"]}
+        open={true}
         onOpenChange={onOpenChangeMock}
         refetch={refetchMock}
       />,
@@ -106,22 +106,21 @@ describe("Storage/Organisms/DeleteVolumeConfirmDialog", () => {
 
     await waitFor(() => {
       expect(errorToastMock).toHaveBeenCalledWith(
-        "空ではないボリュームは削除できません.",
+        "「holos」の削除に失敗しました.\n空ではないボリュームは削除できません.",
       );
     });
   });
 
   it("shows error toast when delete fails without error message", async () => {
     deleteVolumesMock.mockResolvedValue({
-      holos: {
-        success: false,
-      },
+      holos: { success: false },
+      test: { success: false },
     });
 
     render(
-      <DeleteVolumeConfirmDialog
-        name="holos"
-        open
+      <DeleteVolumesConfirmDialog
+        names={["holos", "test"]}
+        open={true}
         onOpenChange={onOpenChangeMock}
         refetch={refetchMock}
       />,
@@ -130,7 +129,7 @@ describe("Storage/Organisms/DeleteVolumeConfirmDialog", () => {
     await userEvent.click(screen.getByRole("button", { name: "削除" }));
 
     await waitFor(() => {
-      expect(errorToastMock).toHaveBeenCalled();
+      expect(errorToastMock).toHaveBeenCalledTimes(2);
     });
   });
 });
