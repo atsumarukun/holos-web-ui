@@ -33,6 +33,7 @@ export const errorToast = (description?: string) => {
       borderLeft: "var(--destructive) 4px solid",
       borderRadius: 4,
       gap: 12,
+      whiteSpace: "pre-line",
     },
   });
 };
