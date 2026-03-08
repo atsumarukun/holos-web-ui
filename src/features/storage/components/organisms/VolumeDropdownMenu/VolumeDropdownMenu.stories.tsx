@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from "@storybook/nextjs";
 import { VolumeDropdownMenu } from "./VolumeDropdownMenu";
-import { fn } from "storybook/test";
 
 const meta = {
   title: "Storage/Organisms/VolumeDropdownMenu",
@@ -16,7 +15,6 @@ const meta = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
-    refetch: fn(),
   },
   argTypes: {
     volume: {

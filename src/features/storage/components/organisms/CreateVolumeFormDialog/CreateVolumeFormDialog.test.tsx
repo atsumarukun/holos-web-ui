@@ -2,6 +2,8 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { UseFormProps } from "react-hook-form";
 import { CreateVolumeFormDialog } from "./CreateVolumeFormDialog";
 import userEvent from "@testing-library/user-event";
+import { refetchContext } from "@/providers/refetch";
+import { ReactNode } from "react";
 
 const resetMock = jest.fn();
 jest.mock("react-hook-form", () => {
@@ -31,13 +33,18 @@ const onOpenChangeMock = jest.fn();
 const refetchMock = jest.fn();
 
 describe("Storage/Organisms/CreateVolumeFormDialog", () => {
-  it("renders", () => {
+  const renderWithContext = (component: ReactNode) => {
     render(
-      <CreateVolumeFormDialog
-        open
-        onOpenChange={onOpenChangeMock}
-        refetch={refetchMock}
-      />,
+      <refetchContext.Provider
+        value={{ refetch: refetchMock, setRefetch: jest.fn() }}
+      >
+        {component}
+      </refetchContext.Provider>,
+    );
+  };
+  it("renders", () => {
+    renderWithContext(
+      <CreateVolumeFormDialog open onOpenChange={onOpenChangeMock} />,
     );
     expect(screen.getByText("ボリューム作成")).toBeInTheDocument();
     expect(screen.getByLabelText("ボリューム名")).toBeInTheDocument();
@@ -47,12 +54,8 @@ describe("Storage/Organisms/CreateVolumeFormDialog", () => {
   });
 
   it("does not render when closed", () => {
-    render(
-      <CreateVolumeFormDialog
-        open={false}
-        onOpenChange={onOpenChangeMock}
-        refetch={refetchMock}
-      />,
+    renderWithContext(
+      <CreateVolumeFormDialog open={false} onOpenChange={onOpenChangeMock} />,
     );
     expect(screen.queryByText("ボリューム作成")).not.toBeInTheDocument();
     expect(screen.queryByLabelText("ボリューム名")).not.toBeInTheDocument();
@@ -74,12 +77,8 @@ describe("Storage/Organisms/CreateVolumeFormDialog", () => {
       },
     });
 
-    render(
-      <CreateVolumeFormDialog
-        open
-        onOpenChange={onOpenChangeMock}
-        refetch={refetchMock}
-      />,
+    renderWithContext(
+      <CreateVolumeFormDialog open onOpenChange={onOpenChangeMock} />,
     );
 
     await userEvent.type(screen.getByRole("textbox"), "holos");
@@ -94,12 +93,8 @@ describe("Storage/Organisms/CreateVolumeFormDialog", () => {
   });
 
   it("shows error when required fields are empty", async () => {
-    render(
-      <CreateVolumeFormDialog
-        open
-        onOpenChange={onOpenChangeMock}
-        refetch={refetchMock}
-      />,
+    renderWithContext(
+      <CreateVolumeFormDialog open onOpenChange={onOpenChangeMock} />,
     );
 
     await userEvent.click(screen.getByRole("button", { name: "作成" }));
@@ -115,12 +110,8 @@ describe("Storage/Organisms/CreateVolumeFormDialog", () => {
       error: "ボリューム名がすでに利用されています.",
     });
 
-    render(
-      <CreateVolumeFormDialog
-        open
-        onOpenChange={onOpenChangeMock}
-        refetch={refetchMock}
-      />,
+    renderWithContext(
+      <CreateVolumeFormDialog open onOpenChange={onOpenChangeMock} />,
     );
 
     await userEvent.type(screen.getByRole("textbox"), "holos");
@@ -136,12 +127,8 @@ describe("Storage/Organisms/CreateVolumeFormDialog", () => {
   it("shows error toast when create fails without error message", async () => {
     createVolumeMock.mockResolvedValue({ success: false });
 
-    render(
-      <CreateVolumeFormDialog
-        open
-        onOpenChange={onOpenChangeMock}
-        refetch={refetchMock}
-      />,
+    renderWithContext(
+      <CreateVolumeFormDialog open onOpenChange={onOpenChangeMock} />,
     );
 
     await userEvent.type(screen.getByRole("textbox"), "holos");

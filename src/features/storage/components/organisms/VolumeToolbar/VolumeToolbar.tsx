@@ -6,11 +6,7 @@ import { useState } from "react";
 import { LuPlus } from "react-icons/lu";
 import { CreateVolumeFormDialog } from "../CreateVolumeFormDialog";
 
-type Props = Readonly<{
-  refetch: () => void;
-}>;
-
-export const VolumeToolbar = ({ refetch }: Props) => {
+export const VolumeToolbar = () => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -27,7 +23,6 @@ export const VolumeToolbar = ({ refetch }: Props) => {
       <CreateVolumeFormDialog
         open={open}
         onOpenChange={() => setOpen((v) => !v)}
-        refetch={refetch}
       />
     </>
   );

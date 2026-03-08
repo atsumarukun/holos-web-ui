@@ -3,7 +3,7 @@ import path from "path";
 
 const config: StorybookConfig = {
   stories: ["../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
-  addons: [],
+  addons: ["storybook-addon-module-mock"],
   framework: {
     name: "@storybook/nextjs",
     options: {},

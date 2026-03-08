@@ -3,6 +3,7 @@ import { CreateVolumeFormDialog } from "./CreateVolumeFormDialog";
 import { fn } from "storybook/test";
 import { useState } from "react";
 import { Button } from "@/components/atoms/Button";
+import { refetchContext } from "@/providers/refetch";
 
 const meta = {
   title: "Storage/Organisms/CreateVolumeFormDialog",
@@ -14,7 +15,6 @@ const meta = {
   args: {
     open: false,
     onOpenChange: fn(),
-    refetch: fn(),
   },
   argTypes: {
     open: {
@@ -27,18 +27,17 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: (args) => {
+  render: () => {
     const [open, setOpen] = useState(false);
 
     return (
-      <>
+      <refetchContext.Provider value={{ refetch: fn(), setRefetch: fn() }}>
         <Button label="開く" onClick={() => setOpen(true)} />
         <CreateVolumeFormDialog
-          {...args}
           open={open}
           onOpenChange={() => setOpen((v) => !v)}
         />
-      </>
+      </refetchContext.Provider>
     );
   },
 };

@@ -3,20 +3,22 @@
 import { ConfirmDialog } from "@/components/organisms/ConfirmDialog";
 import { deleteVolumes } from "@/features/storage/actions/delete-volumes";
 import { errorToast, successToast } from "@/lib/toast";
+import { refetchContext } from "@/providers/refetch";
+import { useContext } from "react";
 
 type Props = Readonly<{
   names: string[];
   open: boolean;
   onOpenChange: () => void;
-  refetch: () => void;
 }>;
 
 export const DeleteVolumesConfirmDialog = ({
   names,
   open,
   onOpenChange,
-  refetch,
 }: Props) => {
+  const context = useContext(refetchContext);
+
   const onApprove = async () => {
     const res = await deleteVolumes(names);
     const failures = Object.entries(res).filter(([, v]) => !v.success);
@@ -31,7 +33,7 @@ export const DeleteVolumesConfirmDialog = ({
         }
       });
     }
-    refetch();
+    context.refetch();
     onOpenChange();
   };
 

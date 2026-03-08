@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
   VolumeFormContent,
@@ -11,18 +11,16 @@ import {
 import { createVolume } from "@/features/storage/actions/create-volume";
 import { errorToast, successToast } from "@/lib/toast";
 import { FormDialog } from "@/components/organisms/FormDialog";
+import { refetchContext } from "@/providers/refetch";
 
 type Props = Readonly<{
   open: boolean;
   onOpenChange: () => void;
-  refetch: () => void;
 }>;
 
-export const CreateVolumeFormDialog = ({
-  open,
-  onOpenChange,
-  refetch,
-}: Props) => {
+export const CreateVolumeFormDialog = ({ open, onOpenChange }: Props) => {
+  const context = useContext(refetchContext);
+
   const [conflictError, setConflictError] = useState<string>();
 
   const {
@@ -41,7 +39,7 @@ export const CreateVolumeFormDialog = ({
     if (res.success) {
       successToast("ボリュームを作成しました.");
       reset();
-      refetch();
+      context.refetch();
       onOpenChange();
     } else {
       if (res.error) {

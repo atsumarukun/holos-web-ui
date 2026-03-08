@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from "@storybook/nextjs";
 import { VolumeToolbar } from "./VolumeToolbar";
-import { fn } from "storybook/test";
 
 const meta = {
   title: "Storage/Organisms/VolumeToolbar",
@@ -9,9 +8,6 @@ const meta = {
     layout: "centered",
   },
   tags: ["autodocs"],
-  args: {
-    refetch: fn(),
-  },
 } satisfies Meta<typeof VolumeToolbar>;
 
 export default meta;

@@ -1,6 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { VolumeToolbar } from "./VolumeToolbar";
 import userEvent from "@testing-library/user-event";
+import { ReactNode } from "react";
+import { refetchContext } from "@/providers/refetch";
 
 const pathnameMock = jest.fn();
 const searchParamsMock = jest.fn();
@@ -14,14 +16,23 @@ jest.mock("next/navigation", () => ({
 const refetchMock = jest.fn();
 
 describe("Storage/Organisms/VolumeToolbar", () => {
+  const renderWithContext = (component: ReactNode) => {
+    render(
+      <refetchContext.Provider
+        value={{ refetch: refetchMock, setRefetch: jest.fn() }}
+      >
+        {component}
+      </refetchContext.Provider>,
+    );
+  };
   it("renders", () => {
-    render(<VolumeToolbar refetch={refetchMock} />);
+    renderWithContext(<VolumeToolbar />);
     expect(screen.getByPlaceholderText("検索")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "作成" })).toBeInTheDocument();
   });
 
   it("renders the dialog when opened", async () => {
-    render(<VolumeToolbar refetch={refetchMock} />);
+    renderWithContext(<VolumeToolbar />);
 
     await userEvent.click(screen.getByRole("button", { name: "作成" }));
 
@@ -29,7 +40,7 @@ describe("Storage/Organisms/VolumeToolbar", () => {
   });
 
   it("does not render the dialog when closed", () => {
-    render(<VolumeToolbar refetch={refetchMock} />);
+    renderWithContext(<VolumeToolbar />);
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 });

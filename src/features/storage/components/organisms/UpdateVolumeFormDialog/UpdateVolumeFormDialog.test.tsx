@@ -2,6 +2,8 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { UpdateVolumeFormDialog } from "./UpdateVolumeFormDialog";
 import { UseFormProps } from "react-hook-form";
 import userEvent from "@testing-library/user-event";
+import { ReactNode } from "react";
+import { refetchContext } from "@/providers/refetch";
 
 const resetMock = jest.fn();
 jest.mock("react-hook-form", () => {
@@ -31,15 +33,24 @@ const onOpenChangeMock = jest.fn();
 const refetchMock = jest.fn();
 
 describe("Storage/Organisms/UpdateVolumeFormDialog", () => {
+  const renderWithContext = (component: ReactNode) => {
+    render(
+      <refetchContext.Provider
+        value={{ refetch: refetchMock, setRefetch: jest.fn() }}
+      >
+        {component}
+      </refetchContext.Provider>,
+    );
+  };
+
   it("renders", () => {
     const name = "holos";
 
-    render(
+    renderWithContext(
       <UpdateVolumeFormDialog
         defaultValues={{ name: name, isPublic: true }}
         open
         onOpenChange={onOpenChangeMock}
-        refetch={refetchMock}
       />,
     );
     expect(screen.getByText(`「${name}」を編集`)).toBeInTheDocument();
@@ -52,12 +63,11 @@ describe("Storage/Organisms/UpdateVolumeFormDialog", () => {
   it("does not render when closed", () => {
     const name = "holos";
 
-    render(
+    renderWithContext(
       <UpdateVolumeFormDialog
         defaultValues={{ name: name, isPublic: true }}
         open={false}
         onOpenChange={onOpenChangeMock}
-        refetch={refetchMock}
       />,
     );
     expect(screen.queryByText(`「${name}」を編集`)).not.toBeInTheDocument();
@@ -80,12 +90,11 @@ describe("Storage/Organisms/UpdateVolumeFormDialog", () => {
       },
     });
 
-    render(
+    renderWithContext(
       <UpdateVolumeFormDialog
         defaultValues={{ name: "holos", isPublic: true }}
         open
         onOpenChange={onOpenChangeMock}
-        refetch={refetchMock}
       />,
     );
 
@@ -101,12 +110,11 @@ describe("Storage/Organisms/UpdateVolumeFormDialog", () => {
   });
 
   it("shows error when required fields are empty", async () => {
-    render(
+    renderWithContext(
       <UpdateVolumeFormDialog
         defaultValues={{ name: "holos", isPublic: true }}
         open
         onOpenChange={onOpenChangeMock}
-        refetch={refetchMock}
       />,
     );
 
@@ -124,12 +132,11 @@ describe("Storage/Organisms/UpdateVolumeFormDialog", () => {
       error: "ボリューム名がすでに利用されています.",
     });
 
-    render(
+    renderWithContext(
       <UpdateVolumeFormDialog
         defaultValues={{ name: "holos", isPublic: true }}
         open
         onOpenChange={onOpenChangeMock}
-        refetch={refetchMock}
       />,
     );
 
@@ -146,12 +153,11 @@ describe("Storage/Organisms/UpdateVolumeFormDialog", () => {
   it("shows error toast when update fails without error message", async () => {
     updateVolumeMock.mockResolvedValue({ success: false });
 
-    render(
+    renderWithContext(
       <UpdateVolumeFormDialog
         defaultValues={{ name: "holos", isPublic: true }}
         open
         onOpenChange={onOpenChangeMock}
-        refetch={refetchMock}
       />,
     );
 
