@@ -15,10 +15,9 @@ import { DeleteVolumeConfirmDialog } from "../DeleteVolumeConfirmDialog";
 
 type Props = Readonly<{
   volume: GetVolumesResponse["volumes"][number];
-  refetch: () => void;
 }>;
 
-export const VolumeDropdownMenu = ({ volume, refetch }: Props) => {
+export const VolumeDropdownMenu = ({ volume }: Props) => {
   const [onUpdateDialogOpen, setOnUpdateDialogOpen] = useState(false);
   const [onDeleteDialogOpen, setOnDeleteDialogOpen] = useState(false);
 
@@ -53,13 +52,11 @@ export const VolumeDropdownMenu = ({ volume, refetch }: Props) => {
         defaultValues={{ name: volume.name, isPublic: volume.isPublic }}
         open={onUpdateDialogOpen}
         onOpenChange={() => setOnUpdateDialogOpen((v) => !v)}
-        refetch={refetch}
       />
       <DeleteVolumeConfirmDialog
         name={volume.name}
         open={onDeleteDialogOpen}
         onOpenChange={() => setOnDeleteDialogOpen((v) => !v)}
-        refetch={refetch}
       />
     </>
   );

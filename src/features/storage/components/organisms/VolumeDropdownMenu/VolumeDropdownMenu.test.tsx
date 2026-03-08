@@ -2,8 +2,6 @@ import { render, screen } from "@testing-library/react";
 import { VolumeDropdownMenu } from "./VolumeDropdownMenu";
 import userEvent from "@testing-library/user-event";
 
-const refetchMock = jest.fn();
-
 describe("Storage/Organisms/VolumeDropdownMenu", () => {
   it("renders", () => {
     render(
@@ -14,7 +12,6 @@ describe("Storage/Organisms/VolumeDropdownMenu", () => {
           createdAt: new Date(),
           updatedAt: new Date(),
         }}
-        refetch={refetchMock}
       />,
     );
     expect(screen.getByRole("button").querySelector("svg")).toBeInTheDocument();
@@ -30,7 +27,6 @@ describe("Storage/Organisms/VolumeDropdownMenu", () => {
           createdAt: new Date(),
           updatedAt: new Date(),
         }}
-        refetch={refetchMock}
       />,
     );
 
@@ -48,7 +44,6 @@ describe("Storage/Organisms/VolumeDropdownMenu", () => {
           createdAt: new Date(),
           updatedAt: new Date(),
         }}
-        refetch={refetchMock}
       />,
     );
 
@@ -67,7 +62,6 @@ describe("Storage/Organisms/VolumeDropdownMenu", () => {
           createdAt: new Date(),
           updatedAt: new Date(),
         }}
-        refetch={refetchMock}
       />,
     );
 

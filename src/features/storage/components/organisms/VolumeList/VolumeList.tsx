@@ -1,7 +1,6 @@
 "use client";
 
 import { IconButton } from "@/components/atoms/IconButton";
-import { GetVolumesResponse } from "@/features/storage/actions/get-volumes";
 import {
   MdCheckBox,
   MdCheckBoxOutlineBlank,
@@ -13,13 +12,16 @@ import Link from "next/link";
 import { SelectedVolumesDropdownMenu } from "../SelectedVolumesDropdownMenu";
 import { useVolumeSelection } from "@/features/storage/hooks/select-volume";
 import { useScrollbarWidthVariable } from "@/hooks/scrollbar-width";
+import { useContext, useEffect } from "react";
+import { refetchContext } from "@/providers/refetch";
+import { useVolumeList } from "@/features/storage/hooks/volume-list";
+import { Error } from "@/components/molecules/Error";
+import { FiAlertTriangle } from "react-icons/fi";
 
-type Props = Readonly<{
-  volumes: GetVolumesResponse["volumes"];
-  refetch: () => void;
-}>;
+export const VolumeList = () => {
+  const context = useContext(refetchContext);
 
-export const VolumeList = ({ volumes, refetch }: Props) => {
+  const { loading, success, volumes, refetch } = useVolumeList();
   const { isSelectedAll, selectedVolumes, onSelectAll, onSelect } =
     useVolumeSelection({
       volumes: volumes,
@@ -28,6 +30,32 @@ export const VolumeList = ({ volumes, refetch }: Props) => {
   const { scrollbarRef } = useScrollbarWidthVariable({
     variableName: "--scrollbar-width",
   });
+
+  useEffect(() => {
+    context.setRefetch(refetch);
+  }, [context, refetch]);
+
+  if (loading) {
+    return <></>;
+  }
+
+  if (!success) {
+    return (
+      <Error
+        icon={FiAlertTriangle}
+        title="ボリュームの取得に失敗しました"
+        description="再度ページを読み込み直してください."
+      />
+    );
+  }
+  if (!volumes || !volumes.length) {
+    return (
+      <Error
+        title="ボリュームが存在しません"
+        description="作成ボタンをから作成してください."
+      />
+    );
+  }
 
   return (
     <>
@@ -50,10 +78,7 @@ export const VolumeList = ({ volumes, refetch }: Props) => {
             <p className="basis-[12%] pr-2">公開状況</p>
             <p className="grow pr-2">最終更新日時</p>
           </div>
-          <SelectedVolumesDropdownMenu
-            volumes={selectedVolumes}
-            refetch={refetch}
-          />
+          <SelectedVolumesDropdownMenu volumes={selectedVolumes} />
         </div>
         <div
           ref={scrollbarRef}
@@ -92,7 +117,7 @@ export const VolumeList = ({ volumes, refetch }: Props) => {
                     .format("YYYY/MM/DD HH:mm:ss")}
                 </p>
               </Link>
-              <VolumeDropdownMenu volume={volume} refetch={refetch} />
+              <VolumeDropdownMenu volume={volume} />
             </div>
           ))}
         </div>

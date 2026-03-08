@@ -1,6 +1,8 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { DeleteVolumesConfirmDialog } from "./DeleteVolumesConfirmDialog";
 import userEvent from "@testing-library/user-event";
+import { refetchContext } from "@/providers/refetch";
+import { ReactNode } from "react";
 
 const successToastMock = jest.fn();
 const errorToastMock = jest.fn();
@@ -18,13 +20,22 @@ const onOpenChangeMock = jest.fn();
 const refetchMock = jest.fn();
 
 describe("Storage/Organisms/DeleteVolumesConfirmDialog", () => {
-  it("renders", () => {
+  const renderWithContext = (component: ReactNode) => {
     render(
+      <refetchContext.Provider
+        value={{ refetch: refetchMock, setRefetch: jest.fn() }}
+      >
+        {component}
+      </refetchContext.Provider>,
+    );
+  };
+
+  it("renders", () => {
+    renderWithContext(
       <DeleteVolumesConfirmDialog
         names={["holos", "test"]}
         open
         onOpenChange={onOpenChangeMock}
-        refetch={refetchMock}
       />,
     );
     expect(screen.getByText("ボリューム削除")).toBeInTheDocument();
@@ -39,12 +50,11 @@ describe("Storage/Organisms/DeleteVolumesConfirmDialog", () => {
   });
 
   it("does not render when closed", () => {
-    render(
+    renderWithContext(
       <DeleteVolumesConfirmDialog
         names={["holos", "test"]}
         open={false}
         onOpenChange={onOpenChangeMock}
-        refetch={refetchMock}
       />,
     );
     expect(screen.queryByText("ボリューム削除")).not.toBeInTheDocument();
@@ -66,12 +76,11 @@ describe("Storage/Organisms/DeleteVolumesConfirmDialog", () => {
       test: { success: true },
     });
 
-    render(
+    renderWithContext(
       <DeleteVolumesConfirmDialog
         names={["holos", "test"]}
         open={true}
         onOpenChange={onOpenChangeMock}
-        refetch={refetchMock}
       />,
     );
 
@@ -93,12 +102,11 @@ describe("Storage/Organisms/DeleteVolumesConfirmDialog", () => {
       test: { success: true },
     });
 
-    render(
+    renderWithContext(
       <DeleteVolumesConfirmDialog
         names={["holos", "test"]}
         open={true}
         onOpenChange={onOpenChangeMock}
-        refetch={refetchMock}
       />,
     );
 
@@ -117,12 +125,11 @@ describe("Storage/Organisms/DeleteVolumesConfirmDialog", () => {
       test: { success: false },
     });
 
-    render(
+    renderWithContext(
       <DeleteVolumesConfirmDialog
         names={["holos", "test"]}
         open={true}
         onOpenChange={onOpenChangeMock}
-        refetch={refetchMock}
       />,
     );
 

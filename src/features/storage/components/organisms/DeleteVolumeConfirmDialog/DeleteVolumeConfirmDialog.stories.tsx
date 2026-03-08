@@ -3,6 +3,7 @@ import { DeleteVolumeConfirmDialog } from "./DeleteVolumeConfirmDialog";
 import { fn } from "storybook/test";
 import { useState } from "react";
 import { Button } from "@/components/atoms/Button";
+import { refetchContext } from "@/providers/refetch";
 
 const meta = {
   title: "Storage/Organisms/DeleteVolumeConfirmDialog",
@@ -15,7 +16,6 @@ const meta = {
     name: "holos",
     open: false,
     onOpenChange: fn(),
-    refetch: fn(),
   },
   argTypes: {
     open: {
@@ -32,14 +32,14 @@ export const Default: Story = {
     const [open, setOpen] = useState(false);
 
     return (
-      <>
+      <refetchContext.Provider value={{ refetch: fn(), setRefetch: fn() }}>
         <Button label="開く" onClick={() => setOpen(true)} />
         <DeleteVolumeConfirmDialog
           {...args}
           open={open}
           onOpenChange={() => setOpen((v) => !v)}
         />
-      </>
+      </refetchContext.Provider>
     );
   },
 };

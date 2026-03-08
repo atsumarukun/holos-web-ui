@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   VolumeFormContent,
   volumeFormSchema,
@@ -11,20 +11,21 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { updateVolume } from "@/features/storage/actions/update-volume";
 import { errorToast, successToast } from "@/lib/toast";
 import { FormDialog } from "@/components/organisms/FormDialog";
+import { refetchContext } from "@/providers/refetch";
 
 type Props = Readonly<{
   defaultValues: VolumeInput;
   open: boolean;
   onOpenChange: () => void;
-  refetch: () => void;
 }>;
 
 export const UpdateVolumeFormDialog = ({
   defaultValues,
   open,
   onOpenChange,
-  refetch,
 }: Props) => {
+  const context = useContext(refetchContext);
+
   const [conflictError, setConflictError] = useState<string>();
 
   const {
@@ -43,7 +44,7 @@ export const UpdateVolumeFormDialog = ({
     if (res.success) {
       successToast("ボリュームを更新しました.");
       reset();
-      refetch();
+      context.refetch();
       onOpenChange();
     } else {
       if (res.error) {
