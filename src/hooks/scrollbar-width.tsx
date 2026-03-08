@@ -26,7 +26,7 @@ export const useScrollbarWidthVariable = ({ variableName }: Props) => {
     resizeObserver.observe(element);
 
     return () => resizeObserver.disconnect();
-  }, [variableName]);
+  });
 
   return { scrollbarRef };
 };
