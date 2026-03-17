@@ -1,0 +1,1 @@
+export { VolumeListTemplate } from "./VolumeListTemplate";
