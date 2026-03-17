@@ -19,11 +19,13 @@ export default async function BoardLayout({
     <AccountProvider accountName={accountName}>
       <div className="h-screen flex flex-col">
         <Header />
-        <div className="grow flex flex-row">
+        <div className="flex-1 min-h-0 flex flex-row">
           <div className="hidden md:block w-[260px]">
             <Menu />
           </div>
-          <div className="grow bg-secondary p-6">{children}</div>
+          <div className="flex-1 min-h-0 flex flex-col bg-secondary p-6">
+            {children}
+          </div>
         </div>
       </div>
     </AccountProvider>

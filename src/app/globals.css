@@ -102,7 +102,7 @@
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
-  --constructive: oklch(0.704 0.191 145)
+  --constructive: oklch(0.704 0.191 145);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
@@ -134,7 +134,7 @@ html {
   font-size: 16px;
 }
 
-/* Tailwindのmdは768pxがbreak point. */
+/* NOTE: Tailwindのmdは768pxがbreak point. */
 @media (max-width: 767px) {
   html {
     font-size: 18px;
