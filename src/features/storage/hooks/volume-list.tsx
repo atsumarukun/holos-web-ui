@@ -11,12 +11,20 @@ export const useVolumeList = () => {
   const [success, setSuccess] = useState<boolean>(false);
   const [volumes, setVolumes] = useState<GetVolumesResponse["volumes"]>([]);
 
-  const fetch = async () => {
+  const fetch = async (
+    props?: Readonly<{
+      onCompleted?: (args?: GetVolumesResponse) => void;
+      onError?: (args?: Error) => void;
+    }>,
+  ) => {
     setLoading(true);
     const result = await getVolumes();
     setSuccess(result.success);
-    if (result.success && result.data) {
-      setVolumes(result.data.volumes);
+    if (result.success) {
+      setVolumes(result.data?.volumes ?? []);
+      props?.onCompleted?.(result.data);
+    } else {
+      props?.onError?.(result.error);
     }
     setLoading(false);
   };
