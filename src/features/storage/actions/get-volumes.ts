@@ -17,6 +17,7 @@ export type GetVolumesResponse = Readonly<{
 export const getVolumes = async (): Promise<{
   success: boolean;
   data?: GetVolumesResponse;
+  error?: Error;
 }> => {
   try {
     const token = await getToken();
@@ -28,7 +29,7 @@ export const getVolumes = async (): Promise<{
           Authorization: `Session ${token}`,
         },
         cache: "no-cache",
-      }
+      },
     );
 
     if (res.ok) {
@@ -46,6 +47,9 @@ export const getVolumes = async (): Promise<{
       redirect("/auth/signin");
     }
     console.error(err);
-    return { success: false };
+    return {
+      success: false,
+      error: err instanceof Error ? err : new Error(String(err)),
+    };
   }
 };
