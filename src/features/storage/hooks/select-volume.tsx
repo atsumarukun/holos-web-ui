@@ -30,10 +30,15 @@ export const useVolumeSelection = ({ volumes }: Props) => {
     }
   };
 
+  const onClear = () => {
+    setSelectedVolumes([]);
+  };
+
   return {
     isSelectedAll,
     selectedVolumes,
     onSelectAll,
     onSelect,
+    onClear,
   };
 };

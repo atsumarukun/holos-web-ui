@@ -40,7 +40,7 @@ describe("getVolumes", () => {
         headers: {
           Authorization: `Session ${token}`,
         },
-      })
+      }),
     );
     expect(result).toEqual({
       success: true,
@@ -84,6 +84,7 @@ describe("getVolumes", () => {
     expect(consoleSpy).toHaveBeenCalled();
     expect(result).toEqual({
       success: false,
+      error: new Error("internal server error"),
     });
   });
 
@@ -102,6 +103,7 @@ describe("getVolumes", () => {
     expect(consoleSpy).toHaveBeenCalled();
     expect(result).toEqual({
       success: false,
+      error: new Error("error"),
     });
   });
 });
