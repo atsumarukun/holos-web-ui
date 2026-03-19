@@ -8,10 +8,6 @@ import { refetchContext } from "@/providers/refetch";
 const meta = {
   title: "Storage/Organisms/DeleteVolumesConfirmDialog",
   component: DeleteVolumesConfirmDialog,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
   args: {
     names: ["holos"],
     open: false,

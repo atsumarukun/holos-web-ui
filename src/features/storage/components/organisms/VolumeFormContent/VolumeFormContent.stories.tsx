@@ -7,10 +7,6 @@ import { fn } from "storybook/internal/test";
 const meta = {
   title: "Storage/Organisms/VolumeFormContent",
   component: VolumeFormContent,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
   args: {
     control: undefined,
     errors: undefined,

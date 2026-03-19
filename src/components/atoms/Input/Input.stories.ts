@@ -5,10 +5,6 @@ import { inputVariants } from "./styles";
 const meta = {
   title: "Common/Atoms/Input",
   component: Input,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
   argTypes: {
     variant: {
       control: "select",

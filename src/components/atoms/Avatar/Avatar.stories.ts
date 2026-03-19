@@ -4,10 +4,6 @@ import { Avatar } from "./Avatar";
 const meta = {
   title: "Common/Atoms/Avatar",
   component: Avatar,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
   argTypes: {
     accountName: {
       control: "text",

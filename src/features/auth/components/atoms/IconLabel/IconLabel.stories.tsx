@@ -6,10 +6,6 @@ import { LuUserRound } from "react-icons/lu";
 const meta = {
   title: "Auth/Atoms/IconLabel",
   component: IconLabel,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
   argTypes: {
     variant: {
       control: "select",

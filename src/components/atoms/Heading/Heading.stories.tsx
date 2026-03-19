@@ -4,10 +4,6 @@ import { Heading } from "./Heading";
 const meta = {
   title: "Common/Atoms/Heading",
   component: Heading,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
 } satisfies Meta<typeof Heading>;
 
 export default meta;

@@ -4,10 +4,6 @@ import { Error } from "./Error";
 const meta = {
   title: "Common/Molecules/Error",
   component: Error,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
   argTypes: {
     icon: {
       control: false,

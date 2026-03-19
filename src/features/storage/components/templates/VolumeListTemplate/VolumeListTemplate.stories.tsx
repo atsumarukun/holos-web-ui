@@ -10,10 +10,11 @@ const meta = {
   parameters: {
     layout: "fullscreen",
   },
-  tags: ["autodocs"],
   decorators: (Story) => (
-    <div className="h-screen m-6">
-      <Story />
+    <div className="h-screen flex items-center mx-64">
+      <div className="grow">
+        <Story />
+      </div>
     </div>
   ),
 } satisfies Meta<typeof VolumeListTemplate>;

@@ -11,10 +11,9 @@ const meta = {
   parameters: {
     layout: "fullscreen",
   },
-  tags: ["autodocs"],
   decorators: (Story) => (
     <refetchContext.Provider value={{ refetch: fn(), setRefetch: fn() }}>
-      <div className="flex h-screen items-center mx-6">
+      <div className="flex h-screen items-center mx-64">
         <Story />
       </div>
     </refetchContext.Provider>

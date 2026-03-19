@@ -4,10 +4,6 @@ import { VolumeDropdownMenu } from "./VolumeDropdownMenu";
 const meta = {
   title: "Storage/Organisms/VolumeDropdownMenu",
   component: VolumeDropdownMenu,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
   args: {
     volume: {
       name: "holos",

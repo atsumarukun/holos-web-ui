@@ -8,10 +8,6 @@ import { refetchContext } from "@/providers/refetch";
 const meta = {
   title: "Storage/Organisms/CreateVolumeFormDialog",
   component: CreateVolumeFormDialog,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
   args: {
     open: false,
     onOpenChange: fn(),

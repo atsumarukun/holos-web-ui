@@ -5,10 +5,6 @@ import { logoSizes } from "./styles";
 const meta = {
   title: "Common/Atoms/Logo",
   component: Logo,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
   argTypes: {
     size: {
       control: "select",
