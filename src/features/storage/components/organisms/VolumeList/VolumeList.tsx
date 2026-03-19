@@ -22,7 +22,7 @@ export const VolumeList = () => {
   const context = useContext(refetchContext);
 
   const { loading, success, volumes, refetch } = useVolumeList();
-  const { isSelectedAll, selectedVolumes, onSelectAll, onSelect } =
+  const { isSelectedAll, selectedVolumes, onSelectAll, onSelect, onClear } =
     useVolumeSelection({
       volumes: volumes,
     });
@@ -32,8 +32,14 @@ export const VolumeList = () => {
   });
 
   useEffect(() => {
-    context.setRefetch(refetch);
-  }, [context, refetch]);
+    context.setRefetch(() =>
+      refetch({
+        onCompleted: () => {
+          onClear();
+        },
+      }),
+    );
+  }, [context, refetch, onClear]);
 
   if (loading) {
     return <></>;
