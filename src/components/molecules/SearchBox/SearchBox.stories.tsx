@@ -4,10 +4,6 @@ import { SearchBox } from "./SearchBox";
 const meta = {
   title: "Common/Molecules/SearchBox",
   component: SearchBox,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
 } satisfies Meta<typeof SearchBox>;
 
 export default meta;

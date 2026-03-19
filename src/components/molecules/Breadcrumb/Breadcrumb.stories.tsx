@@ -5,10 +5,6 @@ import { breadcrumbContext } from "./provider";
 const meta = {
   title: "Common/Molecules/Breadcrumb",
   component: Breadcrumb,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
 } satisfies Meta<typeof Breadcrumb>;
 
 export default meta;

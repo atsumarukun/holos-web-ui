@@ -8,10 +8,6 @@ import { fn } from "storybook/test";
 const meta = {
   title: "Common/Organisms/FormDialog",
   component: FormDialog,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
   argTypes: {
     open: {
       control: false,

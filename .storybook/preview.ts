@@ -22,10 +22,12 @@ const preview: Preview = {
         light: { name: "Light", value: "#f4f6f8" },
       },
     },
+    layout: "centered",
   },
   initialGlobals: {
     backgrounds: { value: "white" },
   },
+  tags: ["autodocs"],
 };
 
 export default preview;

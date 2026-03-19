@@ -4,10 +4,6 @@ import { Alert } from ".";
 const meta = {
   title: "Common/Atoms/Alert",
   component: Alert,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
 } satisfies Meta<typeof Alert>;
 
 export default meta;

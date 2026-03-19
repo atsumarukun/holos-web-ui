@@ -7,10 +7,6 @@ import { Button } from "@/components/atoms/Button";
 const meta = {
   title: "Common/Organisms/ConfirmDialog",
   component: ConfirmDialog,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
   argTypes: {
     open: {
       control: false,

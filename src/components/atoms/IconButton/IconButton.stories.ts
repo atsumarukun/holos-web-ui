@@ -7,10 +7,6 @@ import { iconButtonVariants } from "./styles";
 const meta = {
   title: "Common/Atoms/IconButton",
   component: IconButton,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
   argTypes: {
     variant: {
       control: "select",

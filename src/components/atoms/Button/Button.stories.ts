@@ -7,10 +7,6 @@ import { buttonVariants } from "./styles";
 const meta = {
   title: "Common/Atoms/Button",
   component: Button,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
   argTypes: {
     variant: {
       control: "select",

@@ -5,10 +5,6 @@ import { accountContext } from "@/providers/account";
 const meta = {
   title: "Common/Organisms/Header",
   component: Header,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
 } satisfies Meta<typeof Header>;
 
 export default meta;

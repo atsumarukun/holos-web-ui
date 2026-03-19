@@ -12,10 +12,6 @@ const mockRegisterReturn = {
 const meta = {
   title: "Auth/Molecules/InputField",
   component: InputField,
-  parameters: {
-    layout: "centered",
-  },
-  tags: ["autodocs"],
   argTypes: {
     id: {
       control: false,
