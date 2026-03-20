@@ -2,7 +2,13 @@
 
 import { getToken } from "@/actions/token";
 import { toCamelCase, toSnakeCase } from "@/lib/case-converters";
-import { UnauthorizedErr } from "@/lib/errors";
+import {
+  ActionError,
+  ConflictErr,
+  InternalErr,
+  isActionError,
+  UnauthorizedErr,
+} from "@/lib/errors";
 import { redirect } from "next/navigation";
 
 export type CreateVolumeRequest = Readonly<{
@@ -18,11 +24,10 @@ export type CreateVolumeResponse = Readonly<{
 }>;
 
 export const createVolume = async (
-  data: CreateVolumeRequest
+  data: CreateVolumeRequest,
 ): Promise<{
-  success: boolean;
   data?: CreateVolumeResponse;
-  error?: string;
+  error?: ActionError;
 }> => {
   try {
     const token = await getToken();
@@ -36,12 +41,12 @@ export const createVolume = async (
         },
         body: JSON.stringify(toSnakeCase(data)),
         cache: "no-cache",
-      }
+      },
     );
 
     if (res.ok) {
       const data: CreateVolumeResponse = toCamelCase(await res.json());
-      return { success: true, data: data };
+      return { data: data };
     }
 
     if (res.status === 401) {
@@ -49,7 +54,7 @@ export const createVolume = async (
     }
 
     if (res.status === 409) {
-      return { success: false, error: "ボリューム名がすでに利用されています." };
+      throw ConflictErr;
     }
 
     throw new Error(toCamelCase(await res.json()).message);
@@ -58,6 +63,6 @@ export const createVolume = async (
       redirect("/auth/signin");
     }
     console.error(err);
-    return { success: false };
+    return { error: isActionError(err) ? err : InternalErr };
   }
 };
