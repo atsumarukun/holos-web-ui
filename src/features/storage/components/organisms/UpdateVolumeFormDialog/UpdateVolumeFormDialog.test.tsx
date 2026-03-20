@@ -4,6 +4,7 @@ import { UseFormProps } from "react-hook-form";
 import userEvent from "@testing-library/user-event";
 import { ReactNode } from "react";
 import { refetchContext } from "@/providers/refetch";
+import { ConflictErr, InternalErr } from "@/lib/errors";
 
 const resetMock = jest.fn();
 jest.mock("react-hook-form", () => {
@@ -81,7 +82,6 @@ describe("Storage/Organisms/UpdateVolumeFormDialog", () => {
 
   it("invokes the success handler when update succeeds", async () => {
     updateVolumeMock.mockResolvedValue({
-      success: true,
       data: {
         name: "update",
         isPublic: false,
@@ -128,8 +128,7 @@ describe("Storage/Organisms/UpdateVolumeFormDialog", () => {
 
   it("shows error when update fails with error message", async () => {
     updateVolumeMock.mockResolvedValue({
-      success: false,
-      error: "ボリューム名がすでに利用されています.",
+      error: ConflictErr,
     });
 
     renderWithContext(
@@ -151,7 +150,7 @@ describe("Storage/Organisms/UpdateVolumeFormDialog", () => {
   });
 
   it("shows error toast when update fails without error message", async () => {
-    updateVolumeMock.mockResolvedValue({ success: false });
+    updateVolumeMock.mockResolvedValue({ error: InternalErr });
 
     renderWithContext(
       <UpdateVolumeFormDialog
