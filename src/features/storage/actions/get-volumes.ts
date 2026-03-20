@@ -15,7 +15,6 @@ export type GetVolumesResponse = Readonly<{
 }>;
 
 export const getVolumes = async (): Promise<{
-  success: boolean;
   data?: GetVolumesResponse;
   error?: Error;
 }> => {
@@ -34,7 +33,7 @@ export const getVolumes = async (): Promise<{
 
     if (res.ok) {
       const data: GetVolumesResponse = toCamelCase(await res.json());
-      return { success: true, data: data };
+      return { data: data };
     }
 
     if (res.status === 401) {
@@ -48,7 +47,6 @@ export const getVolumes = async (): Promise<{
     }
     console.error(err);
     return {
-      success: false,
       error: err instanceof Error ? err : new Error(String(err)),
     };
   }

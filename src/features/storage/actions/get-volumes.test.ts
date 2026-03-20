@@ -43,7 +43,6 @@ describe("getVolumes", () => {
       }),
     );
     expect(result).toEqual({
-      success: true,
       data: mockResponse,
     });
   });
@@ -83,7 +82,6 @@ describe("getVolumes", () => {
 
     expect(consoleSpy).toHaveBeenCalled();
     expect(result).toEqual({
-      success: false,
       error: new Error("internal server error"),
     });
   });
@@ -96,14 +94,13 @@ describe("getVolumes", () => {
       .mockImplementation(() => {});
 
     getTokenMock.mockResolvedValue(token);
-    global.fetch = jest.fn().mockRejectedValue(new Error("error"));
+    global.fetch = jest.fn().mockRejectedValue(new Error("failed"));
 
     const result = await getVolumes();
 
     expect(consoleSpy).toHaveBeenCalled();
     expect(result).toEqual({
-      success: false,
-      error: new Error("error"),
+      error: new Error("failed"),
     });
   });
 });
