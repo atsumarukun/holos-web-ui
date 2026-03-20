@@ -3,19 +3,20 @@
 import { useCallback, useEffect, useState } from "react";
 import { getVolumes, GetVolumesResponse } from "../actions/get-volumes";
 import { useSearchParams } from "next/navigation";
+import { ActionError } from "@/lib/errors";
 
 export const useVolumeList = () => {
   const searchParams = useSearchParams();
 
   const [loading, setLoading] = useState<boolean>(true);
   const [volumes, setVolumes] = useState<GetVolumesResponse["volumes"]>([]);
-  const [error, setError] = useState<Error>();
+  const [error, setError] = useState<ActionError>();
 
   const fetch = useCallback(
     async (
       props?: Readonly<{
         onCompleted?: (args?: GetVolumesResponse["volumes"]) => void;
-        onError?: (args?: Error) => void;
+        onError?: (args?: ActionError) => void;
       }>,
     ) => {
       setLoading(true);

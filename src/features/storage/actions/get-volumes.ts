@@ -2,7 +2,12 @@
 
 import { getToken } from "@/actions/token";
 import { toCamelCase } from "@/lib/case-converters";
-import { UnauthorizedErr } from "@/lib/errors";
+import {
+  ActionError,
+  InternalErr,
+  isActionError,
+  UnauthorizedErr,
+} from "@/lib/errors";
 import { redirect } from "next/navigation";
 
 export type GetVolumesResponse = Readonly<{
@@ -16,7 +21,7 @@ export type GetVolumesResponse = Readonly<{
 
 export const getVolumes = async (): Promise<{
   data?: GetVolumesResponse;
-  error?: Error;
+  error?: ActionError;
 }> => {
   try {
     const token = await getToken();
@@ -47,7 +52,7 @@ export const getVolumes = async (): Promise<{
     }
     console.error(err);
     return {
-      error: err instanceof Error ? err : new Error(String(err)),
+      error: isActionError(err) ? err : InternalErr,
     };
   }
 };

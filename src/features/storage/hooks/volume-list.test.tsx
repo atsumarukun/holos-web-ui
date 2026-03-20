@@ -1,5 +1,6 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { useVolumeList } from "./volume-list";
+import { InternalErr } from "@/lib/errors";
 
 const useSearchParamsMock = jest.fn();
 jest.mock("next/navigation", () => ({
@@ -85,14 +86,14 @@ describe("useVolumeList", () => {
   it("failed to get volumes", async () => {
     useSearchParamsMock.mockReturnValue(new URLSearchParams({ search: "vol" }));
     getVolumesMock.mockResolvedValue({
-      error: new Error("failed"),
+      error: InternalErr,
     });
 
     const { result } = renderHook(() => useVolumeList());
 
     await waitFor(() => {
       expect(result.current.volumes).toEqual([]);
-      expect(result.current.error).toEqual(new Error("failed"));
+      expect(result.current.error).toEqual(InternalErr);
     });
   });
 
@@ -162,7 +163,7 @@ describe("useVolumeList", () => {
   it("calls onError when fetch fails", async () => {
     useSearchParamsMock.mockReturnValue(new URLSearchParams({}));
     getVolumesMock.mockResolvedValue({
-      error: new Error("failed"),
+      error: InternalErr,
     });
 
     const { result } = renderHook(() => useVolumeList());
@@ -178,6 +179,6 @@ describe("useVolumeList", () => {
     });
 
     expect(onErrorMock).toHaveBeenCalledTimes(1);
-    expect(onErrorMock).toHaveBeenCalledWith(new Error("failed"));
+    expect(onErrorMock).toHaveBeenCalledWith(InternalErr);
   });
 });

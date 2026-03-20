@@ -1,3 +1,4 @@
+import { InternalErr } from "@/lib/errors";
 import { getVolumes } from "./get-volumes";
 
 const redirectMock = jest.fn();
@@ -82,7 +83,7 @@ describe("getVolumes", () => {
 
     expect(consoleSpy).toHaveBeenCalled();
     expect(result).toEqual({
-      error: new Error("internal server error"),
+      error: InternalErr,
     });
   });
 
@@ -100,7 +101,7 @@ describe("getVolumes", () => {
 
     expect(consoleSpy).toHaveBeenCalled();
     expect(result).toEqual({
-      error: new Error("failed"),
+      error: InternalErr,
     });
   });
 });
