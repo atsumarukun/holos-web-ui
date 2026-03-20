@@ -21,7 +21,7 @@ import { FiAlertTriangle } from "react-icons/fi";
 export const VolumeList = () => {
   const context = useContext(refetchContext);
 
-  const { loading, success, volumes, refetch } = useVolumeList();
+  const { loading, volumes, error, refetch } = useVolumeList();
   const { isSelectedAll, selectedVolumes, onSelectAll, onSelect, onClear } =
     useVolumeSelection({
       volumes: volumes,
@@ -45,7 +45,7 @@ export const VolumeList = () => {
     return <></>;
   }
 
-  if (!success) {
+  if (error) {
     return (
       <Error
         icon={FiAlertTriangle}

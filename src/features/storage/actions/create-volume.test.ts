@@ -1,3 +1,4 @@
+import { ConflictErr, InternalErr } from "@/lib/errors";
 import { createVolume } from "./create-volume";
 
 const redirectMock = jest.fn();
@@ -41,10 +42,9 @@ describe("createVolume", () => {
           Authorization: `Session ${token}`,
           "Content-Type": "application/json",
         },
-      })
+      }),
     );
     expect(result).toEqual({
-      success: true,
       data: mockResponse,
     });
   });
@@ -85,8 +85,7 @@ describe("createVolume", () => {
     });
 
     expect(result).toEqual({
-      success: false,
-      error: "ボリューム名がすでに利用されています.",
+      error: ConflictErr,
     });
   });
 
@@ -112,7 +111,7 @@ describe("createVolume", () => {
 
     expect(consoleSpy).toHaveBeenCalled();
     expect(result).toEqual({
-      success: false,
+      error: InternalErr,
     });
   });
 
@@ -124,7 +123,7 @@ describe("createVolume", () => {
       .mockImplementation(() => {});
 
     getTokenMock.mockResolvedValue(token);
-    global.fetch = jest.fn().mockRejectedValue(new Error("error"));
+    global.fetch = jest.fn().mockRejectedValue(new Error("failed"));
 
     const result = await createVolume({
       name: "volume",
@@ -133,7 +132,7 @@ describe("createVolume", () => {
 
     expect(consoleSpy).toHaveBeenCalled();
     expect(result).toEqual({
-      success: false,
+      error: InternalErr,
     });
   });
 });

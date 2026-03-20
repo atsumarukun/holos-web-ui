@@ -2,6 +2,7 @@
 
 import { ConfirmDialog } from "@/components/organisms/ConfirmDialog";
 import { deleteVolumes } from "@/features/storage/actions/delete-volumes";
+import { status } from "@/lib/errors";
 import { errorToast, successToast } from "@/lib/toast";
 import { refetchContext } from "@/providers/refetch";
 import { useContext } from "react";
@@ -21,16 +22,14 @@ export const DeleteVolumeConfirmDialog = ({
 
   const onApprove = async () => {
     const res = await deleteVolumes([name]);
-    if (res[`${name}`].success) {
+    if (!res[`${name}`].error) {
       successToast("ボリュームを削除しました.");
       context.refetch();
       onOpenChange();
+    } else if (res[`${name}`].error?.status === status.Conflict) {
+      errorToast("空ではないボリュームは削除できません.");
     } else {
-      if (res[`${name}`].error) {
-        errorToast(res[`${name}`].error);
-      } else {
-        errorToast();
-      }
+      errorToast();
     }
   };
 

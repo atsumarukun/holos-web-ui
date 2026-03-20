@@ -3,6 +3,7 @@ import { DeleteVolumeConfirmDialog } from "./DeleteVolumeConfirmDialog";
 import userEvent from "@testing-library/user-event";
 import { ReactNode } from "react";
 import { refetchContext } from "@/providers/refetch";
+import { ConflictErr, InternalErr } from "@/lib/errors";
 
 const successToastMock = jest.fn();
 const errorToastMock = jest.fn();
@@ -72,7 +73,7 @@ describe("Storage/Organisms/DeleteVolumeConfirmDialog", () => {
   it("invokes the success handler when delete succeeds", async () => {
     deleteVolumesMock.mockResolvedValue({
       holos: {
-        success: true,
+        error: undefined,
       },
     });
 
@@ -96,8 +97,7 @@ describe("Storage/Organisms/DeleteVolumeConfirmDialog", () => {
   it("shows error toast when delete fails with error message", async () => {
     deleteVolumesMock.mockResolvedValue({
       holos: {
-        success: false,
-        error: "空ではないボリュームは削除できません.",
+        error: ConflictErr,
       },
     });
 
@@ -121,7 +121,7 @@ describe("Storage/Organisms/DeleteVolumeConfirmDialog", () => {
   it("shows error toast when delete fails without error message", async () => {
     deleteVolumesMock.mockResolvedValue({
       holos: {
-        success: false,
+        error: InternalErr,
       },
     });
 

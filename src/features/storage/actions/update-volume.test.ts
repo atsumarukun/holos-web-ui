@@ -1,3 +1,4 @@
+import { ConflictErr, InternalErr } from "@/lib/errors";
 import { updateVolume } from "./update-volume";
 
 const redirectMock = jest.fn();
@@ -41,10 +42,9 @@ describe("updateVolume", () => {
           Authorization: `Session ${token}`,
           "Content-Type": "application/json",
         },
-      })
+      }),
     );
     expect(result).toEqual({
-      success: true,
       data: mockResponse,
     });
   });
@@ -85,8 +85,7 @@ describe("updateVolume", () => {
     });
 
     expect(result).toEqual({
-      success: false,
-      error: "ボリューム名がすでに利用されています.",
+      error: ConflictErr,
     });
   });
 
@@ -112,7 +111,7 @@ describe("updateVolume", () => {
 
     expect(consoleSpy).toHaveBeenCalled();
     expect(result).toEqual({
-      success: false,
+      error: InternalErr,
     });
   });
 
@@ -133,7 +132,7 @@ describe("updateVolume", () => {
 
     expect(consoleSpy).toHaveBeenCalled();
     expect(result).toEqual({
-      success: false,
+      error: InternalErr,
     });
   });
 });

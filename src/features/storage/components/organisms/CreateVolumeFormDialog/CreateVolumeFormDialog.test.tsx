@@ -4,6 +4,7 @@ import { CreateVolumeFormDialog } from "./CreateVolumeFormDialog";
 import userEvent from "@testing-library/user-event";
 import { refetchContext } from "@/providers/refetch";
 import { ReactNode } from "react";
+import { ConflictErr, InternalErr } from "@/lib/errors";
 
 const resetMock = jest.fn();
 jest.mock("react-hook-form", () => {
@@ -68,7 +69,6 @@ describe("Storage/Organisms/CreateVolumeFormDialog", () => {
 
   it("invokes the success handler when create succeeds", async () => {
     createVolumeMock.mockResolvedValue({
-      success: true,
       data: {
         name: "holos",
         isPublic: false,
@@ -106,8 +106,7 @@ describe("Storage/Organisms/CreateVolumeFormDialog", () => {
 
   it("shows error when create fails with error message", async () => {
     createVolumeMock.mockResolvedValue({
-      success: false,
-      error: "ボリューム名がすでに利用されています.",
+      error: ConflictErr,
     });
 
     renderWithContext(
@@ -125,7 +124,9 @@ describe("Storage/Organisms/CreateVolumeFormDialog", () => {
   });
 
   it("shows error toast when create fails without error message", async () => {
-    createVolumeMock.mockResolvedValue({ success: false });
+    createVolumeMock.mockResolvedValue({
+      error: InternalErr,
+    });
 
     renderWithContext(
       <CreateVolumeFormDialog open onOpenChange={onOpenChangeMock} />,

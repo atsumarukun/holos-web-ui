@@ -1,46 +1,51 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getVolumes, GetVolumesResponse } from "../actions/get-volumes";
 import { useSearchParams } from "next/navigation";
+import { ActionError } from "@/lib/errors";
 
 export const useVolumeList = () => {
   const searchParams = useSearchParams();
 
   const [loading, setLoading] = useState<boolean>(true);
-  const [success, setSuccess] = useState<boolean>(false);
   const [volumes, setVolumes] = useState<GetVolumesResponse["volumes"]>([]);
+  const [error, setError] = useState<ActionError>();
 
-  const fetch = async (
-    props?: Readonly<{
-      onCompleted?: (args?: GetVolumesResponse) => void;
-      onError?: (args?: Error) => void;
-    }>,
-  ) => {
-    setLoading(true);
-    const result = await getVolumes();
-    setSuccess(result.success);
-    if (result.success) {
-      setVolumes(result.data?.volumes ?? []);
-      props?.onCompleted?.(result.data);
-    } else {
-      props?.onError?.(result.error);
-    }
-    setLoading(false);
-  };
+  const fetch = useCallback(
+    async (
+      props?: Readonly<{
+        onCompleted?: (args?: GetVolumesResponse["volumes"]) => void;
+        onError?: (args?: ActionError) => void;
+      }>,
+    ) => {
+      setLoading(true);
+
+      const result = await getVolumes();
+      if (result.data) {
+        const searchedVolumes = result.data.volumes.filter((volume) =>
+          volume.name.startsWith(searchParams.get("search") ?? ""),
+        );
+        setVolumes(searchedVolumes);
+        props?.onCompleted?.(searchedVolumes);
+      } else {
+        setError(result.error);
+        props?.onError?.(result.error);
+      }
+
+      setLoading(false);
+    },
+    [searchParams],
+  );
 
   useEffect(() => {
     fetch();
-  }, []);
-
-  const searchedVolumes = volumes.filter((volume) =>
-    volume.name.startsWith(searchParams.get("search") ?? ""),
-  );
+  }, [fetch]);
 
   return {
     loading,
-    success,
-    volumes: searchedVolumes,
+    volumes: volumes,
+    error,
     refetch: fetch,
   };
 };

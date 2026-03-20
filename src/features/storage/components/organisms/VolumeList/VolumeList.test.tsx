@@ -51,7 +51,6 @@ describe("Storage/Organisms/VolumeList", () => {
   it("renders", () => {
     useVolumeListMock.mockReturnValue({
       loading: false,
-      success: true,
       volumes: mockVolumes,
       refetch: jest.fn(),
     });
@@ -81,7 +80,6 @@ describe("Storage/Organisms/VolumeList", () => {
   it("renders nothing while loading", () => {
     useVolumeListMock.mockReturnValue({
       loading: true,
-      success: false,
       volumes: [],
       refetch: jest.fn(),
     });
@@ -94,8 +92,8 @@ describe("Storage/Organisms/VolumeList", () => {
   it("renders error message when volume fetch fails", () => {
     useVolumeListMock.mockReturnValue({
       loading: false,
-      success: false,
       volumes: [],
+      error: new Error("failed"),
       refetch: jest.fn(),
     });
 
@@ -112,7 +110,6 @@ describe("Storage/Organisms/VolumeList", () => {
   it("renders empty state when no volumes exist", () => {
     useVolumeListMock.mockReturnValue({
       loading: false,
-      success: true,
       volumes: [],
       refetch: jest.fn(),
     });
@@ -128,7 +125,6 @@ describe("Storage/Organisms/VolumeList", () => {
   it("calls onSelect when volume checkbox is clicked", async () => {
     useVolumeListMock.mockReturnValue({
       loading: false,
-      success: true,
       volumes: mockVolumes,
       refetch: jest.fn(),
     });
@@ -145,7 +141,6 @@ describe("Storage/Organisms/VolumeList", () => {
   it("calls onSelectAll when header checkbox is clicked", async () => {
     useVolumeListMock.mockReturnValue({
       loading: false,
-      success: true,
       volumes: mockVolumes,
       refetch: jest.fn(),
     });
@@ -162,7 +157,6 @@ describe("Storage/Organisms/VolumeList", () => {
   it("passes selected volumes to SelectedVolumesDropdownMenu", async () => {
     useVolumeListMock.mockReturnValue({
       loading: false,
-      success: true,
       volumes: mockVolumes,
       refetch: jest.fn(),
     });

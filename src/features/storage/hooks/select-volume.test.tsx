@@ -107,7 +107,7 @@ describe("useVolumeSelection", () => {
     expect(result.current.isSelectedAll).toBe(true);
   });
 
-  it("deselects all volume", () => {
+  it("deselects all volume when called onSelectAll", () => {
     const mockVolumes = [
       {
         name: "volume",
@@ -132,6 +132,37 @@ describe("useVolumeSelection", () => {
     });
     act(() => {
       result.current.onSelectAll();
+    });
+
+    expect(result.current.selectedVolumes).toEqual([]);
+    expect(result.current.isSelectedAll).toBe(false);
+  });
+
+  it("deselects all volume when called onClear", () => {
+    const mockVolumes = [
+      {
+        name: "volume",
+        isPublic: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        name: "test",
+        isPublic: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ];
+
+    const { result } = renderHook(() =>
+      useVolumeSelection({ volumes: mockVolumes }),
+    );
+
+    act(() => {
+      result.current.onSelectAll();
+    });
+    act(() => {
+      result.current.onClear();
     });
 
     expect(result.current.selectedVolumes).toEqual([]);
