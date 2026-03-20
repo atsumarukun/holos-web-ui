@@ -2,24 +2,28 @@
 
 import { getToken } from "@/actions/token";
 import { toCamelCase } from "@/lib/case-converters";
-import { UnauthorizedErr } from "@/lib/errors";
+import {
+  ActionError,
+  ConflictErr,
+  InternalErr,
+  isActionError,
+  UnauthorizedErr,
+} from "@/lib/errors";
 import { redirect } from "next/navigation";
 
 export const deleteVolumes = async (
-  names: string[]
-): Promise<Record<string, { success: boolean; error?: string }>> => {
+  names: string[],
+): Promise<Record<string, { error?: ActionError }>> => {
   const res = await Promise.all(names.map((name) => deleteVolume(name)));
 
-  if (res.some((v) => v.error === UnauthorizedErr.message)) {
+  if (res.some((v) => v.error === UnauthorizedErr)) {
     redirect("/auth/signin");
   }
 
   return Object.fromEntries(names.map((name, i) => [name, res[i]]));
 };
 
-const deleteVolume = async (
-  name: string
-): Promise<{ success: boolean; error?: string }> => {
+const deleteVolume = async (name: string): Promise<{ error?: ActionError }> => {
   try {
     const token = await getToken();
     const res = await fetch(
@@ -30,24 +34,24 @@ const deleteVolume = async (
           Authorization: `Session ${token}`,
         },
         cache: "no-cache",
-      }
+      },
     );
 
     if (res.ok) {
-      return { success: true };
+      return { error: undefined };
     }
 
     if (res.status === 401) {
-      return { success: false, error: UnauthorizedErr.message };
+      throw UnauthorizedErr;
     }
 
     if (res.status === 409) {
-      return { success: false, error: "空ではないボリュームは削除できません." };
+      throw ConflictErr;
     }
 
     throw new Error(toCamelCase(await res.json()).message);
   } catch (err) {
     console.error(err);
-    return { success: false };
+    return { error: isActionError(err) ? err : InternalErr };
   }
 };

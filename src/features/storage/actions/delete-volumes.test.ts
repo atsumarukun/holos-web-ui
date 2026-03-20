@@ -1,3 +1,4 @@
+import { ConflictErr, InternalErr } from "@/lib/errors";
 import { deleteVolumes } from "./delete-volumes";
 
 const redirectMock = jest.fn();
@@ -29,7 +30,7 @@ describe("deleteVolumes", () => {
         headers: {
           Authorization: `Session ${token}`,
         },
-      })
+      }),
     );
     expect(global.fetch).toHaveBeenCalledWith(
       `${process.env.NEXT_PUBLIC_STORAGE_API_HOST}/volumes/vol2`,
@@ -38,11 +39,11 @@ describe("deleteVolumes", () => {
         headers: {
           Authorization: `Session ${token}`,
         },
-      })
+      }),
     );
     expect(result).toEqual({
-      vol1: { success: true },
-      vol2: { success: true },
+      vol1: { error: undefined },
+      vol2: { error: undefined },
     });
   });
 
@@ -82,8 +83,8 @@ describe("deleteVolumes", () => {
     const result = await deleteVolumes(["vol1", "vol2"]);
 
     expect(result).toEqual({
-      vol1: { success: true },
-      vol2: { success: false, error: "空ではないボリュームは削除できません." },
+      vol1: { error: undefined },
+      vol2: { error: ConflictErr },
     });
   });
 
@@ -106,8 +107,8 @@ describe("deleteVolumes", () => {
 
     expect(consoleSpy).toHaveBeenCalledTimes(2);
     expect(result).toEqual({
-      vol1: { success: false },
-      vol2: { success: false },
+      vol1: { error: InternalErr },
+      vol2: { error: InternalErr },
     });
   });
 
@@ -125,8 +126,8 @@ describe("deleteVolumes", () => {
 
     expect(consoleSpy).toHaveBeenCalledTimes(2);
     expect(result).toEqual({
-      vol1: { success: false },
-      vol2: { success: false },
+      vol1: { error: InternalErr },
+      vol2: { error: InternalErr },
     });
   });
 });
