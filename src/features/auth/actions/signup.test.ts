@@ -1,3 +1,4 @@
+import { errorCode } from "@/lib/errors";
 import { signup } from "./signup";
 
 describe("signup", () => {
@@ -23,16 +24,17 @@ describe("signup", () => {
         headers: {
           "Content-Type": "application/json",
         },
-      })
+      }),
     );
     expect(result).toEqual({
-      success: true,
       data: mockResponse,
     });
   });
 
   it("failed: duplicated account", async () => {
-    const mockResponse = { message: "conflict" };
+    const mockResponse = {
+      error: { code: "DUPLICATE", message: "account name already in use" },
+    };
 
     global.fetch = jest.fn().mockResolvedValue({
       ok: false,
@@ -47,13 +49,20 @@ describe("signup", () => {
     });
 
     expect(result).toEqual({
-      success: false,
-      error: "アカウント名がすでに利用されています.",
+      error: {
+        code: errorCode.Duplicate,
+        message: "account name already in use",
+      },
     });
   });
 
   it("failed: internal server error", async () => {
-    const mockResponse = { message: "internal server error" };
+    const mockResponse = {
+      error: {
+        code: "INTERNAL_SERVER_ERROR",
+        message: "internal server error",
+      },
+    };
 
     global.fetch = jest.fn().mockResolvedValue({
       ok: false,
@@ -68,7 +77,10 @@ describe("signup", () => {
     });
 
     expect(result).toEqual({
-      success: false,
+      error: {
+        code: errorCode.InternalServerError,
+        message: "internal server error",
+      },
     });
   });
 
@@ -82,7 +94,10 @@ describe("signup", () => {
     });
 
     expect(result).toEqual({
-      success: false,
+      error: {
+        code: errorCode.Unknown,
+        message: "error",
+      },
     });
   });
 });

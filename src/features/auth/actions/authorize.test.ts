@@ -1,3 +1,4 @@
+import { errorCode } from "@/lib/errors";
 import { authorize } from "./authorize";
 
 describe("authorize", () => {
@@ -18,24 +19,25 @@ describe("authorize", () => {
     const result = await authorize(token);
 
     expect(global.fetch).toHaveBeenCalledWith(
-      `${process.env.NEXT_PUBLIC_ACCOUNT_API_HOST}/authorization`,
+      `${process.env.NEXT_PUBLIC_ACCOUNT_API_HOST}/sessions/verify`,
       expect.objectContaining({
         method: "GET",
         headers: {
           Authorization: `Session ${token}`,
         },
-      })
+      }),
     );
     expect(result).toEqual({
-      success: true,
       data: { name: mockResponse.name },
     });
   });
 
-  it("failed: unauthorized", async () => {
+  it("failed: unauthenticated", async () => {
     const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
 
-    const mockResponse = { message: "unauthorized" };
+    const mockResponse = {
+      error: { code: "UNAUTHENTICATED", message: "unauthenticated" },
+    };
 
     global.fetch = jest.fn().mockResolvedValue({
       ok: false,
@@ -46,15 +48,22 @@ describe("authorize", () => {
     const result = await authorize(token);
 
     expect(result).toEqual({
-      success: false,
-      error: "認証に失敗しました.",
+      error: {
+        code: errorCode.Unauthenticated,
+        message: "unauthenticated",
+      },
     });
   });
 
   it("failed: internal server error", async () => {
     const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
 
-    const mockResponse = { message: "internal server error" };
+    const mockResponse = {
+      error: {
+        code: "INTERNAL_SERVER_ERROR",
+        message: "internal server error",
+      },
+    };
 
     global.fetch = jest.fn().mockResolvedValue({
       ok: false,
@@ -65,7 +74,10 @@ describe("authorize", () => {
     const result = await authorize(token);
 
     expect(result).toEqual({
-      success: false,
+      error: {
+        code: errorCode.InternalServerError,
+        message: "internal server error",
+      },
     });
   });
 
@@ -77,7 +89,10 @@ describe("authorize", () => {
     const result = await authorize(token);
 
     expect(result).toEqual({
-      success: false,
+      error: {
+        code: errorCode.Unknown,
+        message: "error",
+      },
     });
   });
 });

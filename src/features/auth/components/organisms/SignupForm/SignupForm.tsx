@@ -11,6 +11,7 @@ import { useState } from "react";
 import { signup } from "@/features/auth/actions/signup";
 import { useRouter } from "next/navigation";
 import { errorToast, successToast } from "@/lib/toast";
+import { errorCode } from "@/lib/errors";
 
 export const SignupForm = () => {
   const router = useRouter();
@@ -32,13 +33,13 @@ export const SignupForm = () => {
       return;
     }
 
-    const res = await signup(data);
-    if (res.success) {
+    const { error } = await signup(data);
+    if (!error) {
       successToast("アカウントを作成しました.");
       router.push("/auth/signin");
     } else {
-      if (res.error) {
-        setNameError(res.error);
+      if (error.code === errorCode.Duplicate) {
+        setNameError("アカウント名がすでに利用されています.");
       } else {
         errorToast();
       }

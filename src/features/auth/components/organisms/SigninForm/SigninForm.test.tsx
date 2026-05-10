@@ -2,6 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { SigninForm } from "./SigninForm";
 import { SigninRequest } from "@/features/auth/actions/signin";
+import { errorCode } from "@/lib/errors";
 
 const pushMock = jest.fn();
 jest.mock("next/navigation", () => ({
@@ -23,10 +24,7 @@ describe("Auth/Organisms/SigninForm", () => {
   });
 
   it("redirects when signin succeeds", async () => {
-    signinMock.mockResolvedValue({
-      success: true,
-      data: { token: "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS" },
-    });
+    signinMock.mockResolvedValue({});
 
     render(<SigninForm />);
 
@@ -51,8 +49,7 @@ describe("Auth/Organisms/SigninForm", () => {
 
   it("shows error when signin fails with error message", async () => {
     signinMock.mockResolvedValue({
-      success: false,
-      error: "アカウントが存在しないかパスワードが異なります.",
+      error: { code: errorCode.Unauthenticated, message: "unauthenticated" },
     });
 
     render(<SigninForm />);
@@ -64,7 +61,7 @@ describe("Auth/Organisms/SigninForm", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText("アカウントが存在しないかパスワードが異なります.")
+        screen.getByText("アカウントが存在しないかパスワードが異なります."),
       ).toBeInTheDocument();
     });
   });

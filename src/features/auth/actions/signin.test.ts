@@ -1,3 +1,4 @@
+import { errorCode } from "@/lib/errors";
 import { signin } from "./signin";
 
 const setTokenMock = jest.fn();
@@ -11,7 +12,7 @@ describe("signin", () => {
 
     global.fetch = jest.fn().mockResolvedValue({
       ok: true,
-      status: 200,
+      status: 201,
       json: async () => mockResponse,
     });
 
@@ -21,22 +22,22 @@ describe("signin", () => {
     });
 
     expect(global.fetch).toHaveBeenCalledWith(
-      `${process.env.NEXT_PUBLIC_ACCOUNT_API_HOST}/login`,
+      `${process.env.NEXT_PUBLIC_ACCOUNT_API_HOST}/sessions`,
       expect.objectContaining({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-      })
+      }),
     );
-    expect(result).toEqual({
-      success: true,
-    });
+    expect(result).toEqual({});
     expect(setTokenMock).toHaveBeenCalled();
   });
 
-  it("failed: unauthorized", async () => {
-    const mockResponse = { message: "unauthorized" };
+  it("failed: unauthenticated", async () => {
+    const mockResponse = {
+      error: { code: "UNAUTHENTICATED", message: "unauthenticated" },
+    };
 
     global.fetch = jest.fn().mockResolvedValue({
       ok: false,
@@ -50,13 +51,17 @@ describe("signin", () => {
     });
 
     expect(result).toEqual({
-      success: false,
-      error: "アカウントが存在しないかパスワードが異なります.",
+      error: { code: errorCode.Unauthenticated, message: "unauthenticated" },
     });
   });
 
   it("failed: internal server error", async () => {
-    const mockResponse = { message: "internal server error" };
+    const mockResponse = {
+      error: {
+        code: "INTERNAL_SERVER_ERROR",
+        message: "internal server error",
+      },
+    };
 
     global.fetch = jest.fn().mockResolvedValue({
       ok: false,
@@ -70,7 +75,10 @@ describe("signin", () => {
     });
 
     expect(result).toEqual({
-      success: false,
+      error: {
+        code: errorCode.InternalServerError,
+        message: "internal server error",
+      },
     });
   });
 
@@ -83,7 +91,10 @@ describe("signin", () => {
     });
 
     expect(result).toEqual({
-      success: false,
+      error: {
+        code: errorCode.Unknown,
+        message: "error",
+      },
     });
   });
 });

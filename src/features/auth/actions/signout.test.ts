@@ -1,3 +1,4 @@
+import { errorCode } from "@/lib/errors";
 import { signout } from "./signout";
 
 const getTokenMock = jest.fn();
@@ -20,23 +21,52 @@ describe("signout", () => {
     const result = await signout();
 
     expect(global.fetch).toHaveBeenCalledWith(
-      `${process.env.NEXT_PUBLIC_ACCOUNT_API_HOST}/logout`,
+      `${process.env.NEXT_PUBLIC_ACCOUNT_API_HOST}/sessions`,
       expect.objectContaining({
         method: "DELETE",
         headers: {
           Authorization: `Session ${token}`,
         },
-      })
+      }),
     );
-    expect(result).toEqual({
-      success: true,
-    });
+    expect(result).toEqual({});
     expect(removeTokenMock).toHaveBeenCalled();
+  });
+
+  it("failed: unauthenticated", async () => {
+    const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
+    const mockResponse = {
+      error: {
+        code: "UNAUTHENTICATED",
+        message: "unauthenticated",
+      },
+    };
+
+    getTokenMock.mockResolvedValue(token);
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: false,
+      status: 401,
+      json: async () => mockResponse,
+    });
+
+    const result = await signout();
+
+    expect(result).toEqual({
+      error: {
+        code: errorCode.Unauthenticated,
+        message: "unauthenticated",
+      },
+    });
   });
 
   it("failed: internal server error", async () => {
     const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
-    const mockResponse = { message: "internal server error" };
+    const mockResponse = {
+      error: {
+        code: "INTERNAL_SERVER_ERROR",
+        message: "internal server error",
+      },
+    };
 
     getTokenMock.mockResolvedValue(token);
     global.fetch = jest.fn().mockResolvedValue({
@@ -48,7 +78,10 @@ describe("signout", () => {
     const result = await signout();
 
     expect(result).toEqual({
-      success: false,
+      error: {
+        code: errorCode.InternalServerError,
+        message: "internal server error",
+      },
     });
   });
 
@@ -61,7 +94,10 @@ describe("signout", () => {
     const result = await signout();
 
     expect(result).toEqual({
-      success: false,
+      error: {
+        code: errorCode.Unknown,
+        message: "error",
+      },
     });
   });
 });
