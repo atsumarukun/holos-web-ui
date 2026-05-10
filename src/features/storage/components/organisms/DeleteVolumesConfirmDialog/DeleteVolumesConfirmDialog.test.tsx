@@ -3,7 +3,7 @@ import { DeleteVolumesConfirmDialog } from "./DeleteVolumesConfirmDialog";
 import userEvent from "@testing-library/user-event";
 import { refetchContext } from "@/providers/refetch";
 import { ReactNode } from "react";
-import { ConflictErr, InternalErr } from "@/lib/errors";
+import { errorCode } from "@/lib/errors";
 
 const successToastMock = jest.fn();
 const errorToastMock = jest.fn();
@@ -96,7 +96,12 @@ describe("Storage/Organisms/DeleteVolumesConfirmDialog", () => {
 
   it("shows error toast when delete fails with error message", async () => {
     deleteVolumesMock.mockResolvedValue({
-      holos: { error: ConflictErr },
+      holos: {
+        error: {
+          code: errorCode.ConstraintViolation,
+          message: "volume cannot be deleted because it contains entries",
+        },
+      },
       test: { error: undefined },
     });
 
@@ -119,8 +124,18 @@ describe("Storage/Organisms/DeleteVolumesConfirmDialog", () => {
 
   it("shows error toast when delete fails without error message", async () => {
     deleteVolumesMock.mockResolvedValue({
-      holos: { error: InternalErr },
-      test: { error: InternalErr },
+      holos: {
+        error: {
+          code: errorCode.InternalServerError,
+          message: "internal server error",
+        },
+      },
+      test: {
+        error: {
+          code: errorCode.InternalServerError,
+          message: "internal server error",
+        },
+      },
     });
 
     renderWithContext(

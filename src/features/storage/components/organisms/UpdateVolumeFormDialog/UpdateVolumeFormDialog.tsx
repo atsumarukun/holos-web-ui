@@ -12,7 +12,7 @@ import { updateVolume } from "@/features/storage/actions/update-volume";
 import { errorToast, successToast } from "@/lib/toast";
 import { FormDialog } from "@/components/organisms/FormDialog";
 import { refetchContext } from "@/providers/refetch";
-import { status } from "@/lib/errors";
+import { errorCode } from "@/lib/errors";
 
 type Props = Readonly<{
   defaultValues: VolumeInput;
@@ -41,17 +41,19 @@ export const UpdateVolumeFormDialog = ({
   });
 
   const onSubmit: SubmitHandler<VolumeInput> = async (data) => {
-    const res = await updateVolume(defaultValues.name, data);
-    if (res.data) {
+    const { error } = await updateVolume(defaultValues.name, data);
+    if (!error) {
       successToast("ボリュームを更新しました.");
       context.refetch();
       reset();
       setConflictError("");
       onOpenChange();
-    } else if (res.error?.status === status.Conflict) {
-      setConflictError("ボリューム名がすでに利用されています.");
     } else {
-      errorToast();
+      if (error.code === errorCode.Duplicate) {
+        setConflictError("ボリューム名がすでに利用されています.");
+      } else {
+        errorToast();
+      }
     }
   };
 

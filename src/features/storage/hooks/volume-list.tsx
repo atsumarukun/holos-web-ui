@@ -21,16 +21,16 @@ export const useVolumeList = () => {
     ) => {
       setLoading(true);
 
-      const result = await getVolumes();
-      if (result.data) {
-        const searchedVolumes = result.data.volumes.filter((volume) =>
+      const { data, error } = await getVolumes();
+      if (data) {
+        const searchedVolumes = data.volumes.filter((volume) =>
           volume.name.startsWith(searchParams.get("search") ?? ""),
         );
         setVolumes(searchedVolumes);
         props?.onCompleted?.(searchedVolumes);
       } else {
-        setError(result.error);
-        props?.onError?.(result.error);
+        setError(error);
+        props?.onError?.(error);
       }
 
       setLoading(false);

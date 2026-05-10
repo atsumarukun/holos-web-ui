@@ -4,7 +4,7 @@ import { CreateVolumeFormDialog } from "./CreateVolumeFormDialog";
 import userEvent from "@testing-library/user-event";
 import { refetchContext } from "@/providers/refetch";
 import { ReactNode } from "react";
-import { ConflictErr, InternalErr } from "@/lib/errors";
+import { errorCode } from "@/lib/errors";
 
 const resetMock = jest.fn();
 jest.mock("react-hook-form", () => {
@@ -106,7 +106,10 @@ describe("Storage/Organisms/CreateVolumeFormDialog", () => {
 
   it("shows error when create fails with error message", async () => {
     createVolumeMock.mockResolvedValue({
-      error: ConflictErr,
+      error: {
+        code: errorCode.Duplicate,
+        message: "volume name already in use",
+      },
     });
 
     renderWithContext(
@@ -125,7 +128,10 @@ describe("Storage/Organisms/CreateVolumeFormDialog", () => {
 
   it("shows error toast when create fails without error message", async () => {
     createVolumeMock.mockResolvedValue({
-      error: InternalErr,
+      error: {
+        code: errorCode.InternalServerError,
+        message: "internal server error",
+      },
     });
 
     renderWithContext(

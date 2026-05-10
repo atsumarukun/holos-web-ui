@@ -1,4 +1,4 @@
-import { ConflictErr, InternalErr } from "@/lib/errors";
+import { errorCode } from "@/lib/errors";
 import { updateVolume } from "./update-volume";
 
 const redirectMock = jest.fn();
@@ -49,9 +49,11 @@ describe("updateVolume", () => {
     });
   });
 
-  it("failed: unauthorized", async () => {
+  it("failed: unauthenticated", async () => {
     const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
-    const mockResponse = { message: "unauthorized" };
+    const mockResponse = {
+      error: { code: "UNAUTHENTICATED", message: "unauthenticated" },
+    };
 
     getTokenMock.mockResolvedValue(token);
     global.fetch = jest.fn().mockResolvedValue({
@@ -70,7 +72,9 @@ describe("updateVolume", () => {
 
   it("failed: duplicated volume name", async () => {
     const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
-    const mockResponse = { message: "conflict" };
+    const mockResponse = {
+      error: { code: "DUPLICATE", message: "volume name already in use" },
+    };
 
     getTokenMock.mockResolvedValue(token);
     global.fetch = jest.fn().mockResolvedValue({
@@ -85,17 +89,21 @@ describe("updateVolume", () => {
     });
 
     expect(result).toEqual({
-      error: ConflictErr,
+      error: {
+        code: errorCode.Duplicate,
+        message: "volume name already in use",
+      },
     });
   });
 
   it("failed: internal server error", async () => {
     const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
-    const mockResponse = { message: "internal server error" };
-
-    const consoleSpy = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
+    const mockResponse = {
+      error: {
+        code: "INTERNAL_SERVER_ERROR",
+        message: "internal server error",
+      },
+    };
 
     getTokenMock.mockResolvedValue(token);
     global.fetch = jest.fn().mockResolvedValue({
@@ -109,9 +117,11 @@ describe("updateVolume", () => {
       isPublic: true,
     });
 
-    expect(consoleSpy).toHaveBeenCalled();
     expect(result).toEqual({
-      error: InternalErr,
+      error: {
+        code: errorCode.InternalServerError,
+        message: "internal server error",
+      },
     });
   });
 
@@ -123,7 +133,7 @@ describe("updateVolume", () => {
       .mockImplementation(() => {});
 
     getTokenMock.mockResolvedValue(token);
-    global.fetch = jest.fn().mockRejectedValue(new Error("error"));
+    global.fetch = jest.fn().mockRejectedValue(new Error("failed"));
 
     const result = await updateVolume("volume", {
       name: "update",
@@ -132,7 +142,10 @@ describe("updateVolume", () => {
 
     expect(consoleSpy).toHaveBeenCalled();
     expect(result).toEqual({
-      error: InternalErr,
+      error: {
+        code: errorCode.Unknown,
+        message: "failed",
+      },
     });
   });
 });

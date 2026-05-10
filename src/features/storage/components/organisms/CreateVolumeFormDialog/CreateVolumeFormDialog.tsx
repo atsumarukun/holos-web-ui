@@ -12,7 +12,7 @@ import { createVolume } from "@/features/storage/actions/create-volume";
 import { errorToast, successToast } from "@/lib/toast";
 import { FormDialog } from "@/components/organisms/FormDialog";
 import { refetchContext } from "@/providers/refetch";
-import { status } from "@/lib/errors";
+import { errorCode } from "@/lib/errors";
 
 type Props = Readonly<{
   open: boolean;
@@ -36,17 +36,19 @@ export const CreateVolumeFormDialog = ({ open, onOpenChange }: Props) => {
   });
 
   const onSubmit: SubmitHandler<VolumeInput> = async (data) => {
-    const res = await createVolume(data);
-    if (res.data) {
+    const { error } = await createVolume(data);
+    if (!error) {
       successToast("ボリュームを作成しました.");
       context.refetch();
       reset();
       setConflictError("");
       onOpenChange();
-    } else if (res.error?.status === status.Conflict) {
-      setConflictError("ボリューム名がすでに利用されています.");
     } else {
-      errorToast();
+      if (error.code === errorCode.Duplicate) {
+        setConflictError("ボリューム名がすでに利用されています.");
+      } else {
+        errorToast();
+      }
     }
   };
 

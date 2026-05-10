@@ -1,4 +1,4 @@
-import { InternalErr } from "@/lib/errors";
+import { errorCode } from "@/lib/errors";
 import { getVolumes } from "./get-volumes";
 
 const redirectMock = jest.fn();
@@ -48,9 +48,11 @@ describe("getVolumes", () => {
     });
   });
 
-  it("failed: unauthorized", async () => {
+  it("failed: unauthenticated", async () => {
     const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
-    const mockResponse = { message: "unauthorized" };
+    const mockResponse = {
+      error: { code: "UNAUTHENTICATED", message: "unauthenticated" },
+    };
 
     getTokenMock.mockResolvedValue(token);
     global.fetch = jest.fn().mockResolvedValue({
@@ -66,11 +68,12 @@ describe("getVolumes", () => {
 
   it("failed: internal server error", async () => {
     const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
-    const mockResponse = { message: "internal server error" };
-
-    const consoleSpy = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
+    const mockResponse = {
+      error: {
+        code: "INTERNAL_SERVER_ERROR",
+        message: "internal server error",
+      },
+    };
 
     getTokenMock.mockResolvedValue(token);
     global.fetch = jest.fn().mockResolvedValue({
@@ -81,9 +84,11 @@ describe("getVolumes", () => {
 
     const result = await getVolumes();
 
-    expect(consoleSpy).toHaveBeenCalled();
     expect(result).toEqual({
-      error: InternalErr,
+      error: {
+        code: errorCode.InternalServerError,
+        message: "internal server error",
+      },
     });
   });
 
@@ -101,7 +106,10 @@ describe("getVolumes", () => {
 
     expect(consoleSpy).toHaveBeenCalled();
     expect(result).toEqual({
-      error: InternalErr,
+      error: {
+        code: errorCode.Unknown,
+        message: "failed",
+      },
     });
   });
 });
