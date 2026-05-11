@@ -44,25 +44,27 @@ export const VolumeList = () => {
     );
   }, [context, refetch, onClear]);
 
+  useEffect(() => {
+    if (
+      error?.code === errorCode.Unauthenticated ||
+      error?.code === errorCode.Unauthorized
+    ) {
+      router.push("/auth/signin");
+    }
+  }, [error, router]);
+
   if (loading) {
     return <></>;
   }
 
   if (error) {
-    if (
-      error.code === errorCode.Unauthenticated ||
-      error.code === errorCode.Unauthorized
-    ) {
-      router.push("/auth/signin");
-    } else {
-      return (
-        <Error
-          icon={FiAlertTriangle}
-          title="ボリュームの取得に失敗しました"
-          description="再度ページを読み込み直してください."
-        />
-      );
-    }
+    return (
+      <Error
+        icon={FiAlertTriangle}
+        title="ボリュームの取得に失敗しました"
+        description="再度ページを読み込み直してください."
+      />
+    );
   }
   if (!volumes || !volumes.length) {
     return (
