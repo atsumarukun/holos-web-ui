@@ -60,9 +60,22 @@ describe("deleteVolumes", () => {
       json: async () => mockResponse,
     });
 
-    await deleteVolumes(["vol1", "vol2"]);
+    const result = await deleteVolumes(["vol1", "vol2"]);
 
-    expect(redirectMock).toHaveBeenCalledWith("/auth/signin");
+    expect(result).toEqual({
+      vol1: {
+        error: {
+          code: errorCode.Unauthenticated,
+          message: "unauthenticated",
+        },
+      },
+      vol2: {
+        error: {
+          code: errorCode.Unauthenticated,
+          message: "unauthenticated",
+        },
+      },
+    });
   });
 
   it("failed: volume is not empty", async () => {

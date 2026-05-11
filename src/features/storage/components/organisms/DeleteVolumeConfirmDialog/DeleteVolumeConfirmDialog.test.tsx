@@ -5,6 +5,11 @@ import { ReactNode } from "react";
 import { refetchContext } from "@/providers/refetch";
 import { errorCode } from "@/lib/errors";
 
+const pushMock = jest.fn();
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({ push: pushMock }),
+}));
+
 const successToastMock = jest.fn();
 const errorToastMock = jest.fn();
 jest.mock("@/lib/toast", () => ({
@@ -143,6 +148,56 @@ describe("Storage/Organisms/DeleteVolumeConfirmDialog", () => {
 
     await waitFor(() => {
       expect(errorToastMock).toHaveBeenCalled();
+    });
+  });
+
+  it("redirect to signin page when unauthenticated", async () => {
+    deleteVolumesMock.mockResolvedValue({
+      holos: {
+        error: {
+          code: errorCode.Unauthenticated,
+          message: "unauthenticated",
+        },
+      },
+    });
+
+    renderWithContext(
+      <DeleteVolumeConfirmDialog
+        name="holos"
+        open
+        onOpenChange={onOpenChangeMock}
+      />,
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: "削除" }));
+
+    await waitFor(() => {
+      expect(pushMock).toHaveBeenCalledWith("/auth/signin");
+    });
+  });
+
+  it("redirect to signin page when unauthorized", async () => {
+    deleteVolumesMock.mockResolvedValue({
+      holos: {
+        error: {
+          code: errorCode.Unauthorized,
+          message: "unauthorized",
+        },
+      },
+    });
+
+    renderWithContext(
+      <DeleteVolumeConfirmDialog
+        name="holos"
+        open
+        onOpenChange={onOpenChangeMock}
+      />,
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: "削除" }));
+
+    await waitFor(() => {
+      expect(pushMock).toHaveBeenCalledWith("/auth/signin");
     });
   });
 });

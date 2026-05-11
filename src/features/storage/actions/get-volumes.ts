@@ -3,7 +3,6 @@
 import { getToken } from "@/actions/token";
 import { toCamelCase } from "@/lib/case-converters";
 import { ActionError, ErrorResponse, toActionError } from "@/lib/errors";
-import { redirect } from "next/navigation";
 
 export type GetVolumesResponse = Readonly<{
   volumes: {
@@ -34,10 +33,6 @@ export const getVolumes = async (): Promise<{
     if (res.ok) {
       const data: GetVolumesResponse = toCamelCase(await res.json());
       return { data: data };
-    }
-
-    if (res.status === 401 || res.status === 403) {
-      redirect("/auth/signin");
     }
 
     const error: ErrorResponse = toCamelCase(await res.json());

@@ -3,7 +3,6 @@
 import { getToken } from "@/actions/token";
 import { toCamelCase, toSnakeCase } from "@/lib/case-converters";
 import { ActionError, ErrorResponse, toActionError } from "@/lib/errors";
-import { redirect } from "next/navigation";
 
 export type CreateVolumeRequest = Readonly<{
   name: string;
@@ -41,10 +40,6 @@ export const createVolume = async (
     if (res.ok) {
       const data: CreateVolumeResponse = toCamelCase(await res.json());
       return { data: data };
-    }
-
-    if (res.status === 401 || res.status === 403) {
-      redirect("/auth/signin");
     }
 
     const error: ErrorResponse = toCamelCase(await res.json());

@@ -5,6 +5,7 @@ import { deleteVolumes } from "@/features/storage/actions/delete-volumes";
 import { errorCode } from "@/lib/errors";
 import { errorToast, successToast } from "@/lib/toast";
 import { refetchContext } from "@/providers/refetch";
+import { useRouter } from "next/navigation";
 import { useContext } from "react";
 
 type Props = Readonly<{
@@ -18,6 +19,7 @@ export const DeleteVolumeConfirmDialog = ({
   open,
   onOpenChange,
 }: Props) => {
+  const router = useRouter();
   const context = useContext(refetchContext);
 
   const onApprove = async () => {
@@ -27,7 +29,12 @@ export const DeleteVolumeConfirmDialog = ({
       context.refetch();
       onOpenChange();
     } else {
-      if (res[`${name}`].error?.code === errorCode.ConstraintViolation) {
+      if (
+        res[`${name}`].error?.code === errorCode.Unauthenticated ||
+        res[`${name}`].error?.code === errorCode.Unauthorized
+      ) {
+        router.push("/auth/signin");
+      } else if (res[`${name}`].error?.code === errorCode.ConstraintViolation) {
         errorToast("空ではないボリュームは削除できません.");
       } else {
         errorToast();

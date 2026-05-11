@@ -5,6 +5,11 @@ import { refetchContext } from "@/providers/refetch";
 import { ReactNode } from "react";
 import { errorCode } from "@/lib/errors";
 
+const pushMock = jest.fn();
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({ push: pushMock }),
+}));
+
 const successToastMock = jest.fn();
 const errorToastMock = jest.fn();
 jest.mock("@/lib/toast", () => ({
@@ -150,6 +155,68 @@ describe("Storage/Organisms/DeleteVolumesConfirmDialog", () => {
 
     await waitFor(() => {
       expect(errorToastMock).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  it("redirect to signin page when unauthenticated", async () => {
+    deleteVolumesMock.mockResolvedValue({
+      holos: {
+        error: {
+          code: errorCode.Unauthenticated,
+          message: "unauthenticated",
+        },
+      },
+      test: {
+        error: {
+          code: errorCode.InternalServerError,
+          message: "internal server error",
+        },
+      },
+    });
+
+    renderWithContext(
+      <DeleteVolumesConfirmDialog
+        names={["holos", "test"]}
+        open={true}
+        onOpenChange={onOpenChangeMock}
+      />,
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: "削除" }));
+
+    await waitFor(() => {
+      expect(pushMock).toHaveBeenCalledWith("/auth/signin");
+    });
+  });
+
+  it("redirect to signin page when unauthorized", async () => {
+    deleteVolumesMock.mockResolvedValue({
+      holos: {
+        error: {
+          code: errorCode.Unauthorized,
+          message: "unauthorized",
+        },
+      },
+      test: {
+        error: {
+          code: errorCode.Unauthorized,
+          message: "unauthorized",
+        },
+      },
+    });
+
+    renderWithContext(
+      <DeleteVolumesConfirmDialog
+        names={["holos", "test"]}
+        open={true}
+        onOpenChange={onOpenChangeMock}
+      />,
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: "削除" }));
+
+    await waitFor(() => {
+      expect(pushMock).toHaveBeenCalledWith("/auth/signin");
     });
   });
 });

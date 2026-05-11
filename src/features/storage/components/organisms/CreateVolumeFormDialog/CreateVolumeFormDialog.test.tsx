@@ -6,6 +6,11 @@ import { refetchContext } from "@/providers/refetch";
 import { ReactNode } from "react";
 import { errorCode } from "@/lib/errors";
 
+const pushMock = jest.fn();
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({ push: pushMock }),
+}));
+
 const resetMock = jest.fn();
 jest.mock("react-hook-form", () => {
   const actual = jest.requireActual("react-hook-form");
@@ -143,6 +148,46 @@ describe("Storage/Organisms/CreateVolumeFormDialog", () => {
 
     await waitFor(() => {
       expect(errorToastMock).toHaveBeenCalled();
+    });
+  });
+
+  it("redirect to signin page when unauthenticated", async () => {
+    createVolumeMock.mockResolvedValue({
+      error: {
+        code: errorCode.Unauthenticated,
+        message: "unauthenticated",
+      },
+    });
+
+    renderWithContext(
+      <CreateVolumeFormDialog open onOpenChange={onOpenChangeMock} />,
+    );
+
+    await userEvent.type(screen.getByRole("textbox"), "holos");
+    await userEvent.click(screen.getByRole("button", { name: "作成" }));
+
+    await waitFor(() => {
+      expect(pushMock).toHaveBeenCalledWith("/auth/signin");
+    });
+  });
+
+  it("redirect to signin page when unauthorized", async () => {
+    createVolumeMock.mockResolvedValue({
+      error: {
+        code: errorCode.Unauthorized,
+        message: "unauthorized",
+      },
+    });
+
+    renderWithContext(
+      <CreateVolumeFormDialog open onOpenChange={onOpenChangeMock} />,
+    );
+
+    await userEvent.type(screen.getByRole("textbox"), "holos");
+    await userEvent.click(screen.getByRole("button", { name: "作成" }));
+
+    await waitFor(() => {
+      expect(pushMock).toHaveBeenCalledWith("/auth/signin");
     });
   });
 });

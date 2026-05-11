@@ -1,11 +1,6 @@
 import { errorCode } from "@/lib/errors";
 import { updateVolume } from "./update-volume";
 
-const redirectMock = jest.fn();
-jest.mock("next/navigation", () => ({
-  redirect: (path: string) => redirectMock(path),
-}));
-
 const getTokenMock = jest.fn();
 jest.mock("@/actions/token", () => ({
   getToken: () => getTokenMock(),
@@ -62,12 +57,17 @@ describe("updateVolume", () => {
       json: async () => mockResponse,
     });
 
-    await updateVolume("volume", {
+    const result = await updateVolume("volume", {
       name: "update",
       isPublic: true,
     });
 
-    expect(redirectMock).toHaveBeenCalledWith("/auth/signin");
+    expect(result).toEqual({
+      error: {
+        code: errorCode.Unauthenticated,
+        message: "unauthenticated",
+      },
+    });
   });
 
   it("failed: duplicated volume name", async () => {

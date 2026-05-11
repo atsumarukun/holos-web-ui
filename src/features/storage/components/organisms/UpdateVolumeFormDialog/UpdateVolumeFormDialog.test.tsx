@@ -6,6 +6,11 @@ import { ReactNode } from "react";
 import { refetchContext } from "@/providers/refetch";
 import { errorCode } from "@/lib/errors";
 
+const pushMock = jest.fn();
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({ push: pushMock }),
+}));
+
 const resetMock = jest.fn();
 jest.mock("react-hook-form", () => {
   const actual = jest.requireActual("react-hook-form");
@@ -173,6 +178,54 @@ describe("Storage/Organisms/UpdateVolumeFormDialog", () => {
 
     await waitFor(() => {
       expect(errorToastMock).toHaveBeenCalled();
+    });
+  });
+
+  it("redirect to signin page when unauthenticated", async () => {
+    updateVolumeMock.mockResolvedValue({
+      error: {
+        code: errorCode.Unauthenticated,
+        message: "unauthenticated",
+      },
+    });
+
+    renderWithContext(
+      <UpdateVolumeFormDialog
+        defaultValues={{ name: "holos", isPublic: true }}
+        open
+        onOpenChange={onOpenChangeMock}
+      />,
+    );
+
+    await userEvent.type(screen.getByRole("textbox"), "update");
+    await userEvent.click(screen.getByRole("button", { name: "更新" }));
+
+    await waitFor(() => {
+      expect(pushMock).toHaveBeenCalledWith("/auth/signin");
+    });
+  });
+
+  it("redirect to signin page when unauthorized", async () => {
+    updateVolumeMock.mockResolvedValue({
+      error: {
+        code: errorCode.Unauthorized,
+        message: "unauthorized",
+      },
+    });
+
+    renderWithContext(
+      <UpdateVolumeFormDialog
+        defaultValues={{ name: "holos", isPublic: true }}
+        open
+        onOpenChange={onOpenChangeMock}
+      />,
+    );
+
+    await userEvent.type(screen.getByRole("textbox"), "update");
+    await userEvent.click(screen.getByRole("button", { name: "更新" }));
+
+    await waitFor(() => {
+      expect(pushMock).toHaveBeenCalledWith("/auth/signin");
     });
   });
 });

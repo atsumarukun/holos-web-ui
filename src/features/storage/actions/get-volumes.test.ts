@@ -1,11 +1,6 @@
 import { errorCode } from "@/lib/errors";
 import { getVolumes } from "./get-volumes";
 
-const redirectMock = jest.fn();
-jest.mock("next/navigation", () => ({
-  redirect: (path: string) => redirectMock(path),
-}));
-
 const getTokenMock = jest.fn();
 jest.mock("@/actions/token", () => ({
   getToken: () => getTokenMock(),
@@ -61,9 +56,14 @@ describe("getVolumes", () => {
       json: async () => mockResponse,
     });
 
-    await getVolumes();
+    const result = await getVolumes();
 
-    expect(redirectMock).toHaveBeenCalledWith("/auth/signin");
+    expect(result).toEqual({
+      error: {
+        code: errorCode.Unauthenticated,
+        message: "unauthenticated",
+      },
+    });
   });
 
   it("failed: internal server error", async () => {

@@ -3,7 +3,6 @@
 import { getToken } from "@/actions/token";
 import { toCamelCase } from "@/lib/case-converters";
 import { ActionError, ErrorResponse, toActionError } from "@/lib/errors";
-import { redirect } from "next/navigation";
 
 export const deleteVolumes = async (
   names: string[],
@@ -28,10 +27,6 @@ const deleteVolume = async (name: string): Promise<{ error?: ActionError }> => {
 
     if (res.ok) {
       return { error: undefined };
-    }
-
-    if (res.status === 401 || res.status === 403) {
-      redirect("/auth/signin");
     }
 
     const error: ErrorResponse = toCamelCase(await res.json());

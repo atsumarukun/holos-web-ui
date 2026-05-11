@@ -17,8 +17,11 @@ import { refetchContext } from "@/providers/refetch";
 import { useVolumeList } from "@/features/storage/hooks/volume-list";
 import { Error } from "@/components/molecules/Error";
 import { FiAlertTriangle } from "react-icons/fi";
+import { useRouter } from "next/navigation";
+import { errorCode } from "@/lib/errors";
 
 export const VolumeList = () => {
+  const router = useRouter();
   const context = useContext(refetchContext);
 
   const { loading, volumes, error, refetch } = useVolumeList();
@@ -46,13 +49,20 @@ export const VolumeList = () => {
   }
 
   if (error) {
-    return (
-      <Error
-        icon={FiAlertTriangle}
-        title="ボリュームの取得に失敗しました"
-        description="再度ページを読み込み直してください."
-      />
-    );
+    if (
+      error.code === errorCode.Unauthenticated ||
+      error.code === errorCode.Unauthorized
+    ) {
+      router.push("/auth/signin");
+    } else {
+      return (
+        <Error
+          icon={FiAlertTriangle}
+          title="ボリュームの取得に失敗しました"
+          description="再度ページを読み込み直してください."
+        />
+      );
+    }
   }
   if (!volumes || !volumes.length) {
     return (

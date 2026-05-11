@@ -2,6 +2,10 @@ import { render, screen } from "@testing-library/react";
 import { SelectedVolumesDropdownMenu } from "./SelectedVolumesDropdownMenu";
 import userEvent from "@testing-library/user-event";
 
+jest.mock("next/navigation", () => ({
+  useRouter: () => jest.fn(),
+}));
+
 describe("Storage/Organisms/SelectedVolumesDropdownMenu", () => {
   it("renders", () => {
     render(<SelectedVolumesDropdownMenu volumes={["holos"]} />);
