@@ -3,7 +3,12 @@ import { DeleteVolumesConfirmDialog } from "./DeleteVolumesConfirmDialog";
 import userEvent from "@testing-library/user-event";
 import { refetchContext } from "@/providers/refetch";
 import { ReactNode } from "react";
-import { ConflictErr, InternalErr } from "@/lib/errors";
+import { errorCode } from "@/lib/errors";
+
+const pushMock = jest.fn();
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({ push: pushMock }),
+}));
 
 const successToastMock = jest.fn();
 const errorToastMock = jest.fn();
@@ -96,7 +101,12 @@ describe("Storage/Organisms/DeleteVolumesConfirmDialog", () => {
 
   it("shows error toast when delete fails with error message", async () => {
     deleteVolumesMock.mockResolvedValue({
-      holos: { error: ConflictErr },
+      holos: {
+        error: {
+          code: errorCode.ConstraintViolation,
+          message: "volume cannot be deleted because it contains entries",
+        },
+      },
       test: { error: undefined },
     });
 
@@ -119,8 +129,18 @@ describe("Storage/Organisms/DeleteVolumesConfirmDialog", () => {
 
   it("shows error toast when delete fails without error message", async () => {
     deleteVolumesMock.mockResolvedValue({
-      holos: { error: InternalErr },
-      test: { error: InternalErr },
+      holos: {
+        error: {
+          code: errorCode.InternalServerError,
+          message: "internal server error",
+        },
+      },
+      test: {
+        error: {
+          code: errorCode.InternalServerError,
+          message: "internal server error",
+        },
+      },
     });
 
     renderWithContext(
@@ -135,6 +155,68 @@ describe("Storage/Organisms/DeleteVolumesConfirmDialog", () => {
 
     await waitFor(() => {
       expect(errorToastMock).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  it("redirect to signin page when unauthenticated", async () => {
+    deleteVolumesMock.mockResolvedValue({
+      holos: {
+        error: {
+          code: errorCode.Unauthenticated,
+          message: "unauthenticated",
+        },
+      },
+      test: {
+        error: {
+          code: errorCode.InternalServerError,
+          message: "internal server error",
+        },
+      },
+    });
+
+    renderWithContext(
+      <DeleteVolumesConfirmDialog
+        names={["holos", "test"]}
+        open={true}
+        onOpenChange={onOpenChangeMock}
+      />,
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: "削除" }));
+
+    await waitFor(() => {
+      expect(pushMock).toHaveBeenCalledWith("/auth/signin");
+    });
+  });
+
+  it("redirect to signin page when unauthorized", async () => {
+    deleteVolumesMock.mockResolvedValue({
+      holos: {
+        error: {
+          code: errorCode.Unauthorized,
+          message: "unauthorized",
+        },
+      },
+      test: {
+        error: {
+          code: errorCode.Unauthorized,
+          message: "unauthorized",
+        },
+      },
+    });
+
+    renderWithContext(
+      <DeleteVolumesConfirmDialog
+        names={["holos", "test"]}
+        open={true}
+        onOpenChange={onOpenChangeMock}
+      />,
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: "削除" }));
+
+    await waitFor(() => {
+      expect(pushMock).toHaveBeenCalledWith("/auth/signin");
     });
   });
 });

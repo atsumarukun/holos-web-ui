@@ -1,10 +1,5 @@
-import { ConflictErr, InternalErr } from "@/lib/errors";
+import { errorCode } from "@/lib/errors";
 import { createVolume } from "./create-volume";
-
-const redirectMock = jest.fn();
-jest.mock("next/navigation", () => ({
-  redirect: (path: string) => redirectMock(path),
-}));
 
 const getTokenMock = jest.fn();
 jest.mock("@/actions/token", () => ({
@@ -49,9 +44,11 @@ describe("createVolume", () => {
     });
   });
 
-  it("failed: unauthorized", async () => {
+  it("failed: unauthenticated", async () => {
     const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
-    const mockResponse = { message: "unauthorized" };
+    const mockResponse = {
+      error: { code: "UNAUTHENTICATED", message: "unauthenticated" },
+    };
 
     getTokenMock.mockResolvedValue(token);
     global.fetch = jest.fn().mockResolvedValue({
@@ -60,17 +57,24 @@ describe("createVolume", () => {
       json: async () => mockResponse,
     });
 
-    await createVolume({
+    const result = await createVolume({
       name: "volume",
       isPublic: true,
     });
 
-    expect(redirectMock).toHaveBeenCalledWith("/auth/signin");
+    expect(result).toEqual({
+      error: {
+        code: errorCode.Unauthenticated,
+        message: "unauthenticated",
+      },
+    });
   });
 
   it("failed: duplicated volume name", async () => {
     const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
-    const mockResponse = { message: "conflict" };
+    const mockResponse = {
+      error: { code: "DUPLICATE", message: "volume name already in use" },
+    };
 
     getTokenMock.mockResolvedValue(token);
     global.fetch = jest.fn().mockResolvedValue({
@@ -85,17 +89,21 @@ describe("createVolume", () => {
     });
 
     expect(result).toEqual({
-      error: ConflictErr,
+      error: {
+        code: errorCode.Duplicate,
+        message: "volume name already in use",
+      },
     });
   });
 
   it("failed: internal server error", async () => {
     const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
-    const mockResponse = { message: "internal server error" };
-
-    const consoleSpy = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
+    const mockResponse = {
+      error: {
+        code: "INTERNAL_SERVER_ERROR",
+        message: "internal server error",
+      },
+    };
 
     getTokenMock.mockResolvedValue(token);
     global.fetch = jest.fn().mockResolvedValue({
@@ -109,9 +117,11 @@ describe("createVolume", () => {
       isPublic: true,
     });
 
-    expect(consoleSpy).toHaveBeenCalled();
     expect(result).toEqual({
-      error: InternalErr,
+      error: {
+        code: errorCode.InternalServerError,
+        message: "internal server error",
+      },
     });
   });
 
@@ -132,7 +142,10 @@ describe("createVolume", () => {
 
     expect(consoleSpy).toHaveBeenCalled();
     expect(result).toEqual({
-      error: InternalErr,
+      error: {
+        code: errorCode.Unknown,
+        message: "failed",
+      },
     });
   });
 });
