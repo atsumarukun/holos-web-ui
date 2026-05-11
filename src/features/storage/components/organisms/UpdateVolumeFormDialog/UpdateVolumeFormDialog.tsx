@@ -12,7 +12,8 @@ import { updateVolume } from "@/features/storage/actions/update-volume";
 import { errorToast, successToast } from "@/lib/toast";
 import { FormDialog } from "@/components/organisms/FormDialog";
 import { refetchContext } from "@/providers/refetch";
-import { status } from "@/lib/errors";
+import { errorCode } from "@/lib/errors";
+import { useRouter } from "next/navigation";
 
 type Props = Readonly<{
   defaultValues: VolumeInput;
@@ -25,9 +26,12 @@ export const UpdateVolumeFormDialog = ({
   open,
   onOpenChange,
 }: Props) => {
+  const router = useRouter();
   const context = useContext(refetchContext);
 
-  const [conflictError, setConflictError] = useState<string>();
+  const [conflictError, setConflictError] = useState<string | undefined>(
+    undefined,
+  );
 
   const {
     register,
@@ -41,17 +45,24 @@ export const UpdateVolumeFormDialog = ({
   });
 
   const onSubmit: SubmitHandler<VolumeInput> = async (data) => {
-    const res = await updateVolume(defaultValues.name, data);
-    if (res.data) {
+    const { error } = await updateVolume(defaultValues.name, data);
+    if (!error) {
       successToast("ボリュームを更新しました.");
       context.refetch();
       reset();
-      setConflictError("");
+      setConflictError(undefined);
       onOpenChange();
-    } else if (res.error?.status === status.Conflict) {
-      setConflictError("ボリューム名がすでに利用されています.");
     } else {
-      errorToast();
+      if (
+        error.code === errorCode.Unauthenticated ||
+        error.code === errorCode.Unauthorized
+      ) {
+        router.push("/auth/signin");
+      } else if (error.code === errorCode.Duplicate) {
+        setConflictError("ボリューム名がすでに利用されています.");
+      } else {
+        errorToast();
+      }
     }
   };
 

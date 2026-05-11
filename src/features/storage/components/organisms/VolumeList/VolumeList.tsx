@@ -17,8 +17,11 @@ import { refetchContext } from "@/providers/refetch";
 import { useVolumeList } from "@/features/storage/hooks/volume-list";
 import { Error } from "@/components/molecules/Error";
 import { FiAlertTriangle } from "react-icons/fi";
+import { useRouter } from "next/navigation";
+import { errorCode } from "@/lib/errors";
 
 export const VolumeList = () => {
+  const router = useRouter();
   const context = useContext(refetchContext);
 
   const { loading, volumes, error, refetch } = useVolumeList();
@@ -40,6 +43,15 @@ export const VolumeList = () => {
       }),
     );
   }, [context, refetch, onClear]);
+
+  useEffect(() => {
+    if (
+      error?.code === errorCode.Unauthenticated ||
+      error?.code === errorCode.Unauthorized
+    ) {
+      router.push("/auth/signin");
+    }
+  }, [error, router]);
 
   if (loading) {
     return <></>;

@@ -1,42 +1,29 @@
-export const status = {
+export const errorCode = {
+  BadRequest: "BAD_REQUEST",
+  Unauthenticated: "UNAUTHENTICATED",
   Unauthorized: "UNAUTHORIZED",
-  Conflict: "CONFLICT",
-  Internal: "INTERNAL",
+  NotFound: "NOT_FOUND",
+  Duplicate: "DUPLICATE",
+  ConstraintViolation: "CONSTRAINT_VIOLATION",
+  InvalidInput: "INVALID_INPUT",
+  InternalServerError: "INTERNAL_SERVER_ERROR",
+  Unknown: "UNKNOWN",
 } as const;
 
-export type ActionStatus = (typeof status)[keyof typeof status];
-
-export const isActionStatus = (s: unknown): s is ActionStatus => {
-  return (
-    typeof s === "string" && Object.values(status).includes(s as ActionStatus)
-  );
-};
+export type ErrorCode = (typeof errorCode)[keyof typeof errorCode];
 
 export type ActionError = Readonly<{
-  status: ActionStatus;
+  code: ErrorCode;
   message: string;
 }>;
 
-export const isActionError = (err: unknown): err is ActionError => {
-  return (
-    typeof err === "object" &&
-    err !== null &&
-    "status" in err &&
-    "message" in err &&
-    isActionStatus(err.status) &&
-    typeof err.message === "string"
-  );
-};
+export type ErrorResponse = Readonly<{
+  error: ActionError;
+}>;
 
-export const UnauthorizedErr: ActionError = {
-  status: status.Unauthorized,
-  message: "unauthorized",
-};
-export const ConflictErr: ActionError = {
-  status: status.Conflict,
-  message: "conflict",
-};
-export const InternalErr: ActionError = {
-  status: status.Internal,
-  message: "internal",
+export const toActionError = (err: unknown): ActionError => {
+  return {
+    code: errorCode.Unknown,
+    message: err instanceof Error ? err.message : "internal server error",
+  };
 };

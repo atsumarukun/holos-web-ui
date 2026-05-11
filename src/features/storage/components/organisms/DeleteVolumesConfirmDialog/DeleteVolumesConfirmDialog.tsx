@@ -2,9 +2,10 @@
 
 import { ConfirmDialog } from "@/components/organisms/ConfirmDialog";
 import { deleteVolumes } from "@/features/storage/actions/delete-volumes";
-import { status } from "@/lib/errors";
+import { errorCode } from "@/lib/errors";
 import { errorToast, successToast } from "@/lib/toast";
 import { refetchContext } from "@/providers/refetch";
+import { useRouter } from "next/navigation";
 import { useContext } from "react";
 
 type Props = Readonly<{
@@ -18,6 +19,7 @@ export const DeleteVolumesConfirmDialog = ({
   open,
   onOpenChange,
 }: Props) => {
+  const router = useRouter();
   const context = useContext(refetchContext);
 
   const onApprove = async () => {
@@ -26,15 +28,25 @@ export const DeleteVolumesConfirmDialog = ({
     if (failures.length === 0) {
       successToast("ボリュームを削除しました.");
     } else {
-      failures.forEach(([k, v]) => {
-        if (v.error?.status === status.Conflict) {
-          errorToast(
-            `「${k}」の削除に失敗しました.\n空ではないボリュームは削除できません.`,
-          );
-        } else {
-          errorToast();
-        }
-      });
+      if (
+        failures.some(
+          ([, v]) =>
+            v.error?.code === errorCode.Unauthenticated ||
+            v.error?.code === errorCode.Unauthorized,
+        )
+      ) {
+        router.push("/auth/signin");
+      } else {
+        failures.forEach(([k, v]) => {
+          if (v.error?.code === errorCode.ConstraintViolation) {
+            errorToast(
+              `「${k}」の削除に失敗しました.\n空ではないボリュームは削除できません.`,
+            );
+          } else {
+            errorToast();
+          }
+        });
+      }
     }
     context.refetch();
     onOpenChange();

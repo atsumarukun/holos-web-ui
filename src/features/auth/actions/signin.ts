@@ -2,6 +2,7 @@
 
 import { setToken } from "@/actions/token";
 import { toCamelCase, toSnakeCase } from "@/lib/case-converters";
+import { ActionError, ErrorResponse, toActionError } from "@/lib/errors";
 
 export type SigninRequest = Readonly<{
   accountName: string;
@@ -13,11 +14,11 @@ export type SigninResponse = Readonly<{
 }>;
 
 export const signin = async (
-  data: SigninRequest
-): Promise<{ success: boolean; error?: string }> => {
+  data: SigninRequest,
+): Promise<{ error?: ActionError }> => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_ACCOUNT_API_HOST}/login`,
+      `${process.env.NEXT_PUBLIC_ACCOUNT_API_HOST}/sessions`,
       {
         method: "POST",
         headers: {
@@ -25,25 +26,19 @@ export const signin = async (
         },
         body: JSON.stringify(toSnakeCase(data)),
         cache: "no-cache",
-      }
+      },
     );
 
     if (res.ok) {
       const data: SigninResponse = toCamelCase(await res.json());
       await setToken(data.token);
-      return { success: true };
+      return {};
     }
 
-    if (res.status === 401) {
-      return {
-        success: false,
-        error: "アカウントが存在しないかパスワードが異なります.",
-      };
-    }
-
-    throw new Error(toCamelCase(await res.json()).message);
+    const error: ErrorResponse = toCamelCase(await res.json());
+    return { error: error.error };
   } catch (err) {
     console.error(err);
-    return { success: false };
+    return { error: toActionError(err) };
   }
 };

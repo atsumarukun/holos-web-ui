@@ -1,6 +1,7 @@
 "use server";
 
 import { toCamelCase, toSnakeCase } from "@/lib/case-converters";
+import { ActionError, ErrorResponse, toActionError } from "@/lib/errors";
 
 export type SignupRequest = Readonly<{
   name: string;
@@ -13,8 +14,8 @@ export type SignupResponse = Readonly<{
 }>;
 
 export const signup = async (
-  data: SignupRequest
-): Promise<{ success: boolean; data?: SignupResponse; error?: string }> => {
+  data: SignupRequest,
+): Promise<{ data?: SignupResponse; error?: ActionError }> => {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_ACCOUNT_API_HOST}/accounts`,
@@ -25,20 +26,17 @@ export const signup = async (
         },
         body: JSON.stringify(toSnakeCase(data)),
         cache: "no-cache",
-      }
+      },
     );
 
     if (res.ok) {
-      return { success: true, data: toCamelCase(await res.json()) };
+      return { data: toCamelCase(await res.json()) };
     }
 
-    if (res.status === 409) {
-      return { success: false, error: "アカウント名がすでに利用されています." };
-    }
-
-    throw new Error(toCamelCase(await res.json()).message);
+    const error: ErrorResponse = toCamelCase(await res.json());
+    return { error: error.error };
   } catch (err) {
     console.error(err);
-    return { success: false };
+    return { error: toActionError(err) };
   }
 };

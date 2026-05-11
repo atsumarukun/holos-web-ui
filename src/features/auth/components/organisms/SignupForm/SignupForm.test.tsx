@@ -2,6 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { SignupForm } from "./SignupForm";
 import { SignupRequest } from "@/features/auth/actions/signup";
+import { errorCode } from "@/lib/errors";
 
 const pushMock = jest.fn();
 jest.mock("next/navigation", () => ({
@@ -24,7 +25,7 @@ describe("Auth/Organisms/SignupForm", () => {
   });
 
   it("redirects when signup succeeds", async () => {
-    signupMock.mockResolvedValue({ success: true });
+    signupMock.mockResolvedValue({ data: { name: "holos" } });
 
     render(<SignupForm />);
 
@@ -32,7 +33,7 @@ describe("Auth/Organisms/SignupForm", () => {
     await userEvent.type(screen.getByPlaceholderText("パスワード"), "password");
     await userEvent.type(
       screen.getByPlaceholderText("パスワード(確認)"),
-      "password"
+      "password",
     );
 
     await userEvent.click(screen.getByRole("button"));
@@ -58,11 +59,11 @@ describe("Auth/Organisms/SignupForm", () => {
     await userEvent.type(screen.getByPlaceholderText("アカウント名"), "holos");
     await userEvent.type(
       screen.getByPlaceholderText("パスワード"),
-      "password1"
+      "password1",
     );
     await userEvent.type(
       screen.getByPlaceholderText("パスワード(確認)"),
-      "password2"
+      "password2",
     );
 
     await userEvent.click(screen.getByRole("button"));
@@ -74,8 +75,10 @@ describe("Auth/Organisms/SignupForm", () => {
 
   it("shows error when signup fails with error message", async () => {
     signupMock.mockResolvedValue({
-      success: false,
-      error: "アカウント名がすでに利用されています.",
+      error: {
+        code: errorCode.Duplicate,
+        message: "account name already in use",
+      },
     });
 
     render(<SignupForm />);
@@ -84,14 +87,14 @@ describe("Auth/Organisms/SignupForm", () => {
     await userEvent.type(screen.getByPlaceholderText("パスワード"), "password");
     await userEvent.type(
       screen.getByPlaceholderText("パスワード(確認)"),
-      "password"
+      "password",
     );
 
     await userEvent.click(screen.getByRole("button"));
 
     await waitFor(() => {
       expect(
-        screen.getByText("アカウント名がすでに利用されています.")
+        screen.getByText("アカウント名がすでに利用されています."),
       ).toBeInTheDocument();
     });
   });

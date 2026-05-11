@@ -36,8 +36,8 @@ export const Header = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const handleSignout = async () => {
-    const res = await signout();
-    if (res.success) {
+    const { error } = await signout();
+    if (!error) {
       successToast("ログアウトしました.");
     } else {
       errorToast();

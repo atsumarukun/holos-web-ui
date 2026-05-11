@@ -2,13 +2,7 @@
 
 import { getToken } from "@/actions/token";
 import { toCamelCase } from "@/lib/case-converters";
-import {
-  ActionError,
-  InternalErr,
-  isActionError,
-  UnauthorizedErr,
-} from "@/lib/errors";
-import { redirect } from "next/navigation";
+import { ActionError, ErrorResponse, toActionError } from "@/lib/errors";
 
 export type GetVolumesResponse = Readonly<{
   volumes: {
@@ -41,18 +35,10 @@ export const getVolumes = async (): Promise<{
       return { data: data };
     }
 
-    if (res.status === 401) {
-      throw UnauthorizedErr;
-    }
-
-    throw new Error(toCamelCase(await res.json()).message);
+    const error: ErrorResponse = toCamelCase(await res.json());
+    return { error: error.error };
   } catch (err) {
-    if (err === UnauthorizedErr) {
-      redirect("/auth/signin");
-    }
     console.error(err);
-    return {
-      error: isActionError(err) ? err : InternalErr,
-    };
+    return { error: toActionError(err) };
   }
 };

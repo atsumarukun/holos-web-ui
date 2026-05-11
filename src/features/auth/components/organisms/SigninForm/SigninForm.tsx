@@ -12,6 +12,7 @@ import { errorToast, successToast } from "@/lib/toast";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Alert } from "@/components/atoms/Alert";
+import { errorCode } from "@/lib/errors";
 
 export const SigninForm = () => {
   const router = useRouter();
@@ -27,13 +28,13 @@ export const SigninForm = () => {
   });
 
   const onSubmit: SubmitHandler<SigninInput> = async (data) => {
-    const res = await signin(data);
-    if (res.success) {
+    const { error } = await signin(data);
+    if (!error) {
       successToast("ログインしました.");
       router.push("/");
     } else {
-      if (res.error) {
-        setError(res.error);
+      if (error.code === errorCode.Unauthenticated) {
+        setError("アカウントが存在しないかパスワードが異なります.");
       } else {
         errorToast();
       }

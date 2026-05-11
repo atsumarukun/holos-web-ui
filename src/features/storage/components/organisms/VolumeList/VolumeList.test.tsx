@@ -4,6 +4,7 @@ import dayjs from "@/lib/dayjs";
 import userEvent from "@testing-library/user-event";
 import { ReactNode } from "react";
 import { refetchContext } from "@/providers/refetch";
+import { errorCode } from "@/lib/errors";
 
 const now = new Date();
 const mockVolumes = [
@@ -20,6 +21,11 @@ const mockVolumes = [
     updatedAt: now,
   },
 ];
+
+const pushMock = jest.fn();
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({ push: pushMock }),
+}));
 
 const useVolumeListMock = jest.fn();
 jest.mock("@/features/storage/hooks/volume-list", () => ({
@@ -93,7 +99,10 @@ describe("Storage/Organisms/VolumeList", () => {
     useVolumeListMock.mockReturnValue({
       loading: false,
       volumes: [],
-      error: new Error("failed"),
+      error: {
+        code: errorCode.InternalServerError,
+        message: "internal server error",
+      },
       refetch: jest.fn(),
     });
 
@@ -167,6 +176,36 @@ describe("Storage/Organisms/VolumeList", () => {
 
     await waitFor(() => {
       expect(screen.getByRole("menu")).toHaveTextContent("2 件選択中");
+    });
+  });
+
+  it("redirect to signin page when unauthenticated", async () => {
+    useVolumeListMock.mockReturnValue({
+      loading: false,
+      volumes: [],
+      error: { code: errorCode.Unauthenticated, message: "unauthenticated" },
+      refetch: jest.fn(),
+    });
+
+    renderWithContext(<VolumeList />);
+
+    await waitFor(() => {
+      expect(pushMock).toHaveBeenCalledWith("/auth/signin");
+    });
+  });
+
+  it("redirect to signin page when unauthorized", async () => {
+    useVolumeListMock.mockReturnValue({
+      loading: false,
+      volumes: [],
+      error: { code: errorCode.Unauthorized, message: "unauthorized" },
+      refetch: jest.fn(),
+    });
+
+    renderWithContext(<VolumeList />);
+
+    await waitFor(() => {
+      expect(pushMock).toHaveBeenCalledWith("/auth/signin");
     });
   });
 });

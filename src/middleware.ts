@@ -8,10 +8,10 @@ export const middleware = async (request: NextRequest) => {
     return NextResponse.redirect(new URL("/auth/signin", request.url));
   }
 
-  const res = await authorize(token);
-  if (res.success && res.data) {
+  const { data } = await authorize(token);
+  if (data) {
     const response = NextResponse.next();
-    response.headers.set("account-name", res.data.name);
+    response.headers.set("account-name", data.name);
     return response;
   }
   return NextResponse.redirect(new URL("/auth/signin", request.url));
