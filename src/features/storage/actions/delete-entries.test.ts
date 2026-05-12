@@ -1,14 +1,15 @@
 import { errorCode } from "@/lib/errors";
-import { deleteVolumes } from "./delete-volumes";
+import { deleteEntries } from "./delete-entries";
 
 const getTokenMock = jest.fn();
 jest.mock("@/actions/token", () => ({
   getToken: () => getTokenMock(),
 }));
 
-describe("deleteVolumes", () => {
-  it("success: delete volumes", async () => {
+describe("deleteEntries", () => {
+  it("success: delete entries", async () => {
     const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
+    const volumeName = "volume";
 
     getTokenMock.mockResolvedValue(token);
     global.fetch = jest.fn().mockResolvedValue({
@@ -16,10 +17,13 @@ describe("deleteVolumes", () => {
       status: 204,
     });
 
-    const result = await deleteVolumes(["vol1", "vol2"]);
+    const result = await deleteEntries(volumeName, [
+      "key/sample01.txt",
+      "key/sample02.txt",
+    ]);
 
     expect(global.fetch).toHaveBeenCalledWith(
-      `${process.env.NEXT_PUBLIC_STORAGE_API_HOST}/volumes/vol1`,
+      `${process.env.NEXT_PUBLIC_STORAGE_API_HOST}/entries/${volumeName}/key/sample01.txt`,
       expect.objectContaining({
         method: "DELETE",
         headers: {
@@ -28,7 +32,7 @@ describe("deleteVolumes", () => {
       }),
     );
     expect(global.fetch).toHaveBeenCalledWith(
-      `${process.env.NEXT_PUBLIC_STORAGE_API_HOST}/volumes/vol2`,
+      `${process.env.NEXT_PUBLIC_STORAGE_API_HOST}/entries/${volumeName}/key/sample02.txt`,
       expect.objectContaining({
         method: "DELETE",
         headers: {
@@ -37,13 +41,15 @@ describe("deleteVolumes", () => {
       }),
     );
     expect(result).toEqual({
-      vol1: { error: undefined },
-      vol2: { error: undefined },
+      "key/sample01.txt": { error: undefined },
+      "key/sample02.txt": { error: undefined },
     });
   });
 
   it("failed: unauthenticated", async () => {
     const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
+    const volumeName = "volume";
+
     const mockResponse = {
       error: { code: "UNAUTHENTICATED", message: "unauthenticated" },
     };
@@ -55,54 +61,22 @@ describe("deleteVolumes", () => {
       json: async () => mockResponse,
     });
 
-    const result = await deleteVolumes(["vol1", "vol2"]);
+    const result = await deleteEntries(volumeName, [
+      "key/sample01.txt",
+      "key/sample02.txt",
+    ]);
 
     expect(result).toEqual({
-      vol1: {
+      "key/sample01.txt": {
         error: {
           code: errorCode.Unauthenticated,
           message: "unauthenticated",
         },
       },
-      vol2: {
+      "key/sample02.txt": {
         error: {
           code: errorCode.Unauthenticated,
           message: "unauthenticated",
-        },
-      },
-    });
-  });
-
-  it("failed: volume is not empty", async () => {
-    const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
-    const mockResponse = {
-      error: {
-        code: "CONSTRAINT_VIOLATION",
-        message: "volume cannot be deleted because it contains entries",
-      },
-    };
-
-    getTokenMock.mockResolvedValue(token);
-    global.fetch = jest
-      .fn()
-      .mockResolvedValueOnce({
-        ok: true,
-        status: 204,
-      })
-      .mockResolvedValueOnce({
-        ok: false,
-        status: 409,
-        json: async () => mockResponse,
-      });
-
-    const result = await deleteVolumes(["vol1", "vol2"]);
-
-    expect(result).toEqual({
-      vol1: { error: undefined },
-      vol2: {
-        error: {
-          code: errorCode.ConstraintViolation,
-          message: "volume cannot be deleted because it contains entries",
         },
       },
     });
@@ -110,6 +84,8 @@ describe("deleteVolumes", () => {
 
   it("failed: internal server error", async () => {
     const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
+    const volumeName = "volume";
+
     const mockResponse = {
       error: {
         code: "INTERNAL_SERVER_ERROR",
@@ -124,16 +100,19 @@ describe("deleteVolumes", () => {
       json: async () => mockResponse,
     });
 
-    const result = await deleteVolumes(["vol1", "vol2"]);
+    const result = await deleteEntries(volumeName, [
+      "key/sample01.txt",
+      "key/sample02.txt",
+    ]);
 
     expect(result).toEqual({
-      vol1: {
+      "key/sample01.txt": {
         error: {
           code: errorCode.InternalServerError,
           message: "internal server error",
         },
       },
-      vol2: {
+      "key/sample02.txt": {
         error: {
           code: errorCode.InternalServerError,
           message: "internal server error",
@@ -144,6 +123,7 @@ describe("deleteVolumes", () => {
 
   it("failed: occured fetch error", async () => {
     const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
+    const volumeName = "volume";
 
     const consoleSpy = jest
       .spyOn(console, "error")
@@ -152,12 +132,19 @@ describe("deleteVolumes", () => {
     getTokenMock.mockResolvedValue(token);
     global.fetch = jest.fn().mockRejectedValue(new Error("failed"));
 
-    const result = await deleteVolumes(["vol1", "vol2"]);
+    const result = await deleteEntries(volumeName, [
+      "key/sample01.txt",
+      "key/sample02.txt",
+    ]);
 
     expect(consoleSpy).toHaveBeenCalledTimes(2);
     expect(result).toEqual({
-      vol1: { error: { code: errorCode.Unknown, message: "failed" } },
-      vol2: { error: { code: errorCode.Unknown, message: "failed" } },
+      "key/sample01.txt": {
+        error: { code: errorCode.Unknown, message: "failed" },
+      },
+      "key/sample02.txt": {
+        error: { code: errorCode.Unknown, message: "failed" },
+      },
     });
   });
 });
