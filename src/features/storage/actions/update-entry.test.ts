@@ -1,18 +1,20 @@
 import { errorCode } from "@/lib/errors";
-import { updateVolume } from "./update-volume";
+import { updateEntry } from "./update-entry";
 
 const getTokenMock = jest.fn();
 jest.mock("@/actions/token", () => ({
   getToken: () => getTokenMock(),
 }));
 
-describe("updateVolume", () => {
-  it("success: update volume", async () => {
+describe("updateEntry", () => {
+  it("success: update entry", async () => {
     const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
+    const volumeName = "volume";
 
     const mockResponse = {
-      name: "update",
-      isPublic: false,
+      key: "update/sample.txt",
+      size: 4,
+      type: "text/plain; charset=utf-8",
       createdAt: "2025-01-01T00:00:00Z",
       updatedAt: "2025-01-01T00:00:00Z",
     };
@@ -24,13 +26,12 @@ describe("updateVolume", () => {
       json: async () => mockResponse,
     });
 
-    const result = await updateVolume("volume", {
-      name: "update",
-      isPublic: true,
+    const result = await updateEntry(volumeName, "key/sample.txt", {
+      key: "update/sample.txt",
     });
 
     expect(global.fetch).toHaveBeenCalledWith(
-      `${process.env.NEXT_PUBLIC_STORAGE_API_HOST}/volumes/volume`,
+      `${process.env.NEXT_PUBLIC_STORAGE_API_HOST}/entries/${volumeName}/key/sample.txt`,
       expect.objectContaining({
         method: "PUT",
         headers: {
@@ -46,6 +47,8 @@ describe("updateVolume", () => {
 
   it("failed: unauthenticated", async () => {
     const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
+    const volumeName = "volume";
+
     const mockResponse = {
       error: { code: "UNAUTHENTICATED", message: "unauthenticated" },
     };
@@ -57,9 +60,8 @@ describe("updateVolume", () => {
       json: async () => mockResponse,
     });
 
-    const result = await updateVolume("volume", {
-      name: "update",
-      isPublic: true,
+    const result = await updateEntry(volumeName, "key/sample.txt", {
+      key: "update/sample.txt",
     });
 
     expect(result).toEqual({
@@ -70,10 +72,12 @@ describe("updateVolume", () => {
     });
   });
 
-  it("failed: duplicated volume name", async () => {
+  it("failed: duplicated entry key", async () => {
     const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
+    const volumeName = "volume";
+
     const mockResponse = {
-      error: { code: "DUPLICATE", message: "volume name already in use" },
+      error: { code: "DUPLICATE", message: "entry key already in use" },
     };
 
     getTokenMock.mockResolvedValue(token);
@@ -83,21 +87,22 @@ describe("updateVolume", () => {
       json: async () => mockResponse,
     });
 
-    const result = await updateVolume("volume", {
-      name: "update",
-      isPublic: true,
+    const result = await updateEntry(volumeName, "key/sample.txt", {
+      key: "update/sample.txt",
     });
 
     expect(result).toEqual({
       error: {
         code: errorCode.Duplicate,
-        message: "volume name already in use",
+        message: "entry key already in use",
       },
     });
   });
 
   it("failed: internal server error", async () => {
     const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
+    const volumeName = "volume";
+
     const mockResponse = {
       error: {
         code: "INTERNAL_SERVER_ERROR",
@@ -112,9 +117,8 @@ describe("updateVolume", () => {
       json: async () => mockResponse,
     });
 
-    const result = await updateVolume("volume", {
-      name: "update",
-      isPublic: true,
+    const result = await updateEntry(volumeName, "key/sample.txt", {
+      key: "update/sample.txt",
     });
 
     expect(result).toEqual({
@@ -127,6 +131,7 @@ describe("updateVolume", () => {
 
   it("failed: occured fetch error", async () => {
     const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
+    const volumeName = "volume";
 
     const consoleSpy = jest
       .spyOn(console, "error")
@@ -135,9 +140,8 @@ describe("updateVolume", () => {
     getTokenMock.mockResolvedValue(token);
     global.fetch = jest.fn().mockRejectedValue(new Error("failed"));
 
-    const result = await updateVolume("volume", {
-      name: "update",
-      isPublic: true,
+    const result = await updateEntry(volumeName, "key/sample.txt", {
+      key: "update/sample.txt",
     });
 
     expect(consoleSpy).toHaveBeenCalled();
