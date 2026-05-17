@@ -3,6 +3,7 @@
 import { getToken } from "@/actions/token";
 import { toCamelCase } from "@/lib/case-converters";
 import { ActionError, ErrorResponse, toActionError } from "@/lib/errors";
+import { toURLSearchParams } from "@/lib/search-params";
 
 export type GetEntriesResponse = Readonly<{
   entries: {
@@ -16,6 +17,7 @@ export type GetEntriesResponse = Readonly<{
 
 export const getEntries = async (
   volumeName: string,
+  options?: { prefix?: string; depth?: number },
 ): Promise<{
   data?: GetEntriesResponse;
   error?: ActionError;
@@ -23,7 +25,7 @@ export const getEntries = async (
   try {
     const token = await getToken();
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_STORAGE_API_HOST}/entries/${volumeName}`,
+      `${process.env.NEXT_PUBLIC_STORAGE_API_HOST}/entries/${volumeName}${options ? "?" + toURLSearchParams(options) : ""}`,
       {
         method: "GET",
         headers: {
