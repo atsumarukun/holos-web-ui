@@ -10,7 +10,7 @@ const meta = {
   component: CreateEntryFormDialog,
   args: {
     volumeName: "volume",
-    currentKey: "",
+    currentKey: "key",
     open: false,
     onOpenChange: fn(),
   },

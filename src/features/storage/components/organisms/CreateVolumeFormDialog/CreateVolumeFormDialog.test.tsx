@@ -48,6 +48,7 @@ describe("Storage/Organisms/CreateVolumeFormDialog", () => {
       </refetchContext.Provider>,
     );
   };
+
   it("renders", () => {
     renderWithContext(
       <CreateVolumeFormDialog open onOpenChange={onOpenChangeMock} />,
