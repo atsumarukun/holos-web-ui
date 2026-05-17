@@ -45,6 +45,44 @@ describe("getEntries", () => {
     });
   });
 
+  it("success: woth options", async () => {
+    const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
+    const volumeName = "volume";
+    const mockResponse = {
+      entries: [
+        {
+          key: "key/sample.txt",
+          size: 4,
+          type: "text/plain; charset=utf-8",
+          createdAt: "2025-01-01T00:00:00Z",
+          updatedAt: "2025-01-01T00:00:00Z",
+        },
+      ],
+    };
+
+    getTokenMock.mockResolvedValue(token);
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => mockResponse,
+    });
+
+    const result = await getEntries(volumeName, { prefix: "key", depth: 1 });
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      `${process.env.NEXT_PUBLIC_STORAGE_API_HOST}/entries/${volumeName}?prefix=key&depth=1`,
+      expect.objectContaining({
+        method: "GET",
+        headers: {
+          Authorization: `Session ${token}`,
+        },
+      }),
+    );
+    expect(result).toEqual({
+      data: mockResponse,
+    });
+  });
+
   it("failed: unauthenticated", async () => {
     const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
     const volumeName = "volume";
