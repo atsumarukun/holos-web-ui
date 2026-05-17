@@ -14,6 +14,7 @@ import { useDropzone } from "react-dropzone";
 import z from "zod";
 import { Button } from "@/components/atoms/Button";
 import { cn } from "@/lib/utils";
+import { buildKey } from "@/features/storage/lib/key";
 
 const createEntryFormSchema = z.object({
   name: z
@@ -65,7 +66,7 @@ export const CreateEntryFormDialog = ({
   const onSubmit: SubmitHandler<CreateEntryInput> = async (data) => {
     const { error } = await createEntry(volumeName, {
       ...data,
-      key: currentKey + "/" + data.name,
+      key: buildKey(currentKey, data.name),
     });
     if (!error) {
       successToast("エントリーを作成しました.");
