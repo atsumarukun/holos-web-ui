@@ -1,8 +1,8 @@
-import { render, screen, waitFor } from "@testing-library/react";
-import { DeleteVolumeConfirmDialog } from "./DeleteVolumeConfirmDialog";
-import userEvent from "@testing-library/user-event";
-import { ReactNode } from "react";
 import { refetchContext } from "@/providers/refetch";
+import { render, screen, waitFor } from "@testing-library/react";
+import { ReactNode } from "react";
+import { DeleteEntryConfirmDialog } from "./DeleteEntryConfirmDialog";
+import userEvent from "@testing-library/user-event";
 import { errorCode } from "@/lib/errors";
 
 const pushMock = jest.fn();
@@ -13,19 +13,19 @@ jest.mock("next/navigation", () => ({
 const successToastMock = jest.fn();
 const errorToastMock = jest.fn();
 jest.mock("@/lib/toast", () => ({
-  successToast: () => successToastMock(),
-  errorToast: (description?: string) => errorToastMock(description),
+  successToast: (...args: unknown[]) => successToastMock(...args),
+  errorToast: (...args: unknown[]) => errorToastMock(...args),
 }));
 
-const deleteVolumesMock = jest.fn();
-jest.mock("@/features/storage/actions/delete-volumes", () => ({
-  deleteVolumes: () => deleteVolumesMock(),
+const deleteEntriesMock = jest.fn();
+jest.mock("@/features/storage/actions/delete-entries", () => ({
+  deleteEntries: () => deleteEntriesMock(),
 }));
 
 const onOpenChangeMock = jest.fn();
 const refetchMock = jest.fn();
 
-describe("Storage/Organisms/DeleteVolumeConfirmDialog", () => {
+describe("Storage/Organisms/DeleteEntryConfirmDialog", () => {
   const renderWithContext = (component: ReactNode) => {
     render(
       <refetchContext.Provider
@@ -38,18 +38,19 @@ describe("Storage/Organisms/DeleteVolumeConfirmDialog", () => {
 
   it("renders", () => {
     renderWithContext(
-      <DeleteVolumeConfirmDialog
-        name="holos"
+      <DeleteEntryConfirmDialog
+        volumeName="volume"
+        entryKey="key/sample.txt"
         open
         onOpenChange={onOpenChangeMock}
       />,
     );
-    expect(screen.getByText("ボリューム削除")).toBeInTheDocument();
+    expect(screen.getByText("エントリー削除")).toBeInTheDocument();
     expect(
       screen.getByText(
         (content) =>
-          content.includes("「holos」を削除しますか？") &&
-          content.includes("削除したボリュームは復元できません."),
+          content.includes("「sample.txt」を削除しますか？") &&
+          content.includes("削除したエントリーは復元できません."),
       ),
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "削除" })).toBeInTheDocument();
@@ -57,18 +58,19 @@ describe("Storage/Organisms/DeleteVolumeConfirmDialog", () => {
 
   it("does not render when closed", () => {
     renderWithContext(
-      <DeleteVolumeConfirmDialog
-        name="holos"
+      <DeleteEntryConfirmDialog
+        volumeName="volume"
+        entryKey="key/sample.txt"
         open={false}
         onOpenChange={onOpenChangeMock}
       />,
     );
-    expect(screen.queryByText("ボリューム削除")).not.toBeInTheDocument();
+    expect(screen.queryByText("エントリー削除")).not.toBeInTheDocument();
     expect(
       screen.queryByText(
         (content) =>
-          content.includes("「holos」を削除しますか？") &&
-          content.includes("削除したボリュームは復元できません."),
+          content.includes("「sample.txt」を削除しますか？") &&
+          content.includes("削除したエントリーは復元できません."),
       ),
     ).not.toBeInTheDocument();
     expect(
@@ -77,15 +79,16 @@ describe("Storage/Organisms/DeleteVolumeConfirmDialog", () => {
   });
 
   it("invokes the success handler when delete succeeds", async () => {
-    deleteVolumesMock.mockResolvedValue({
-      holos: {
+    deleteEntriesMock.mockResolvedValue({
+      "key/sample.txt": {
         error: undefined,
       },
     });
 
     renderWithContext(
-      <DeleteVolumeConfirmDialog
-        name="holos"
+      <DeleteEntryConfirmDialog
+        volumeName="volume"
+        entryKey="key/sample.txt"
         open
         onOpenChange={onOpenChangeMock}
       />,
@@ -94,42 +97,17 @@ describe("Storage/Organisms/DeleteVolumeConfirmDialog", () => {
     await userEvent.click(screen.getByRole("button", { name: "削除" }));
 
     await waitFor(() => {
-      expect(successToastMock).toHaveBeenCalled();
+      expect(successToastMock).toHaveBeenCalledWith(
+        "エントリーを削除しました.",
+      );
       expect(refetchMock).toHaveBeenCalled();
       expect(onOpenChangeMock).toHaveBeenCalled();
     });
   });
 
-  it("shows error toast when delete fails with error message", async () => {
-    deleteVolumesMock.mockResolvedValue({
-      holos: {
-        error: {
-          code: errorCode.ConstraintViolation,
-          message: "volume cannot be deleted because it contains entries",
-        },
-      },
-    });
-
-    renderWithContext(
-      <DeleteVolumeConfirmDialog
-        name="holos"
-        open
-        onOpenChange={onOpenChangeMock}
-      />,
-    );
-
-    await userEvent.click(screen.getByRole("button", { name: "削除" }));
-
-    await waitFor(() => {
-      expect(errorToastMock).toHaveBeenCalledWith(
-        "空ではないボリュームは削除できません.",
-      );
-    });
-  });
-
   it("shows error toast when delete fails without error message", async () => {
-    deleteVolumesMock.mockResolvedValue({
-      holos: {
+    deleteEntriesMock.mockResolvedValue({
+      "key/sample.txt": {
         error: {
           code: errorCode.InternalServerError,
           message: "internal server error",
@@ -138,8 +116,9 @@ describe("Storage/Organisms/DeleteVolumeConfirmDialog", () => {
     });
 
     renderWithContext(
-      <DeleteVolumeConfirmDialog
-        name="holos"
+      <DeleteEntryConfirmDialog
+        volumeName="volume"
+        entryKey="key/sample.txt"
         open
         onOpenChange={onOpenChangeMock}
       />,
@@ -153,8 +132,8 @@ describe("Storage/Organisms/DeleteVolumeConfirmDialog", () => {
   });
 
   it("redirect to signin page when unauthenticated", async () => {
-    deleteVolumesMock.mockResolvedValue({
-      holos: {
+    deleteEntriesMock.mockResolvedValue({
+      "key/sample.txt": {
         error: {
           code: errorCode.Unauthenticated,
           message: "unauthenticated",
@@ -163,8 +142,9 @@ describe("Storage/Organisms/DeleteVolumeConfirmDialog", () => {
     });
 
     renderWithContext(
-      <DeleteVolumeConfirmDialog
-        name="holos"
+      <DeleteEntryConfirmDialog
+        volumeName="volume"
+        entryKey="key/sample.txt"
         open
         onOpenChange={onOpenChangeMock}
       />,
@@ -178,8 +158,8 @@ describe("Storage/Organisms/DeleteVolumeConfirmDialog", () => {
   });
 
   it("redirect to signin page when unauthorized", async () => {
-    deleteVolumesMock.mockResolvedValue({
-      holos: {
+    deleteEntriesMock.mockResolvedValue({
+      "key/sample.txt": {
         error: {
           code: errorCode.Unauthorized,
           message: "unauthorized",
@@ -188,8 +168,9 @@ describe("Storage/Organisms/DeleteVolumeConfirmDialog", () => {
     });
 
     renderWithContext(
-      <DeleteVolumeConfirmDialog
-        name="holos"
+      <DeleteEntryConfirmDialog
+        volumeName="volume"
+        entryKey="key/sample.txt"
         open
         onOpenChange={onOpenChangeMock}
       />,

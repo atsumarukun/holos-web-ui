@@ -4,3 +4,7 @@ export const buildKey = (currentKey: string, name: string): string => {
   }
   return name;
 };
+
+export const extractName = (key: string): string => {
+  return key.split("/").at(-1) ?? "";
+};
