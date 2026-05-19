@@ -35,6 +35,7 @@ describe("Storage/Organisms/DeleteVolumeConfirmDialog", () => {
       </refetchContext.Provider>,
     );
   };
+
   it("renders", () => {
     renderWithContext(
       <DeleteVolumeConfirmDialog

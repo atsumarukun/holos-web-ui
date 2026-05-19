@@ -115,7 +115,9 @@ describe("Storage/Organisms/UpdateEntryFormDialog", () => {
     await userEvent.click(screen.getByRole("button", { name: "更新" }));
 
     await waitFor(() => {
-      expect(successToastMock).toHaveBeenCalled();
+      expect(successToastMock).toHaveBeenCalledWith(
+        "エントリーを更新しました.",
+      );
       expect(refetchMock).toHaveBeenCalled();
       expect(resetMock).toHaveBeenCalled();
       expect(onOpenChangeMock).toHaveBeenCalled();
