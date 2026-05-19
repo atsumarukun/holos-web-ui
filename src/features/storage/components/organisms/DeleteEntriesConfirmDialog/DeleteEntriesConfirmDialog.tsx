@@ -1,7 +1,8 @@
 "use client";
 
 import { ConfirmDialog } from "@/components/organisms/ConfirmDialog";
-import { deleteVolumes } from "@/features/storage/actions/delete-volumes";
+import { deleteEntries } from "@/features/storage/actions/delete-entries";
+import { extractName } from "@/features/storage/lib/key";
 import { errorCode } from "@/lib/errors";
 import { errorToast, successToast } from "@/lib/toast";
 import { refetchContext } from "@/providers/refetch";
@@ -9,13 +10,15 @@ import { useRouter } from "next/navigation";
 import { useContext } from "react";
 
 type Props = Readonly<{
-  names: string[];
+  volumeName: string;
+  entryKeys: string[];
   open: boolean;
   onOpenChange: () => void;
 }>;
 
-export const DeleteVolumesConfirmDialog = ({
-  names,
+export const DeleteEntriesConfirmDialog = ({
+  volumeName,
+  entryKeys,
   open,
   onOpenChange,
 }: Props) => {
@@ -23,10 +26,10 @@ export const DeleteVolumesConfirmDialog = ({
   const context = useContext(refetchContext);
 
   const onApprove = async () => {
-    const res = await deleteVolumes(names);
+    const res = await deleteEntries(volumeName, entryKeys);
     const failures = Object.entries(res).filter(([, v]) => !!v.error);
     if (failures.length === 0) {
-      successToast("ボリュームを削除しました.");
+      successToast("エントリーを削除しました.");
     } else {
       if (
         failures.some(
@@ -37,14 +40,8 @@ export const DeleteVolumesConfirmDialog = ({
       ) {
         router.push("/auth/signin");
       } else {
-        failures.forEach(([k, v]) => {
-          if (v.error?.code === errorCode.ConstraintViolation) {
-            errorToast(
-              `「${k}」の削除に失敗しました.\n空ではないボリュームは削除できません.`,
-            );
-          } else {
-            errorToast(`「${k}」の削除に失敗しました.`);
-          }
+        failures.forEach(([k]) => {
+          errorToast(`「${extractName(k)}」の削除に失敗しました.`);
         });
       }
     }
@@ -54,8 +51,8 @@ export const DeleteVolumesConfirmDialog = ({
 
   return (
     <ConfirmDialog
-      title="ボリューム削除"
-      description={`選択したボリュームを削除しますか？\n削除したボリュームは復元できません.`}
+      title="エントリー削除"
+      description={`選択したエントリーを削除しますか？\n削除したエントリーは復元できません.`}
       approveLabel="削除"
       open={open}
       onOpenChange={onOpenChange}
