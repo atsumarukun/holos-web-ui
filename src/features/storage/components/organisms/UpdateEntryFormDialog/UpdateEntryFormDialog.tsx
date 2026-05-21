@@ -2,7 +2,7 @@
 
 import { InputField } from "@/components/molecules/InputField";
 import { FormDialog } from "@/components/organisms/FormDialog";
-import { updateEntry } from "@/features/storage/actions/update-entry";
+import { updateEntries } from "@/features/storage/actions/update-entries";
 import { buildKey } from "@/features/storage/lib/key";
 import { errorCode } from "@/lib/errors";
 import { errorToast, successToast } from "@/lib/toast";
@@ -58,12 +58,13 @@ export const UpdateEntryFormDialog = ({
   });
 
   const onSubmit: SubmitHandler<UpdateEntryInput> = async (data) => {
-    const { error } = await updateEntry(
-      volumeName,
-      buildKey(currentKey, defaultValues.name),
-      { ...data, key: buildKey(currentKey, data.name) },
-    );
-    if (!error) {
+    const res = await updateEntries(volumeName, {
+      [buildKey(currentKey, defaultValues.name)]: {
+        ...data,
+        key: buildKey(currentKey, data.name),
+      },
+    });
+    if (!res[`${buildKey(currentKey, defaultValues.name)}`].error) {
       successToast("エントリーを更新しました.");
       context.refetch();
       reset();
@@ -71,11 +72,16 @@ export const UpdateEntryFormDialog = ({
       onOpenChange();
     } else {
       if (
-        error.code === errorCode.Unauthenticated ||
-        error.code === errorCode.Unauthorized
+        res[`${buildKey(currentKey, defaultValues.name)}`].error?.code ===
+          errorCode.Unauthenticated ||
+        res[`${buildKey(currentKey, defaultValues.name)}`].error?.code ===
+          errorCode.Unauthorized
       ) {
         router.push("/auth/signin");
-      } else if (error.code === errorCode.Duplicate) {
+      } else if (
+        res[`${buildKey(currentKey, defaultValues.name)}`].error?.code ===
+        errorCode.Duplicate
+      ) {
         setConflictError("エントリー名がすでに利用されています.");
       } else {
         errorToast();

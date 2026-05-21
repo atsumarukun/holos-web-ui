@@ -16,7 +16,25 @@ export type UpdateEntryResponse = Readonly<{
   updatedAt: Date;
 }>;
 
-export const updateEntry = async (
+export const updateEntries = async (
+  volumeName: string,
+  data: Record<string, UpdateEntryRequest>,
+): Promise<
+  Record<
+    string,
+    {
+      data?: UpdateEntryResponse;
+      error?: ActionError;
+    }
+  >
+> => {
+  const res = await Promise.all(
+    Object.entries(data).map(([key, val]) => updateEntry(volumeName, key, val)),
+  );
+  return Object.fromEntries(Object.keys(data).map((key, i) => [key, res[i]]));
+};
+
+const updateEntry = async (
   volumeName: string,
   key: string,
   data: UpdateEntryRequest,
