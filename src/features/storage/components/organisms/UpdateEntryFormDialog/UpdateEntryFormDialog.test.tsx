@@ -30,9 +30,9 @@ jest.mock("@/lib/toast", () => ({
   errorToast: (...args: unknown[]) => errorToastMock(...args),
 }));
 
-const updateEntryMock = jest.fn();
-jest.mock("@/features/storage/actions/update-entry", () => ({
-  updateEntry: () => updateEntryMock(),
+const updateEntriesMock = jest.fn();
+jest.mock("@/features/storage/actions/update-entries", () => ({
+  updateEntries: () => updateEntriesMock(),
 }));
 
 const onOpenChangeMock = jest.fn();
@@ -91,13 +91,15 @@ describe("Storage/Organisms/UpdateEntryFormDialog", () => {
   it("invokes the success handler when update succeeds", async () => {
     const name = "sample.txt";
 
-    updateEntryMock.mockResolvedValue({
-      data: {
-        key: "key/sample.txt",
-        size: 4,
-        type: "text/plain; charset=utf-8",
-        createdAt: "2025-01-01T00:00:00Z",
-        updatedAt: "2025-01-01T00:00:00Z",
+    updateEntriesMock.mockResolvedValue({
+      "key/sample.txt": {
+        data: {
+          key: "key/update.txt",
+          size: 4,
+          type: "text/plain; charset=utf-8",
+          createdAt: "2025-01-01T00:00:00Z",
+          updatedAt: "2025-01-01T00:00:00Z",
+        },
       },
     });
 
@@ -148,10 +150,12 @@ describe("Storage/Organisms/UpdateEntryFormDialog", () => {
   it("shows error when update fails with error message", async () => {
     const name = "sample.txt";
 
-    updateEntryMock.mockResolvedValue({
-      error: {
-        code: errorCode.Duplicate,
-        message: "entry key already in use",
+    updateEntriesMock.mockResolvedValue({
+      "key/sample.txt": {
+        error: {
+          code: errorCode.Duplicate,
+          message: "entry key already in use",
+        },
       },
     });
 
@@ -178,10 +182,12 @@ describe("Storage/Organisms/UpdateEntryFormDialog", () => {
   it("shows error toast when update fails without error message", async () => {
     const name = "sample.txt";
 
-    updateEntryMock.mockResolvedValue({
-      error: {
-        code: errorCode.InternalServerError,
-        message: "internal server error",
+    updateEntriesMock.mockResolvedValue({
+      "key/sample.txt": {
+        error: {
+          code: errorCode.InternalServerError,
+          message: "internal server error",
+        },
       },
     });
 
@@ -206,10 +212,12 @@ describe("Storage/Organisms/UpdateEntryFormDialog", () => {
   it("redirect to signin page when unauthenticated", async () => {
     const name = "sample.txt";
 
-    updateEntryMock.mockResolvedValue({
-      error: {
-        code: errorCode.Unauthenticated,
-        message: "unauthenticated",
+    updateEntriesMock.mockResolvedValue({
+      "key/sample.txt": {
+        error: {
+          code: errorCode.Unauthenticated,
+          message: "unauthenticated",
+        },
       },
     });
 
@@ -234,10 +242,12 @@ describe("Storage/Organisms/UpdateEntryFormDialog", () => {
   it("redirect to signin page when unauthorized", async () => {
     const name = "sample.txt";
 
-    updateEntryMock.mockResolvedValue({
-      error: {
-        code: errorCode.Unauthorized,
-        message: "unauthorized",
+    updateEntriesMock.mockResolvedValue({
+      "key/sample.txt": {
+        error: {
+          code: errorCode.Unauthorized,
+          message: "unauthorized",
+        },
       },
     });
 

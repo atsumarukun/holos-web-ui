@@ -19,17 +19,22 @@ export type UpdateEntryResponse = Readonly<{
 export const updateEntries = async (
   volumeName: string,
   data: Record<string, UpdateEntryRequest>,
-): Promise<{
-  data?: Record<string, UpdateEntryResponse>;
-  error?: ActionError;
-}> => {
+): Promise<
+  Record<
+    string,
+    {
+      data?: UpdateEntryResponse;
+      error?: ActionError;
+    }
+  >
+> => {
   const res = await Promise.all(
     Object.entries(data).map(([key, val]) => updateEntry(volumeName, key, val)),
   );
   return Object.fromEntries(Object.keys(data).map((key, i) => [key, res[i]]));
 };
 
-export const updateEntry = async (
+const updateEntry = async (
   volumeName: string,
   key: string,
   data: UpdateEntryRequest,
