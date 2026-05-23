@@ -61,6 +61,7 @@ export const VolumeList = () => {
     return (
       <Error
         icon={FiAlertTriangle}
+        variant="page"
         title="ボリュームの取得に失敗しました"
         description="再度ページを読み込み直してください."
       />
@@ -69,6 +70,7 @@ export const VolumeList = () => {
   if (!volumes || !volumes.length) {
     return (
       <Error
+        variant="page"
         title="ボリュームが存在しません"
         description="作成ボタンをから作成してください."
       />

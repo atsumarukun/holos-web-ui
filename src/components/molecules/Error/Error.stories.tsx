@@ -14,15 +14,25 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Page: Story = {
   args: {
+    variant: "page",
     title: "エラーが発生しました",
     description: "再度ページを読み込み直してください.",
   },
 };
 
+export const Dialog: Story = {
+  args: {
+    variant: "dialog",
+    title: "エラーが発生しました",
+    description: "再度ダイアログを読み込み直してください.",
+  },
+};
+
 export const WithoutDescription: Story = {
   args: {
+    variant: "page",
     title: "エラーが発生しました",
   },
 };
