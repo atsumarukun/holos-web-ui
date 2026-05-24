@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { Breadcrumb } from "./Breadcrumb";
-import { userEvent } from "storybook/internal/test";
+import { userEvent } from "@testing-library/user-event";
 
 const onClickPartMock = jest.fn();
 
