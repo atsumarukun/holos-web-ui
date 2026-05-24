@@ -16,7 +16,7 @@ const meta = {
   args: {
     entries: [
       {
-        key: "key/folder",
+        key: "key/sample",
         size: 4,
         type: "folder",
         createdAt: new Date(),
