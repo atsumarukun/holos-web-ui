@@ -44,7 +44,7 @@ export const useVolumeList = () => {
 
   return {
     loading,
-    volumes: volumes,
+    volumes,
     error,
     refetch: fetch,
   };
