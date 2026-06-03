@@ -30,7 +30,6 @@ export const Default: Story = {
         const mock = createMock(VolumeListHook, "useVolumeList");
         mock.mockReturnValue({
           loading: false,
-          success: true,
           volumes: [
             {
               name: "holos",
@@ -39,6 +38,7 @@ export const Default: Story = {
               updatedAt: new Date(),
             },
           ],
+          error: undefined,
           refetch: fn(),
         });
         return [mock];
