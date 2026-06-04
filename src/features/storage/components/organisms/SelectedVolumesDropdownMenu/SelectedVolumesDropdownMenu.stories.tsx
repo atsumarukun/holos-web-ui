@@ -11,12 +11,12 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    volumes: ["holos"],
+    names: ["holos"],
   },
 };
 
 export const NotSelected: Story = {
   args: {
-    volumes: [],
+    names: [],
   },
 };

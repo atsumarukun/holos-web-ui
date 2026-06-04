@@ -98,7 +98,7 @@ export const VolumeList = () => {
             <p className="basis-[12%] pr-2">公開状況</p>
             <p className="grow pr-2">最終更新日時</p>
           </div>
-          <SelectedVolumesDropdownMenu volumes={selectedVolumes} />
+          <SelectedVolumesDropdownMenu names={selectedVolumes} />
         </div>
         <div
           ref={scrollbarRef}
