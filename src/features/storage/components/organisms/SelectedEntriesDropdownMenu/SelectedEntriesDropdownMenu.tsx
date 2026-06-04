@@ -49,6 +49,7 @@ export const SelectedEntriesDropdownMenu = ({
           </DropdownMenuLabel>
           <DropdownMenuItem
             className="flex-row items-center gap-1 hover:cursor-pointer"
+            disabled={entryKeys.length === 0}
             onClick={() => setOnCopyDialogOpen(true)}
           >
             <LuCopy />
@@ -56,6 +57,7 @@ export const SelectedEntriesDropdownMenu = ({
           </DropdownMenuItem>
           <DropdownMenuItem
             className="flex-row items-center gap-1 hover:cursor-pointer"
+            disabled={entryKeys.length === 0}
             onClick={() => setOnMoveDialogOpen(true)}
           >
             <LuFolderOutput />
@@ -63,6 +65,7 @@ export const SelectedEntriesDropdownMenu = ({
           </DropdownMenuItem>
           <DropdownMenuItem
             className="flex-row items-center gap-1 text-destructive focus:text-destructive focus:bg-destructive/10 hover:cursor-pointer"
+            disabled={entryKeys.length === 0}
             onClick={() => setOnDeleteDialogOpen(true)}
           >
             <LuTrash className="text-destructive" />
