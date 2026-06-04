@@ -37,7 +37,7 @@ const onSelectAllMock = jest.fn();
 jest.mock("@/features/storage/hooks/select-volume", () => ({
   useVolumeSelection: () => ({
     isSelectedAll: false,
-    selectedVolumes: mockVolumes,
+    selectedVolumeNames: mockVolumes.map((volume) => volume.name),
     onSelect: () => onSelectMock(),
     onSelectAll: () => onSelectAllMock(),
   }),

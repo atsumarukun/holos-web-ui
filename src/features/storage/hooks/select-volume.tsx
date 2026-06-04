@@ -8,35 +8,35 @@ type Props = Readonly<{
 }>;
 
 export const useVolumeSelection = ({ volumes }: Props) => {
-  const [selectedVolumes, setSelectedVolumes] = useState<string[]>([]);
+  const [selectedVolumeNames, setSelectedVolumeNames] = useState<string[]>([]);
 
-  const isSelectedAll = selectedVolumes.length === volumes.length;
+  const isSelectedAll = selectedVolumeNames.length === volumes.length;
 
   const onSelectAll = () => {
     if (isSelectedAll) {
-      setSelectedVolumes([]);
+      setSelectedVolumeNames([]);
     } else {
-      setSelectedVolumes(volumes.map((volume) => volume.name));
+      setSelectedVolumeNames(volumes.map((volume) => volume.name));
     }
   };
 
   const onSelect = (name: string) => {
-    if (selectedVolumes.includes(name)) {
-      setSelectedVolumes((volumes) =>
+    if (selectedVolumeNames.includes(name)) {
+      setSelectedVolumeNames((volumes) =>
         volumes.filter((volume) => volume !== name),
       );
     } else {
-      setSelectedVolumes((volumes) => [...volumes, name]);
+      setSelectedVolumeNames((volumes) => [...volumes, name]);
     }
   };
 
   const onClear = () => {
-    setSelectedVolumes([]);
+    setSelectedVolumeNames([]);
   };
 
   return {
     isSelectedAll,
-    selectedVolumes,
+    selectedVolumeNames,
     onSelectAll,
     onSelect,
     onClear,

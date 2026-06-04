@@ -16,7 +16,7 @@ describe("useVolumeSelection", () => {
       useVolumeSelection({ volumes: mockVolumes }),
     );
 
-    expect(result.current.selectedVolumes).toEqual([]);
+    expect(result.current.selectedVolumeNames).toEqual([]);
     expect(result.current.isSelectedAll).toBe(false);
   });
 
@@ -44,7 +44,7 @@ describe("useVolumeSelection", () => {
       result.current.onSelect("volume");
     });
 
-    expect(result.current.selectedVolumes).toEqual(["volume"]);
+    expect(result.current.selectedVolumeNames).toEqual(["volume"]);
     expect(result.current.isSelectedAll).toBe(false);
   });
 
@@ -75,7 +75,7 @@ describe("useVolumeSelection", () => {
       result.current.onSelect("volume");
     });
 
-    expect(result.current.selectedVolumes).toEqual([]);
+    expect(result.current.selectedVolumeNames).toEqual([]);
     expect(result.current.isSelectedAll).toBe(false);
   });
 
@@ -103,7 +103,7 @@ describe("useVolumeSelection", () => {
       result.current.onSelectAll();
     });
 
-    expect(result.current.selectedVolumes).toEqual(["volume", "test"]);
+    expect(result.current.selectedVolumeNames).toEqual(["volume", "test"]);
     expect(result.current.isSelectedAll).toBe(true);
   });
 
@@ -134,7 +134,7 @@ describe("useVolumeSelection", () => {
       result.current.onSelectAll();
     });
 
-    expect(result.current.selectedVolumes).toEqual([]);
+    expect(result.current.selectedVolumeNames).toEqual([]);
     expect(result.current.isSelectedAll).toBe(false);
   });
 
@@ -165,7 +165,7 @@ describe("useVolumeSelection", () => {
       result.current.onClear();
     });
 
-    expect(result.current.selectedVolumes).toEqual([]);
+    expect(result.current.selectedVolumeNames).toEqual([]);
     expect(result.current.isSelectedAll).toBe(false);
   });
 
@@ -196,7 +196,7 @@ describe("useVolumeSelection", () => {
       result.current.onSelect("test");
     });
 
-    expect(result.current.selectedVolumes).toEqual(["volume", "test"]);
+    expect(result.current.selectedVolumeNames).toEqual(["volume", "test"]);
     expect(result.current.isSelectedAll).toBe(true);
   });
 });
