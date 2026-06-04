@@ -25,7 +25,7 @@ export const VolumeList = () => {
   const context = useContext(refetchContext);
 
   const { loading, volumes, error, refetch } = useVolumeList();
-  const { isSelectedAll, selectedVolumes, onSelectAll, onSelect, onClear } =
+  const { isSelectedAll, selectedVolumeNames, onSelectAll, onSelect, onClear } =
     useVolumeSelection({
       volumes: volumes,
     });
@@ -98,7 +98,7 @@ export const VolumeList = () => {
             <p className="basis-[12%] pr-2">公開状況</p>
             <p className="grow pr-2">最終更新日時</p>
           </div>
-          <SelectedVolumesDropdownMenu names={selectedVolumes} />
+          <SelectedVolumesDropdownMenu names={selectedVolumeNames} />
         </div>
         <div
           ref={scrollbarRef}
@@ -111,13 +111,13 @@ export const VolumeList = () => {
             >
               <IconButton
                 icon={
-                  selectedVolumes.includes(volume.name)
+                  selectedVolumeNames.includes(volume.name)
                     ? MdCheckBox
                     : MdCheckBoxOutlineBlank
                 }
                 variant="ghost"
                 className={
-                  selectedVolumes.includes(volume.name)
+                  selectedVolumeNames.includes(volume.name)
                     ? "text-accent-foreground hover:text-accent-foreground/75"
                     : "text-[#999999]"
                 }
