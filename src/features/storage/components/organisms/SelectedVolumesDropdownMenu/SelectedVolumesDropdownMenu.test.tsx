@@ -8,13 +8,13 @@ jest.mock("next/navigation", () => ({
 
 describe("Storage/Organisms/SelectedVolumesDropdownMenu", () => {
   it("renders", () => {
-    render(<SelectedVolumesDropdownMenu volumes={["holos"]} />);
+    render(<SelectedVolumesDropdownMenu names={["holos"]} />);
     expect(screen.getByRole("button").querySelector("svg")).toBeInTheDocument();
     expect(screen.queryByRole("menu")).not.toBeInTheDocument();
   });
 
   it("renders dropdown menu items when opened", async () => {
-    render(<SelectedVolumesDropdownMenu volumes={["holos"]} />);
+    render(<SelectedVolumesDropdownMenu names={["holos"]} />);
 
     await userEvent.click(screen.getByRole("button"));
 
@@ -22,7 +22,7 @@ describe("Storage/Organisms/SelectedVolumesDropdownMenu", () => {
   });
 
   it("shows selected count and enables delete when items are selected", async () => {
-    render(<SelectedVolumesDropdownMenu volumes={["holos", "test"]} />);
+    render(<SelectedVolumesDropdownMenu names={["holos", "test"]} />);
 
     await userEvent.click(screen.getByRole("button"));
 
@@ -32,7 +32,7 @@ describe("Storage/Organisms/SelectedVolumesDropdownMenu", () => {
   });
 
   it("shows selected count and disables delete when no items are selected", async () => {
-    render(<SelectedVolumesDropdownMenu volumes={[]} />);
+    render(<SelectedVolumesDropdownMenu names={[]} />);
 
     await userEvent.click(screen.getByRole("button"));
 
@@ -42,7 +42,7 @@ describe("Storage/Organisms/SelectedVolumesDropdownMenu", () => {
   });
 
   it("opens delete dialog when delete is clicked", async () => {
-    render(<SelectedVolumesDropdownMenu volumes={["holos", "test"]} />);
+    render(<SelectedVolumesDropdownMenu names={["holos", "test"]} />);
 
     await userEvent.click(screen.getByRole("button"));
     await userEvent.click(screen.getByText("削除"));

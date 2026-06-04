@@ -13,10 +13,10 @@ import { LuEllipsisVertical, LuTrash } from "react-icons/lu";
 import { DeleteVolumesConfirmDialog } from "../DeleteVolumesConfirmDialog";
 
 type Props = Readonly<{
-  volumes: string[];
+  names: string[];
 }>;
 
-export const SelectedVolumesDropdownMenu = ({ volumes }: Props) => {
+export const SelectedVolumesDropdownMenu = ({ names }: Props) => {
   const [onDeleteDialogOpen, setOnDeleteDialogOpen] = useState(false);
 
   return (
@@ -31,11 +31,11 @@ export const SelectedVolumesDropdownMenu = ({ volumes }: Props) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent className="mr-6">
           <DropdownMenuLabel className="font-normal">
-            <span className="font-medium">{volumes.length}</span> 件選択中
+            <span className="font-medium">{names.length}</span> 件選択中
           </DropdownMenuLabel>
           <DropdownMenuItem
             className="flex-row items-center gap-1 text-destructive focus:text-destructive focus:bg-destructive/10 hover:cursor-pointer"
-            disabled={volumes.length === 0}
+            disabled={names.length === 0}
             onClick={() => setOnDeleteDialogOpen(true)}
           >
             <LuTrash className="text-destructive" />
@@ -44,7 +44,7 @@ export const SelectedVolumesDropdownMenu = ({ volumes }: Props) => {
         </DropdownMenuContent>
       </DropdownMenu>
       <DeleteVolumesConfirmDialog
-        names={volumes}
+        names={names}
         open={onDeleteDialogOpen}
         onOpenChange={() => setOnDeleteDialogOpen((v) => !v)}
       />
