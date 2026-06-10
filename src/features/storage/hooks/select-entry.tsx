@@ -20,13 +20,13 @@ export const useEntrySelection = ({ entries }: Props) => {
     }
   };
 
-  const onSelect = (entryKey: string) => {
-    if (selectedEntryKeys.includes(entryKey)) {
+  const onSelect = (key: string) => {
+    if (selectedEntryKeys.includes(key)) {
       setSelectedEntryKeys((entryKeys) =>
-        entryKeys.filter((entryKey) => entryKey !== entryKey),
+        entryKeys.filter((entryKey) => entryKey !== key),
       );
     } else {
-      setSelectedEntryKeys((entryKeys) => [...entryKeys, entryKey]);
+      setSelectedEntryKeys((entryKeys) => [...entryKeys, key]);
     }
   };
 
