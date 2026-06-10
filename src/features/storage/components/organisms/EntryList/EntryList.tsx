@@ -144,11 +144,11 @@ export const EntryList = ({ volumeName, currentKey }: Props) => {
               className="grow flex flex-row py-4"
             >
               <p className="basis-5/9 pr-2">{extractName(entry.key)}</p>
-              <p className="flex flex-row items-center gap-2 basis-1/9 text-[#999999] pr-2">
+              <p className="min-w-0 flex flex-row items-center gap-2 basis-1/9 text-[#999999] pr-2">
                 <span>
                   {entry.type === "folder" ? <LuFolder /> : <LuFile />}
                 </span>
-                {entry.type}
+                <span className="truncate">{entry.type}</span>
               </p>
               <p className="basis-1/9 text-[#999999] pr-2">
                 {entry.type === "folder" ? "-----" : formatSize(entry.size)}
