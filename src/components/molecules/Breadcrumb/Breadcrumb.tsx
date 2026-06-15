@@ -41,11 +41,8 @@ export const Breadcrumb = ({ className }: Props) => {
         <MdChevronRight size={18} className="mt-0.5" />
         {context.breadcrumbs
           .slice(0, context.breadcrumbs.length - 1)
-          .map((breadcrumb) => (
-            <div
-              className="flex flex-row items-center gap-0.5"
-              key={breadcrumb.href}
-            >
+          .map((breadcrumb, i) => (
+            <div className="flex flex-row items-center gap-0.5" key={i}>
               <Link href={breadcrumb.href}>{breadcrumb.label}</Link>
               <MdChevronRight size={18} className="mt-0.5" />
             </div>
@@ -72,8 +69,8 @@ export const Breadcrumb = ({ className }: Props) => {
         <DropdownMenuContent align="start">
           {context.breadcrumbs
             .slice(0, context.breadcrumbs.length - 2)
-            .map((breadcrumb) => (
-              <Link href={breadcrumb.href} key={breadcrumb.href}>
+            .map((breadcrumb, i) => (
+              <Link href={breadcrumb.href} key={i}>
                 <DropdownMenuItem className="hover:cursor-pointer">
                   {breadcrumb.label}
                 </DropdownMenuItem>
