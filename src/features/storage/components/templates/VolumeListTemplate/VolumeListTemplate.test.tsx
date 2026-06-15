@@ -1,10 +1,13 @@
 import { render, screen } from "@testing-library/react";
 import { VolumeListTemplate } from "./VolumeListTemplate";
 
+const pathnameMock = jest.fn();
+const searchParamsMock = jest.fn();
+const pushMock = jest.fn();
 jest.mock("next/navigation", () => ({
-  useRouter: () => ({ push: jest.fn() }),
-  usePathname: () => "/storage/volumes",
-  useSearchParams: () => new URLSearchParams(),
+  usePathname: () => pathnameMock(),
+  useSearchParams: () => searchParamsMock(),
+  useRouter: () => ({ push: pushMock }),
 }));
 
 const useVolumeListMock = jest.fn();
