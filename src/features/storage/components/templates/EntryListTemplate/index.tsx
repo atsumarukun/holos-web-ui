@@ -1,0 +1,1 @@
+export { EntryListTemplate } from "./EntryListTemplate";
