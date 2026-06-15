@@ -34,8 +34,12 @@ export const useEntryList = ({ volumeName, currentKey }: Props) => {
         const searchedEntries = data.entries.filter((entry) =>
           entry.key.startsWith(searchParams.get("search") ?? ""),
         );
-        setEntries(searchedEntries);
-        props?.onCompleted?.(searchedEntries);
+        const sortedEntries = [
+          ...searchedEntries.filter((entry) => entry.type === "folder"),
+          ...searchedEntries.filter((entry) => entry.type !== "folder"),
+        ];
+        setEntries(sortedEntries);
+        props?.onCompleted?.(sortedEntries);
       } else {
         setError(error);
         props?.onError?.(error);

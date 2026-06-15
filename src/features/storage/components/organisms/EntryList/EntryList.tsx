@@ -1,33 +1,44 @@
 "use client";
 
 import { IconButton } from "@/components/atoms/IconButton";
+import { Error } from "@/components/molecules/Error";
+import { useEntryList } from "@/features/storage/hooks/entry-list";
+import { useEntrySelection } from "@/features/storage/hooks/select-entry";
+import { useScrollbarWidthVariable } from "@/hooks/scrollbar-width";
+import { errorCode } from "@/lib/errors";
+import { refetchContext } from "@/providers/refetch";
+import { useRouter } from "next/navigation";
+import { useContext, useEffect } from "react";
+import { FiAlertTriangle } from "react-icons/fi";
 import {
   MdCheckBox,
   MdCheckBoxOutlineBlank,
   MdIndeterminateCheckBox,
 } from "react-icons/md";
-import dayjs from "@/lib/dayjs";
-import { VolumeDropdownMenu } from "../VolumeDropdownMenu";
+import { SelectedEntriesDropdownMenu } from "../SelectedEntriesDropdownMenu";
 import Link from "next/link";
-import { SelectedVolumesDropdownMenu } from "../SelectedVolumesDropdownMenu";
-import { useVolumeSelection } from "@/features/storage/hooks/select-volume";
-import { useScrollbarWidthVariable } from "@/hooks/scrollbar-width";
-import { useContext, useEffect } from "react";
-import { refetchContext } from "@/providers/refetch";
-import { useVolumeList } from "@/features/storage/hooks/volume-list";
-import { Error } from "@/components/molecules/Error";
-import { FiAlertTriangle } from "react-icons/fi";
-import { useRouter } from "next/navigation";
-import { errorCode } from "@/lib/errors";
+import dayjs from "@/lib/dayjs";
+import { EntryDropdownMenu } from "../EntryDropdownMenu";
+import { formatSize } from "@/features/storage/lib/size";
+import { extractName } from "@/features/storage/lib/key";
+import { LuFile, LuFolder } from "react-icons/lu";
 
-export const VolumeList = () => {
+type Props = Readonly<{
+  volumeName: string;
+  currentKey: string;
+}>;
+
+export const EntryList = ({ volumeName, currentKey }: Props) => {
   const router = useRouter();
   const context = useContext(refetchContext);
 
-  const { loading, volumes, error, refetch } = useVolumeList();
-  const { isSelectedAll, selectedVolumeNames, onSelectAll, onSelect, onClear } =
-    useVolumeSelection({
-      volumes: volumes,
+  const { loading, entries, error, refetch } = useEntryList({
+    volumeName: volumeName,
+    currentKey: currentKey,
+  });
+  const { isSelectedAll, selectedEntryKeys, onSelectAll, onSelect, onClear } =
+    useEntrySelection({
+      entries: entries,
     });
 
   const { scrollbarRef } = useScrollbarWidthVariable({
@@ -62,17 +73,17 @@ export const VolumeList = () => {
       <Error
         icon={FiAlertTriangle}
         variant="page"
-        title="ボリュームの取得に失敗しました"
+        title="エントリーの取得に失敗しました"
         description="再度ページを読み込み直してください."
       />
     );
   }
 
-  if (!volumes || !volumes.length) {
+  if (!entries || !entries.length) {
     return (
       <Error
         variant="page"
-        title="ボリュームが存在しません"
+        title="エントリーが存在しません"
         description="作成ボタンをから作成してください."
       />
     );
@@ -94,50 +105,65 @@ export const VolumeList = () => {
           onClick={onSelectAll}
         />
         <div className="grow flex flex-row py-4">
-          <p className="basis-3/5 pr-2">ボリューム名</p>
-          <p className="basis-[12%] pr-2">公開状況</p>
+          <p className="basis-5/9 pr-2">エントリー名</p>
+          <p className="basis-1/9 pr-2">タイプ</p>
+          <p className="basis-1/9 pr-2">サイズ</p>
           <p className="grow pr-2">最終更新日時</p>
         </div>
-        <SelectedVolumesDropdownMenu names={selectedVolumeNames} />
+        <SelectedEntriesDropdownMenu
+          volumeName={volumeName}
+          currentKey={currentKey}
+          entryKeys={selectedEntryKeys}
+        />
       </div>
       <div
         ref={scrollbarRef}
         className="flex-1 min-h-0 flex flex-col gap-[2px] overflow-y-auto -mr-[var(--scrollbar-width)]"
       >
-        {volumes.map((volume) => (
+        {entries.map((entry) => (
           <div
             className="flex flex-row items-center gap-2 bg-white px-6"
-            key={volume.name}
+            key={entry.key}
           >
             <IconButton
               icon={
-                selectedVolumeNames.includes(volume.name)
+                selectedEntryKeys.includes(entry.key)
                   ? MdCheckBox
                   : MdCheckBoxOutlineBlank
               }
               variant="ghost"
               className={
-                selectedVolumeNames.includes(volume.name)
+                selectedEntryKeys.includes(entry.key)
                   ? "text-accent-foreground hover:text-accent-foreground/75"
                   : "text-[#999999]"
               }
-              onClick={() => onSelect(volume.name)}
+              onClick={() => onSelect(entry.key)}
             />
             <Link
-              href={`/storage/entities/${volume.name}`}
+              href={`/storage/entries/${volumeName}/${entry.key}`}
               className="grow flex flex-row py-4"
             >
-              <p className="basis-3/5 pr-2">{volume.name}</p>
-              <p className="basis-[12%] text-[#999999] pr-2">
-                {volume.isPublic ? "PUBLIC" : "PRIVATE"}
+              <p className="basis-5/9 pr-2">{extractName(entry.key)}</p>
+              <p className="min-w-0 flex flex-row items-center gap-2 basis-1/9 text-[#999999] pr-2">
+                <span>
+                  {entry.type === "folder" ? <LuFolder /> : <LuFile />}
+                </span>
+                <span className="truncate">{entry.type}</span>
+              </p>
+              <p className="basis-1/9 text-[#999999] pr-2">
+                {entry.type === "folder" ? "-----" : formatSize(entry.size)}
               </p>
               <p className="grow text-[#999999] pr-2">
-                {dayjs(volume.updatedAt)
+                {dayjs(entry.updatedAt)
                   .tz("Asia/Tokyo")
                   .format("YYYY/MM/DD HH:mm:ss")}
               </p>
             </Link>
-            <VolumeDropdownMenu volume={volume} />
+            <EntryDropdownMenu
+              volumeName={volumeName}
+              currentKey={currentKey}
+              entry={entry}
+            />
           </div>
         ))}
       </div>
