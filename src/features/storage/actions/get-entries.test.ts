@@ -45,7 +45,7 @@ describe("getEntries", () => {
     });
   });
 
-  it("success: woth options", async () => {
+  it("success: with options", async () => {
     const token = "1Ty1HKTPKTt8xEi-_3HTbWf2SCHOdqOS";
     const volumeName = "volume";
     const mockResponse = {
