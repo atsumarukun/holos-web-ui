@@ -1,6 +1,7 @@
 import { Error } from "@/components/molecules/Error";
 import { GetEntriesResponse } from "@/features/storage/actions/get-entries";
 import { extractName } from "@/features/storage/lib/key";
+import { buildPreviewSrc } from "@/features/storage/lib/preview";
 import { cn } from "@/lib/utils";
 import { LuEyeOff } from "react-icons/lu";
 
@@ -11,7 +12,7 @@ type Props = Readonly<{
 }>;
 
 export const PreviewEntry = ({ volumeName, entry, className }: Props) => {
-  const src = `/api/storage/entries/${volumeName}/${entry.key}`;
+  const src = buildPreviewSrc(volumeName, entry.key);
 
   if (entry.type.startsWith("image/")) {
     return <img src={src} alt={extractName(entry.key)} className={className} />;
