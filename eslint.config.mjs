@@ -26,6 +26,7 @@ const eslintConfig = [
       "no-var": "off",
       "no-console": ["error", { allow: ["error"] }],
       "@typescript-eslint/no-unused-vars": "error",
+      "@next/next/no-img-element": "off",
     },
   }),
   ...storybook.configs["flat/recommended"],
