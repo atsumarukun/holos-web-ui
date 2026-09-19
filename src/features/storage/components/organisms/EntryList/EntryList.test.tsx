@@ -70,8 +70,7 @@ describe("Storage/Organisms/EntryList", () => {
     expect(screen.getByText("サイズ")).toBeInTheDocument();
     expect(screen.getByText("最終更新日時")).toBeInTheDocument();
 
-    expect(screen.getAllByRole("link")).toHaveLength(2);
-    expect(screen.getAllByRole("button")).toHaveLength(6);
+    expect(screen.getAllByRole("button")).toHaveLength(8);
 
     expect(screen.getByText("sample")).toBeInTheDocument();
     expect(screen.getByText("sample.txt")).toBeInTheDocument();
