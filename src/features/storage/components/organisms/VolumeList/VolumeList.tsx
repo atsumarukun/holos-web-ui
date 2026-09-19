@@ -124,7 +124,7 @@ export const VolumeList = () => {
               onClick={() => onSelect(volume.name)}
             />
             <Link
-              href={`/storage/entities/${volume.name}`}
+              href={`/storage/entries/${volume.name}`}
               className="grow flex flex-row py-4"
             >
               <p className="basis-3/5 pr-2">{volume.name}</p>
