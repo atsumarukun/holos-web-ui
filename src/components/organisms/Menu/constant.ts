@@ -1,5 +1,5 @@
 import { IconType } from "react-icons";
-import { LuHouse } from "react-icons/lu";
+import { LuHouse, LuInbox } from "react-icons/lu";
 
 export type Floor = {
   key: string;
@@ -23,5 +23,11 @@ export const floors: Floor[] = [
     name: "ホーム",
     icon: LuHouse,
     path: "/",
+  },
+  {
+    key: "storage",
+    name: "ストレージ",
+    icon: LuInbox,
+    path: "/storage/volumes",
   },
 ];
