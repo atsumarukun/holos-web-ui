@@ -18,8 +18,8 @@ type Props = Readonly<{
 }>;
 
 export const VolumeDropdownMenu = ({ volume }: Props) => {
-  const [onUpdateDialogOpen, setOnUpdateDialogOpen] = useState(false);
-  const [onDeleteDialogOpen, setOnDeleteDialogOpen] = useState(false);
+  const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   return (
     <>
@@ -34,14 +34,14 @@ export const VolumeDropdownMenu = ({ volume }: Props) => {
         <DropdownMenuContent className="mr-6">
           <DropdownMenuItem
             className="flex-row items-center gap-1 hover:cursor-pointer"
-            onClick={() => setOnUpdateDialogOpen(true)}
+            onClick={() => setUpdateDialogOpen(true)}
           >
             <LuPencil />
             編集
           </DropdownMenuItem>
           <DropdownMenuItem
             className="flex-row items-center gap-1 text-destructive focus:text-destructive focus:bg-destructive/10 hover:cursor-pointer"
-            onClick={() => setOnDeleteDialogOpen(true)}
+            onClick={() => setDeleteDialogOpen(true)}
           >
             <LuTrash className="text-destructive" />
             削除
@@ -50,13 +50,13 @@ export const VolumeDropdownMenu = ({ volume }: Props) => {
       </DropdownMenu>
       <UpdateVolumeFormDialog
         defaultValues={{ name: volume.name, isPublic: volume.isPublic }}
-        open={onUpdateDialogOpen}
-        onOpenChange={() => setOnUpdateDialogOpen((v) => !v)}
+        open={updateDialogOpen}
+        onOpenChange={() => setUpdateDialogOpen((v) => !v)}
       />
       <DeleteVolumeConfirmDialog
         name={volume.name}
-        open={onDeleteDialogOpen}
-        onOpenChange={() => setOnDeleteDialogOpen((v) => !v)}
+        open={deleteDialogOpen}
+        onOpenChange={() => setDeleteDialogOpen((v) => !v)}
       />
     </>
   );

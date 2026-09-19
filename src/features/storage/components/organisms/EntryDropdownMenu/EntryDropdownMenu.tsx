@@ -28,10 +28,10 @@ type Props = Readonly<{
 }>;
 
 export const EntryDropdownMenu = ({ volumeName, currentKey, entry }: Props) => {
-  const [onUpdateDialogOpen, setOnUpdateDialogOpen] = useState(false);
-  const [onCopyDialogOpen, setOnCopyDialogOpen] = useState(false);
-  const [onMoveDialogOpen, setOnMoveDialogOpen] = useState(false);
-  const [onDeleteDialogOpen, setOnDeleteDialogOpen] = useState(false);
+  const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
+  const [copyDialogOpen, setCopyDialogOpen] = useState(false);
+  const [moveDialogOpen, setMoveDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   return (
     <>
@@ -46,28 +46,28 @@ export const EntryDropdownMenu = ({ volumeName, currentKey, entry }: Props) => {
         <DropdownMenuContent className="mr-6">
           <DropdownMenuItem
             className="flex-row items-center gap-1 hover:cursor-pointer"
-            onClick={() => setOnUpdateDialogOpen(true)}
+            onClick={() => setUpdateDialogOpen(true)}
           >
             <LuPencil />
             編集
           </DropdownMenuItem>
           <DropdownMenuItem
             className="flex-row items-center gap-1 hover:cursor-pointer"
-            onClick={() => setOnCopyDialogOpen(true)}
+            onClick={() => setCopyDialogOpen(true)}
           >
             <LuCopy />
             コピー
           </DropdownMenuItem>
           <DropdownMenuItem
             className="flex-row items-center gap-1 hover:cursor-pointer"
-            onClick={() => setOnMoveDialogOpen(true)}
+            onClick={() => setMoveDialogOpen(true)}
           >
             <LuFolderOutput />
             移動
           </DropdownMenuItem>
           <DropdownMenuItem
             className="flex-row items-center gap-1 text-destructive focus:text-destructive focus:bg-destructive/10 hover:cursor-pointer"
-            onClick={() => setOnDeleteDialogOpen(true)}
+            onClick={() => setDeleteDialogOpen(true)}
           >
             <LuTrash className="text-destructive" />
             削除
@@ -78,30 +78,30 @@ export const EntryDropdownMenu = ({ volumeName, currentKey, entry }: Props) => {
         volumeName={volumeName}
         currentKey={currentKey}
         defaultValues={{ name: extractName(entry.key) }}
-        open={onUpdateDialogOpen}
-        onOpenChange={() => setOnUpdateDialogOpen((v) => !v)}
+        open={updateDialogOpen}
+        onOpenChange={() => setUpdateDialogOpen((v) => !v)}
       />
       <EntryDestinationDialog
         mode="copy"
         volumeName={volumeName}
         currentKey={currentKey}
         entryKeys={[entry.key]}
-        open={onCopyDialogOpen}
-        onOpenChange={() => setOnCopyDialogOpen((v) => !v)}
+        open={copyDialogOpen}
+        onOpenChange={() => setCopyDialogOpen((v) => !v)}
       />
       <EntryDestinationDialog
         mode="move"
         volumeName={volumeName}
         currentKey={currentKey}
         entryKeys={[entry.key]}
-        open={onMoveDialogOpen}
-        onOpenChange={() => setOnMoveDialogOpen((v) => !v)}
+        open={moveDialogOpen}
+        onOpenChange={() => setMoveDialogOpen((v) => !v)}
       />
       <DeleteEntryConfirmDialog
         volumeName={volumeName}
         entryKey={entry.key}
-        open={onDeleteDialogOpen}
-        onOpenChange={() => setOnDeleteDialogOpen((v) => !v)}
+        open={deleteDialogOpen}
+        onOpenChange={() => setDeleteDialogOpen((v) => !v)}
       />
     </>
   );
