@@ -62,7 +62,7 @@ describe("useEntryList", () => {
         updatedAt: "2025-01-01T00:00:00Z",
       },
       {
-        key: "test/sample.txt",
+        key: "key/test.txt",
         size: 4,
         type: "text/plain; charset=utf-8",
         createdAt: "2025-01-01T00:00:00Z",
@@ -70,7 +70,9 @@ describe("useEntryList", () => {
       },
     ];
 
-    useSearchParamsMock.mockReturnValue(new URLSearchParams({ search: "key" }));
+    useSearchParamsMock.mockReturnValue(
+      new URLSearchParams({ search: "sample" }),
+    );
     getEntriesMock.mockResolvedValue({
       data: {
         entries: mockEntries,
