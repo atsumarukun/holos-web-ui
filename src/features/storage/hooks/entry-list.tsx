@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { getEntries, GetEntriesResponse } from "../actions/get-entries";
 import { ActionError } from "@/lib/errors";
+import { extractName } from "../lib/key";
 
 type Props = Readonly<{
   volumeName: string;
@@ -32,7 +33,7 @@ export const useEntryList = ({ volumeName, currentKey }: Props) => {
       });
       if (data) {
         const searchedEntries = data.entries.filter((entry) =>
-          entry.key.startsWith(searchParams.get("search") ?? ""),
+          extractName(entry.key).startsWith(searchParams.get("search") ?? ""),
         );
         const sortedEntries = [
           ...searchedEntries.filter((entry) => entry.type === "folder"),
