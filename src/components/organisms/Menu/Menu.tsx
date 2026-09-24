@@ -28,15 +28,23 @@ const MenuItem = ({
   floor,
   currentPath,
 }: Readonly<{ floor: Floor; currentPath: string }>) => {
+  const isCurrentFloor = (floorPath: string): boolean => {
+    if (floorPath === "/") {
+      // NOTE: トップページは前方一致だとすべてのページにマッチするため完全一致で判定.
+      return currentPath === floorPath;
+    }
+    return currentPath.startsWith(floorPath);
+  };
+
   if ("path" in floor) {
     return (
       <Link
         href={floor.path}
         className={cn(
           "flex flex-row items-center gap-3 hover:bg-accent py-3 pr-6",
-          floor.path === currentPath
+          isCurrentFloor(floor.path)
             ? "bg-accent border-l-4 border-theme pl-5"
-            : "pl-6"
+            : "pl-6",
         )}
       >
         <floor.icon className="w-6 h-6 rounded text-theme bg-theme/24 p-1" />
@@ -59,9 +67,9 @@ const MenuItem = ({
             href={child.path}
             className={cn(
               "hover:bg-accent py-3 pr-6",
-              child.path === currentPath
+              isCurrentFloor(child.path)
                 ? "bg-accent border-l-4 border-theme pl-14"
-                : "pl-15"
+                : "pl-15",
             )}
             key={child.path}
           >

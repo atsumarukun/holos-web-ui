@@ -30,32 +30,37 @@ jest.mock("./constant", () => ({
 
 describe("Common/Organisms/Menu", () => {
   it("renders", () => {
+    pathnameMock.mockReturnValue("/");
+
     render(<Menu />);
+
     expect(screen.getByRole("link", { name: "ホーム" })).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: "アクセス許可" })
+      screen.getByRole("button", { name: "アクセス許可" }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("link", { name: "ホーム" }).querySelector("svg")
+      screen.getByRole("link", { name: "ホーム" }).querySelector("svg"),
     ).toBeInTheDocument();
     expect(
       screen
         .getByRole("button", { name: "アクセス許可" })
-        .querySelectorAll("svg").length
+        .querySelectorAll("svg").length,
     ).toBe(2);
   });
 
   it("renders children when the accordion is open", async () => {
+    pathnameMock.mockReturnValue("/");
+
     render(<Menu />);
 
     await userEvent.click(screen.getByRole("button"));
 
     await waitFor(() => {
       expect(
-        screen.getByRole("link", { name: "エージェント" })
+        screen.getByRole("link", { name: "エージェント" }),
       ).toBeInTheDocument();
       expect(
-        screen.getByRole("link", { name: "ポリシー" })
+        screen.getByRole("link", { name: "ポリシー" }),
       ).toBeInTheDocument();
     });
   });
@@ -66,7 +71,7 @@ describe("Common/Organisms/Menu", () => {
     render(<Menu />);
 
     expect(screen.getByRole("link", { name: "ホーム" })).toHaveClass(
-      "border-l-4"
+      "border-l-4",
     );
   });
 
@@ -79,7 +84,7 @@ describe("Common/Organisms/Menu", () => {
 
     await waitFor(() => {
       expect(screen.getByRole("link", { name: "エージェント" })).toHaveClass(
-        "border-l-4"
+        "border-l-4",
       );
     });
   });
