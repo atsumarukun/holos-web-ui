@@ -28,6 +28,6 @@ export const floors: Floor[] = [
     key: "storage",
     name: "ストレージ",
     icon: LuInbox,
-    path: "/storage/volumes",
+    path: "/storage",
   },
 ];
