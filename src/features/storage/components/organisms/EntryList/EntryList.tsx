@@ -168,7 +168,7 @@ export const EntryList = ({ volumeName, currentKey }: Props) => {
                   </span>
                   <span className="truncate">{entry.type}</span>
                 </p>
-                <p className="flex-1 text-[#999999] xl:pr-2">
+                <p className="truncate flex-1 text-[#999999] xl:pr-2">
                   {entry.type === "folder" ? "-----" : formatSize(entry.size)}
                 </p>
                 <p className="xl:flex-[2] text-[#999999] hidden xl:block">
