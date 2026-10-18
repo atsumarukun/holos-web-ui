@@ -13,7 +13,7 @@ describe("Common/Molecules/Error", () => {
       <Error variant="page" title="エラーが発生しました" />,
     );
     expect(pageContainer.querySelector("svg")?.parentElement).toHaveClass(
-      "bg-background",
+      "bg-secondary md:bg-background",
     );
 
     const { container: dialogContainer } = render(

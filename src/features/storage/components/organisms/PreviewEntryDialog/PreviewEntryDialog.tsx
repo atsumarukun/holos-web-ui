@@ -44,7 +44,7 @@ export const PreviewEntryDialog = ({
           <PreviewEntry
             volumeName={volumeName}
             entry={entry}
-            className="max-w-[84vw] max-h-[84vh]"
+            className="max-w-[90vw] md:max-w-[84vw] max-h-[90dvh] md:max-h-[84dvh]"
           />
           <Close
             data-slot="dialog-close"

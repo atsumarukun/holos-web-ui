@@ -46,7 +46,7 @@ export const Header = () => {
   };
 
   return (
-    <header className="flex flex-row bg-[#262C3C] px-6 py-3">
+    <header className="flex flex-row bg-[#262C3C] px-4 md:px-6 py-3">
       <IconButton
         icon={LuMenu}
         variant="ghost"

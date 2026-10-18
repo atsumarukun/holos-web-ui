@@ -80,7 +80,7 @@ export const VolumeList = () => {
 
   return (
     <div className="flex-1 min-h-0 flex flex-col gap-[2px]">
-      <div className="flex flex-row items-center gap-2 bg-white px-6">
+      <div className="flex flex-row items-center gap-2 bg-white border-b md:border-none px-2 md:px-6">
         <IconButton
           icon={
             isSelectedAll ? MdIndeterminateCheckBox : MdCheckBoxOutlineBlank
@@ -94,9 +94,9 @@ export const VolumeList = () => {
           onClick={onSelectAll}
         />
         <div className="grow flex flex-row py-4">
-          <p className="basis-3/5 pr-2">ボリューム名</p>
-          <p className="basis-[12%] pr-2">公開状況</p>
-          <p className="grow pr-2">最終更新日時</p>
+          <p className="flex-[5] lg:flex-[3] pr-2">ボリューム名</p>
+          <p className="flex-[2] lg:flex-1 lg:pr-2">公開状況</p>
+          <p className="lg:flex-[2] xl:flex-1 hidden lg:block">最終更新日時</p>
         </div>
         <SelectedVolumesDropdownMenu names={selectedVolumeNames} />
       </div>
@@ -106,7 +106,7 @@ export const VolumeList = () => {
       >
         {volumes.map((volume) => (
           <div
-            className="flex flex-row items-center gap-2 bg-white px-6"
+            className="flex flex-row items-center gap-2 bg-white border-b md:border-none px-2 md:px-6"
             key={volume.name}
           >
             <IconButton
@@ -125,13 +125,15 @@ export const VolumeList = () => {
             />
             <Link
               href={`/storage/entries/${volume.name}`}
-              className="grow flex flex-row py-4"
+              className="grow min-w-0 flex flex-row py-4"
             >
-              <p className="basis-3/5 pr-2">{volume.name}</p>
-              <p className="basis-[12%] text-[#999999] pr-2">
+              <p className="truncate min-w-0 flex-[5] lg:flex-[3] pr-2">
+                {volume.name}
+              </p>
+              <p className="flex-[2] lg:flex-1 text-[#999999] lg:pr-2">
                 {volume.isPublic ? "PUBLIC" : "PRIVATE"}
               </p>
-              <p className="grow text-[#999999] pr-2">
+              <p className="lg:flex-[2] xl:flex-1 text-[#999999] hidden lg:block">
                 {dayjs(volume.updatedAt)
                   .tz("Asia/Tokyo")
                   .format("YYYY/MM/DD HH:mm:ss")}

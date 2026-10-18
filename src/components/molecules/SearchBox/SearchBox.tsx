@@ -27,15 +27,15 @@ export const SearchBox = () => {
 
   return (
     <form
-      className="max-w-lg w-full flex flex-row items-center"
+      className="max-w-[256px] md:max-w-lg w-full flex flex-row items-center"
       onSubmit={handleSubmit(onSubmit)}
     >
       <input
         placeholder="検索"
-        className="grow bg-background border rounded-l focus:outline-none px-4 py-1.5"
+        className="grow bg-background border rounded-l focus:outline-none px-3 md:px-4 py-0.5 md:py-1.5"
         {...register("keyword")}
       />
-      <button className="text-white bg-button hover:bg-button/80 border border-l-0 rounded-r px-4 py-2">
+      <button className="text-white bg-button hover:bg-button/80 border border-l-0 rounded-r px-3 md:px-4 py-1.5 md:py-2">
         <LuSearch size={20} />
       </button>
     </form>

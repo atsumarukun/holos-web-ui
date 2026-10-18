@@ -14,7 +14,7 @@ export const VolumeListTemplate = () => {
   return (
     <Template breadcrumbs={breadcrumbs}>
       <RefetchProvider>
-        <div className="flex flex-col gap-6 mb-6">
+        <div className="flex flex-col gap-4 md:gap-6 px-4 md:px-0 mb-4 md:mb-6">
           <Heading text="ボリューム一覧" />
           <VolumeToolbar />
         </div>

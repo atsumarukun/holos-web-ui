@@ -6,7 +6,7 @@ export const iconButtonVariants = {
   default: cn(base, "bg-primary text-primary-foreground hover:bg-primary/90"),
   outline: cn(
     base,
-    "border bg-inherit hover:bg-accent hover:text-accent-foreground"
+    "border bg-inherit hover:bg-accent hover:text-accent-foreground",
   ),
   ghost: cn(base, "bg-inherit hover:bg-accent hover:text-accent-foreground"),
 } as const;
