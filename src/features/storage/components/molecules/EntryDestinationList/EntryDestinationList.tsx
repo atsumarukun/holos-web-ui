@@ -16,9 +16,9 @@ export const EntryDestinationList = ({ entries, onSelect }: Props) => {
   return (
     <div className="flex-1 min-h-0 flex flex-col">
       <div className="flex border-b px-4 py-1.5">
-        <p className="basis-1/2">エントリー名</p>
-        <p className="basis-1/4">タイプ</p>
-        <p className="grow">最終更新日時</p>
+        <p className="flex-1 lg:flex-[2]">エントリー名</p>
+        <p className="flex-1">タイプ</p>
+        <p className="lg:flex-1 hidden lg:block">最終更新日時</p>
       </div>
       <div
         ref={scrollbarRef}
@@ -32,9 +32,11 @@ export const EntryDestinationList = ({ entries, onSelect }: Props) => {
               className="flex flex-row text-start hover:bg-accent border-b px-4 py-1.5"
               key={entry.key}
             >
-              <p className="basis-1/2">{extractName(entry.key)}</p>
-              <p className="basis-1/4 text-[#999999]">{entry.type}</p>
-              <p className="grow text-[#999999]">
+              <p className="truncate flex-1 lg:flex-[2]">
+                {extractName(entry.key)}
+              </p>
+              <p className="truncate flex-1 text-[#999999]">{entry.type}</p>
+              <p className="lg:flex-1 hidden lg:block text-[#999999]">
                 {dayjs(entry.updatedAt)
                   .tz("Asia/Tokyo")
                   .format("YYYY/MM/DD HH:mm:ss")}
@@ -48,9 +50,11 @@ export const EntryDestinationList = ({ entries, onSelect }: Props) => {
               className="flex flex-row text-[#999999] border-b px-4 py-1.5"
               key={entry.key}
             >
-              <p className="basis-1/2">{extractName(entry.key)}</p>
-              <p className="basis-1/4">{entry.type}</p>
-              <p className="grow">
+              <p className="truncate flex-1 lg:flex-[2]">
+                {extractName(entry.key)}
+              </p>
+              <p className="truncate flex-1">{entry.type}</p>
+              <p className="lg:flex-1 hidden lg:block">
                 {dayjs(entry.updatedAt)
                   .tz("Asia/Tokyo")
                   .format("YYYY/MM/DD HH:mm:ss")}

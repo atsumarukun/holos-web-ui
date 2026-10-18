@@ -102,7 +102,7 @@ const EntryDestinationDialogContent = ({
   };
 
   return (
-    <DialogContent className="min-w-[1024px] h-[512px] max-w-none flex flex-col">
+    <DialogContent className="w-[90vw] min-w-[90vw] xl:min-w-[1024px] h-[512px] max-w-none flex flex-col">
       <DialogHeader>
         <DialogTitle>{`エントリー${label}`}</DialogTitle>
         <VisuallyHidden>

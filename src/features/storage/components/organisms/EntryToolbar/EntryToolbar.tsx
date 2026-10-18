@@ -16,7 +16,7 @@ export const EntryToolbar = ({ volumeName, currentKey }: Props) => {
 
   return (
     <>
-      <div className="w-full flex flex-row justify-between gap-6">
+      <div className="w-full flex flex-row justify-between gap-4 md:gap-6">
         <SearchBox />
         <Button
           icon={LuPlus}

@@ -106,8 +106,8 @@ export const EntryList = ({ volumeName, currentKey }: Props) => {
 
   return (
     <>
-      <div className="flex-1 min-h-0 flex flex-col gap-[2px]">
-        <div className="flex flex-row items-center gap-2 bg-white px-6">
+      <div className="flex-1 min-w-0 min-h-0 flex flex-col gap-[2px]">
+        <div className="flex flex-row items-center gap-2 bg-white border-b md:border-none px-2 md:px-6">
           <IconButton
             icon={
               isSelectedAll ? MdIndeterminateCheckBox : MdCheckBoxOutlineBlank
@@ -121,10 +121,10 @@ export const EntryList = ({ volumeName, currentKey }: Props) => {
             onClick={onSelectAll}
           />
           <div className="grow flex flex-row py-4">
-            <p className="basis-1/2 pr-2">エントリー名</p>
-            <p className="basis-1/8 pr-2">タイプ</p>
-            <p className="basis-1/8 pr-2">サイズ</p>
-            <p className="grow pr-2">最終更新日時</p>
+            <p className="flex-[2] xl:flex-[4] pr-2">エントリー名</p>
+            <p className="flex-1 pr-2">タイプ</p>
+            <p className="flex-1 xl:pr-2">サイズ</p>
+            <p className="xl:flex-[2] hidden xl:block">最終更新日時</p>
           </div>
           <SelectedEntriesDropdownMenu
             volumeName={volumeName}
@@ -138,7 +138,7 @@ export const EntryList = ({ volumeName, currentKey }: Props) => {
         >
           {entries.map((entry) => (
             <div
-              className="flex flex-row items-center gap-2 bg-white px-6"
+              className="flex flex-row items-center gap-2 bg-white border-b md:border-none px-2 md:px-6"
               key={entry.key}
             >
               <IconButton
@@ -157,19 +157,21 @@ export const EntryList = ({ volumeName, currentKey }: Props) => {
               />
               <button
                 onClick={() => onClickEntry(entry)}
-                className="grow flex flex-row text-start py-4"
+                className="grow min-w-0 flex flex-row text-start py-4"
               >
-                <p className="basis-1/2 pr-2">{extractName(entry.key)}</p>
-                <p className="min-w-0 flex flex-row items-center gap-2 basis-1/8 text-[#999999] pr-2">
+                <p className="truncate min-w-0 flex-[2] xl:flex-[4] pr-2">
+                  {extractName(entry.key)}
+                </p>
+                <p className="min-w-0 flex flex-row items-center gap-2 flex-1 text-[#999999] pr-2">
                   <span>
                     {entry.type === "folder" ? <LuFolder /> : <LuFile />}
                   </span>
                   <span className="truncate">{entry.type}</span>
                 </p>
-                <p className="basis-1/8 text-[#999999] pr-2">
+                <p className="flex-1 text-[#999999] xl:pr-2">
                   {entry.type === "folder" ? "-----" : formatSize(entry.size)}
                 </p>
-                <p className="grow text-[#999999] pr-2">
+                <p className="xl:flex-[2] text-[#999999] hidden xl:block">
                   {dayjs(entry.updatedAt)
                     .tz("Asia/Tokyo")
                     .format("YYYY/MM/DD HH:mm:ss")}

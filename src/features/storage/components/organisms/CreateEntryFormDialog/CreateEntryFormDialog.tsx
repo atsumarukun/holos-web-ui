@@ -124,7 +124,7 @@ export const CreateEntryFormDialog = ({
             <div
               {...getRootProps()}
               className={cn(
-                "border rounded flex flex-col items-center gap-2 py-8",
+                "border rounded flex flex-col items-center gap-2 px-2 py-8",
                 errors.file?.message
                   ? "bg-destructive/10 border-destructive/50"
                   : isDragActive
