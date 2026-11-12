@@ -6,8 +6,8 @@ export default function ErrorPage() {
   return (
     <Error
       variant="page"
-      title="サーバー内部でエラーが発生しました"
-      description="アクセスしようとしたページは表示できませんでした. 時間をおいて再度お試しください."
+      title="エラーが発生しました"
+      description="アクセスしようとしたページは表示できませんでした.\n時間をおいて再度お試しください."
     />
   );
 }

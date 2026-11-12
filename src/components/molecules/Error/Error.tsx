@@ -30,7 +30,11 @@ export const Error = ({
       </div>
       <div className="flex flex-col items-center">
         <p className="text-xl">{title}</p>
-        {description && <p className="text-sm text-[#999999]">{description}</p>}
+        {description && (
+          <p className="text-sm text-[#999999] whitespace-pre-line text-center">
+            {description.replace(/\\n/g, "\n")}
+          </p>
+        )}
       </div>
     </div>
   );
