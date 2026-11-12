@@ -1,7 +1,7 @@
 import { WorkspaceLayout } from "@/components/layouts/WorkspaceLayout";
 import { Error } from "@/components/molecules/Error";
 
-export default async function NotFound() {
+export default async function NotFoundPage() {
   return (
     <WorkspaceLayout>
       <Error
