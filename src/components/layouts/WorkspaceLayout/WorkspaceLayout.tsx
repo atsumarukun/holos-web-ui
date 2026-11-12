@@ -4,11 +4,11 @@ import { AccountProvider } from "@/providers/account";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-export default async function BoardLayout({
-  children,
-}: Readonly<{
+type Props = Readonly<{
   children: React.ReactNode;
-}>) {
+}>;
+
+export const WorkspaceLayout = async ({ children }: Props) => {
   const accountName = (await headers()).get("account-name");
 
   if (!accountName) {
@@ -20,14 +20,14 @@ export default async function BoardLayout({
       <div className="h-[100dvh] flex flex-col">
         <Header />
         <div className="flex-1 min-h-0 flex flex-row">
-          <div className="hidden md:block w-[260px]">
+          <aside className="hidden md:block w-[260px]">
             <Menu />
-          </div>
-          <div className="flex-1 min-w-0 min-h-0 flex flex-col md:bg-secondary py-4 md:p-6">
+          </aside>
+          <main className="flex-1 min-w-0 min-h-0 flex flex-col md:bg-secondary py-4 md:p-6">
             {children}
-          </div>
+          </main>
         </div>
       </div>
     </AccountProvider>
   );
-}
+};
